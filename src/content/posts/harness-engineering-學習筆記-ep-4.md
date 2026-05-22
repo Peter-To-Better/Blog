@@ -96,6 +96,39 @@ You are a code reviewer. When invoked, analyze the code...
 
 `description` 寫得好不好，決定 Claude 會不會**主動派**這個 agent — 比 system prompt 還重要。
 
+## 怎麼實際叫出 Sub-agent？
+
+寫了定義檔之後，很多人會卡在一個問題 — **「我到底怎麼讓它跑起來？要另外開一個 Terminal 嗎？」**
+
+先破除最常見的誤會：
+
+> ❌ 在同一個對話框繼續打字、丟一段新 prompt，**不是** sub-agent。
+> 那只是主 agent 在**同一個 context** 裡繼續做事 — context 只會越來越長，正好是 Context Rot 的來源。
+
+Sub-agent 的本質是 — **Claude 在背後幫你開一個獨立的 context window**，分身在裡面做事，做完只把**摘要**丟回主對話。你不需要、也不會去「手動再開一個東西」。
+
+| 你可能以為的          | 實際的 Sub-agent                          |
+| :-------------------- | :---------------------------------------- |
+| 要另外開 Terminal     | 不用 — 同一個 session、同一個視窗          |
+| 同一對話丟新 prompt   | 開**獨立 context**，分身做完回傳摘要       |
+| context 越來越長      | 主對話 context 幾乎不變胖                  |
+
+### 觸發的三種方式
+
+前提：`.claude/agents/<name>.md` 定義檔要存在，且 Claude Code **session 啟動時會載入**它（直接編輯檔案要重啟 session 才生效；用 `/agents` 介面建立則即時生效）。
+
+1. **Claude 自動委派** — 當你描述的任務匹配某個 sub-agent 的 `description`，主 Claude 會自己決定派它。這就是為什麼 `description` 要寫 "use proactively after code changes" 這種句子 — 它是在對主 Claude 喊「這種情況請派我」。
+
+2. **你明確點名** — 直接說「用 `code-reviewer` 這個 sub-agent 檢查剛剛的改動」，Claude 就會呼叫 `Agent` 工具把它派出去。
+
+3. **`/agents` 指令** — 打開管理介面，瀏覽 / 新建 / 編輯 sub-agent。
+
+### UI 上會看到什麼
+
+Sub-agent 跑起來時，Claude Code 介面會把它顯示成一個**巢狀的子任務**展開 — 你看得到它在跑、看得到它最後回傳的摘要，但它的中間過程（讀了哪些檔、跑了什麼指令）不會灌進你的主對話。
+
+簡單講：**你要做的只有兩件事 — (1) 把定義檔放進 `.claude/agents/`，(2) 描述任務或直接點名**。剩下的開分身、隔離 context、回傳摘要，都是 Claude Code 自動處理。
+
 ## 拿到 template
 
 ```bash
