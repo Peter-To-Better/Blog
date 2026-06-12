@@ -428,7 +428,7 @@ composer require pestphp/pest --dev --with-all-dependencies
 | 2.7  | `backend/.env.example`                        | 寫齊 `APP_URL` / `FRONTEND_URL` / `SANCTUM_STATEFUL_DOMAINS=localhost:3000` / `DB_CONNECTION=mysql` 跟對應 DB 參數 |
 | 2.8  | `backend/routes/web.php`                      | 清空(SPA 接管所有瀏覽器路由)                                                                                       |
 | 2.8  | `backend/routes/api.php`                      | 加一條 `GET /api/health` 回 `{"status":"ok"}`                                                                      |
-| 2.10 | `backend/database/seeders/DatabaseSeeder.php` | 把 `User::factory()->create(...)` 改成 `User::factory()->createOrFirst([...])`,讓 `db:seed` 可重跑                 |
+| 2.10 | `backend/database/seeders/DatabaseSeeder.php` | 把 `User::factory()->create(...)` 改成 `User::firstOrCreate(...)`(Model method,不是 Factory — **task 2.10 原本寫成 `factory()->createOrFirst()` 是 bug**,後記章節說明),讓 `db:seed` 可重跑 |
 
 全跑完之後三條指令驗收:
 
@@ -439,6 +439,128 @@ curl http://localhost:8000/api/health       # 預期回 {"status":"ok"}
 ```
 
 > 為什麼 Sanctum 一定要走 **SPA + httpOnly cookie**、為什麼把 sqlite 切回 mysql、為什麼 `routes/web.php` 要清空 — 這三個是這個 stack 裡少數沒得選的設計決策,Ep-3 會分章節各拆一段。
+
+## ⚠️ 後記:照 quickstart 跑一遍,一次踩到四個訊號
+
+ep-2 + ep-3 寫完之後,我自己跟著 [CLAUDE.md 本地開發 quickstart](https://github.com/hongyui/Carbon-ESG/blob/main/CLAUDE.md) 從頭走一次驗證,結果 transcript **一次給了四個訊號** — 第一手記錄:
+
+```text
+➜  Carbon-ESG/backend (main) cd backend
+cd: no such file or directory: backend                            ← 訊號 ①
+
+➜  Carbon-ESG/backend (main) composer install
+Nothing to install, update or remove
+Generating optimized autoload files
+...
+
+➜  Carbon-ESG/backend (main) cp .env.example .env
+➜  Carbon-ESG/backend (main) php artisan key:generate
+   INFO  Application key set successfully.
+
+➜  Carbon-ESG/backend (main) php artisan migrate --seed
+   INFO  Nothing to migrate.                                      ← 訊號 ②
+
+   INFO  Seeding database.
+
+   BadMethodCallException
+     Call to undefined method
+     Database\Factories\UserFactory::createOrFirst()              ← 訊號 ③
+
+➜  Carbon-ESG/backend (main) php artisan serve
+   INFO  Server running on [http://127.0.0.1:8000].               ← 訊號 ④
+```
+
+四個訊號逐條看 — **真正的 bug 只有 ③**,其他三個都是「看起來不對勁但其實預期」或「副作用」,值得各停下來看一秒。
+
+### 訊號 ①:`cd backend` no such file — 你已經在 `backend/` 裡了
+
+跟 [Ep-3 的 `cd frontend` 失敗](/posts/openspec-重構老專案-ep-3/) 是同一個模式。CLAUDE.md 那段 quickstart 假設你從 repo root 開始,但我的 shell prompt 已經顯示 `Carbon-ESG/backend (main)`。修法是先 `pwd` 確認;CLAUDE.md 已補一行註腳「**以下從 repo root 跑;如果你已經在 backend/ 內,跳過 cd 那行**」。
+
+### 訊號 ②:`migrate` 顯示 Nothing to migrate — 不是坑,是預期
+
+`composer create-project` 階段的 [post-create-project-cmd hook](#等等為什麼-create-project-結尾會自己-migrate) 已經跑過一次 `migrate --graceful`,加上 phase-0 開發過程中很可能在某次「測 docker mysql 連得通沒」時又跑過一次 `migrate`。`.env` 是同一份 mysql 連線設定,所以這時候再跑 `migrate`,Laravel 看到 schema 已經是最新狀態 — Nothing to migrate 是**正確輸出**,不是壞掉。
+
+> 反過來,如果你 `migrate` 顯示 Nothing **但 mysql 內查不到 table**,代表 backend 連的 DB 跟 docker mysql 不是同一個 — 檢查 `.env` 的 `DB_DATABASE` / `DB_HOST` / `DB_PORT` 三件套有沒有跟 docker mysql 對齊。常見問題是 `DB_HOST=mysql`(對 docker 內部 service name,適用 backend 也跑在 container 內)vs `DB_HOST=127.0.0.1`(backend 跑在 host 上,連 host 端口 forward)選錯。本系列 backend 跑在 host 上,所以是 `127.0.0.1`。
+
+### 訊號 ③:seed 拋 `BadMethodCallException` — 這個才是 bug
+
+完整 stack trace:
+
+```text
+BadMethodCallException
+
+  Call to undefined method Database\Factories\UserFactory::createOrFirst()
+
+  at vendor/laravel/framework/src/Illuminate/Support/Traits/ForwardsCalls.php:67
+   ...
+  2  database/seeders/DatabaseSeeder.php:18
+     Illuminate\Database\Eloquent\Factories\Factory::__call("createOrFirst")
+```
+
+原因很單純 — **Laravel 的 `createOrFirst` 是 Model 上的方法,不是 Factory 上的**。task 2.10 原本寫的 `User::factory()->createOrFirst([...])` **不存在**:Factory 鏈那一端有 `create()` / `createMany()` / `createQuietly()`,**沒有 `createOrFirst()`**,所以 `Factory::__call()` 把這個未知 method 名 forward 到底層,最後 throw `BadMethodCallException`。
+
+### 兩種「找不到就建,找得到就回現有」的正確寫法
+
+| Method | 在哪裡 | 行為 |
+|---|---|---|
+| `Model::firstOrCreate($attrs, $values)` | Model 上(`User::firstOrCreate(...)`) | 先 `where $attrs` 查 → 有就 return,沒有就 `create($attrs + $values)`。讀寫之間**沒鎖**,並發 insert 可能撞 unique constraint |
+| `Model::createOrFirst($attrs, $values)` | Model 上,Laravel 10+ | 先嘗試 `create($attrs + $values)`,撞 unique constraint 就改 `where $attrs` 取現有。**race-safe**,高並發場景推薦 |
+
+兩個都在 Model,**Factory 沒有對等方法**。寫進 factory chain 上一定錯。
+
+### 正確的 seeder
+
+```php
+// backend/database/seeders/DatabaseSeeder.php
+public function run(): void
+{
+    User::firstOrCreate(
+        ['email' => 'test@example.com'],
+        [
+            'name' => 'Test User',
+            'password' => 'password',  // Laravel 11+ 的 password=>hashed cast 會自動 bcrypt
+        ],
+    );
+}
+```
+
+Laravel 11+ User Model 預設 `casts()` 把 `password` 標成 `'hashed'`,**塞 plain string 進來會被自動 bcrypt**,不用 `Hash::make()`。
+
+### 已踩到要怎麼救
+
+`users` table 是空的(seed 在 transaction 內 throw,Laravel 預設會 rollback)。把 seeder 改好後直接重跑:
+
+```bash
+cd backend
+php artisan db:seed
+# 應看到 "Database seeding completed successfully."
+php artisan tinker --execute="echo App\\Models\\User::count();"
+# 1
+```
+
+### task 2.10 的精神還在,我寫錯的是介面
+
+task 2.10 的目標「讓 `db:seed` 可重跑」(idempotency)沒問題 — `firstOrCreate` 完全做到。**只是 method 該在 Model 上,不是 Factory chain 上**。Carbon-ESG repo 已經 hot-fix 進 seeder;phase-0 的 archived spec 沒提具體 method 名,所以 archived spec 仍 valid 不用回頭改。
+
+### 訊號 ④:exception 後 `php artisan serve` 仍跑起來 — 不是補救,是 zsh 行為
+
+很多人看到 transcript 第四行 `Server running on http://127.0.0.1:8000` 會以為「啊那 seed 應該也救回來了吧」— **不是**。zsh 用換行分隔指令(等同 `;`,不是 `&&`),**前面那行炸了不會擋下面那行**。serve 起得來只證明 **PHP runtime + Laravel application 載入沒問題**,跟 seeder 是不是炸了**完全無關**。
+
+驗 seed 真的對不對,獨立跑兩條:
+
+```bash
+# 1. exit code 跟 INFO 訊息
+php artisan db:seed
+# 應看到 "INFO  Database seeding completed successfully."
+
+# 2. DB 內 record 數
+php artisan tinker --execute="echo App\\Models\\User::count();"
+# 1
+```
+
+兩個都對才算 seed 真的過了。
+
+> 如果你照 ep-2 寫的多行 quickstart 整段貼進 shell,**前面任何一個 artisan 指令炸了都不會擋後面**。要嚴格 fail-fast,改用 `&&` 串接,或在開頭加 `set -e`(bash / zsh 都支援)。實務上 quickstart 設計成「即使中間炸了也讓 server 起來方便 debug」反而更友善,所以本系列維持換行寫法 — **但要記得 transcript 最後一行 success 不是整段成功的證明**。
 
 ## 收尾與下一篇預告
 
