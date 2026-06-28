@@ -2,6 +2,21 @@
 import BaseLayout from './BaseLayout.astro';
 import { formatDate, getReadingTime } from '../utils/helpers';
 
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface RelatedPost {
+  title: string;
+  slug: string;
+  category: string;
+  pubDate: Date;
+  description: string;
+  tags: string[];
+}
+
 interface Props {
   title: string;
   pubDate: Date;
@@ -11,12 +26,22 @@ interface Props {
   description?: string;
   image?: string;
   body: string;
+  headings?: Heading[];
+  relatedPosts?: RelatedPost[];
 }
 
-const { title, pubDate, category, tags, keywords, description, image, body } = Astro.props;
+const {
+  title, pubDate, category, tags, keywords, description, image, body,
+  headings = [], relatedPosts = [],
+} = Astro.props;
+
 const readingTime = getReadingTime(body);
+const tocHeadings = headings.filter(h => h.depth <= 3);
 
 const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const postUrl = Astro.url.toString();
+const shareUrl = encodeURIComponent(postUrl);
+const shareTitle = encodeURIComponent(title);
 
 const articleSchema = {
   '@context': 'https://schema.org',
@@ -38,7 +63,7 @@ const articleSchema = {
     },
   },
   datePublished: pubDate.toISOString(),
-  url: Astro.url.toString(),
+  url: postUrl,
   keywords: keywords ?? tags.join(', '),
   inLanguage: 'zh-TW',
   ...(image && { image: image.startsWith('http') ? image : `${siteUrl}${image}` }),
@@ -50,7 +75,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: '首頁', item: siteUrl || '/' },
     { '@type': 'ListItem', position: 2, name: category, item: `${siteUrl}/categories/${category}` },
-    { '@type': 'ListItem', position: 3, name: title, item: Astro.url.toString() },
+    { '@type': 'ListItem', position: 3, name: title, item: postUrl },
   ],
 };
 ---
@@ -58,6 +83,13 @@ const breadcrumbSchema = {
 <BaseLayout title={title} description={description} image={image} keywords={keywords}>
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <!-- Reading Progress Bar -->
+  <div
+    id="reading-progress-bar"
+    class="fixed top-0 left-0 h-[3px] w-0 bg-blue-500 dark:bg-blue-400 z-50"
+    aria-hidden="true"
+  ></div>
 
   <article class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
     <!-- Header -->
@@ -104,13 +136,100 @@ const breadcrumbSchema = {
       </div>
     </header>
 
+    <!-- Table of Contents -->
+    {tocHeadings.length > 1 && (
+      <nav aria-label="文章目錄" class="mb-10 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 overflow-hidden">
+        <details open>
+          <summary class="flex items-center justify-between px-5 py-3.5 text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer select-none">
+            <span>文章目錄</span>
+            <span class="text-gray-400 dark:text-gray-500 text-xs toc-arrow">▾</span>
+          </summary>
+          <ol class="px-5 pb-4 space-y-2">
+            {tocHeadings.map((h) => (
+              <li class={h.depth === 3 ? 'pl-4' : ''}>
+                <a
+                  href={`#${h.slug}`}
+                  class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors leading-relaxed"
+                >
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </details>
+      </nav>
+    )}
+
     <!-- Content -->
     <div class="prose prose-lg dark:prose-invert max-w-none">
       <slot />
     </div>
 
+    <!-- Related Posts -->
+    {relatedPosts.length > 0 && (
+      <section class="mt-16">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-4">相關文章</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {relatedPosts.map((related) => (
+            <a
+              href={`/posts/${related.slug}`}
+              class="group block p-4 rounded-xl border border-gray-100 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 hover:border-blue-200 dark:hover:border-blue-900 hover:shadow-md transition-all"
+            >
+              <span class="text-xs font-medium text-blue-600 dark:text-blue-400 mb-1.5 block">
+                {related.category}
+              </span>
+              <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 mb-1">
+                {related.title}
+              </h3>
+              {related.description && (
+                <p class="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
+                  {related.description}
+                </p>
+              )}
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
     <!-- Footer -->
     <footer class="mt-16 pt-8 border-t border-gray-100 dark:border-gray-800">
+      <!-- Social Share -->
+      <div class="flex flex-wrap items-center gap-2 mb-10">
+        <span class="text-sm text-gray-500 dark:text-gray-400">分享：</span>
+        <a
+          href={`https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareTitle}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-3 py-1.5 text-xs font-medium rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          X / Twitter
+        </a>
+        <a
+          href={`https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-3 py-1.5 text-xs font-medium rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          Facebook
+        </a>
+        <a
+          href={`https://social-plugins.line.me/lineit/share?url=${shareUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-3 py-1.5 text-xs font-medium rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          LINE
+        </a>
+        <button
+          id="copy-link"
+          data-url={postUrl}
+          class="px-3 py-1.5 text-xs font-medium rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+        >
+          複製連結
+        </button>
+      </div>
+
       <!-- Buy Me a Coffee -->
       <div class="text-center mb-8">
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">如果這篇文章對你有幫助</p>
@@ -150,7 +269,6 @@ const breadcrumbSchema = {
 </BaseLayout>
 
 <style is:global>
-  /* 讓 mermaid 圖跳出 prose 的 code block 樣式，置中、無底色 */
   pre.mermaid {
     background: transparent;
     padding: 0;
@@ -158,14 +276,37 @@ const breadcrumbSchema = {
     text-align: center;
     overflow-x: auto;
   }
-  /* 渲染完成前先隱藏原始文字，避免閃現一坨語法 */
   pre.mermaid:not([data-processed]) {
     visibility: hidden;
   }
+
+  details summary::-webkit-details-marker { display: none; }
+  details:not([open]) .toc-arrow { transform: rotate(-90deg); }
 </style>
 
 <script>
-  // 只有頁面真的有 mermaid 圖時才動態載入 mermaid（code-split，省流量）
+  const bar = document.getElementById('reading-progress-bar');
+  if (bar) {
+    const update = () => {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      const progress = (scrollTop / (scrollHeight - clientHeight)) * 100;
+      (bar as HTMLElement).style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    };
+    window.addEventListener('scroll', update, { passive: true });
+  }
+
+  const copyBtn = document.getElementById('copy-link');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      const url = (copyBtn as HTMLButtonElement).dataset.url ?? window.location.href;
+      await navigator.clipboard.writeText(url);
+      copyBtn.textContent = '已複製！';
+      setTimeout(() => { copyBtn.textContent = '複製連結'; }, 2000);
+    });
+  }
+</script>
+
+<script>
   if (document.querySelector('pre.mermaid')) {
     const { default: mermaid } = await import('mermaid');
     const isDark = document.documentElement.classList.contains('dark');
