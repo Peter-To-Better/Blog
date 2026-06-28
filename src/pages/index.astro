@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import Pagination from '../components/Pagination.astro';
+import LogoSVG from '../components/LogoSVG.astro';
 import { getExcerpt } from '../utils/helpers';
 
 const POSTS_PER_PAGE = 9;
@@ -16,19 +17,23 @@ const posts = allPosts.slice(0, POSTS_PER_PAGE);
 ---
 
 <BaseLayout>
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-    <!-- Hero -->
-    <section class="text-center mb-14">
-      <h1 class="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-3">
-        peter-to-better
-      </h1>
-      <p class="text-lg text-gray-500 dark:text-gray-400">
-        一個變好變強的部落格 — 技術分享與成長的天地
-      </p>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+
+    <!-- Hero: animated logo -->
+    <section class="flex flex-col items-center justify-center py-16 mb-10 border-b border-gray-100 dark:border-gray-800">
+      <LogoSVG class="w-56 sm:w-72 text-gray-900 dark:text-white" animate />
     </section>
 
+    <!-- Section label -->
+    <div class="flex items-center gap-4 mb-8">
+      <span class="text-[10px] font-semibold tracking-[0.3em] uppercase text-gray-400 dark:text-gray-500 shrink-0">
+        最新文章
+      </span>
+      <div class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></div>
+    </div>
+
     <!-- Posts Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {posts.map((post) => (
         <PostCard
           title={post.data.title}

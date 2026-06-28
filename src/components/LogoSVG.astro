@@ -1,0 +1,153 @@
+---
+interface Props {
+  class?: string;
+  animate?: boolean;
+}
+const { class: className = '', animate = false } = Astro.props;
+---
+
+<!--
+  All strokes use currentColor → automatically black in light mode, white in dark mode.
+  No filter or mix-blend-mode needed.
+-->
+<svg
+  viewBox="0 0 196 118"
+  xmlns="http://www.w3.org/2000/svg"
+  class:list={['to-better-logo', className]}
+  data-animate={animate || undefined}
+  aria-label="To_Better — Growing Together"
+  role="img"
+>
+  <!-- Guide / hand curve -->
+  <path
+    class="logo-hand"
+    d="M 12,82 C 30,72 45,65 65,68 C 80,70 87,58 92,50"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="3.5"
+    stroke-linecap="round"
+  />
+
+  <!-- Main trending arrow -->
+  <path
+    class="logo-arrow-line"
+    d="M 36,76 L 150,18"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="3.5"
+    stroke-linecap="round"
+  />
+
+  <!-- Arrow head (open V) -->
+  <path
+    class="logo-arrow-head"
+    d="M 134,44 L 152,18 L 122,12"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="3.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- "To_Better" wordmark -->
+  <text
+    class="logo-text"
+    x="8"
+    y="100"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="23"
+    font-weight="800"
+    fill="currentColor"
+    letter-spacing="-0.5"
+  >To_Better</text>
+
+  <!-- Underline + right arrow -->
+  <g class="logo-underline-group">
+    <line x1="8" y1="105" x2="188" y2="105" stroke="currentColor" stroke-width="1.5" />
+    <polyline
+      points="180,101 188,105 180,109"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+
+  <!-- Tagline -->
+  <text
+    class="logo-tagline"
+    x="8"
+    y="115"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="7.5"
+    font-weight="600"
+    fill="currentColor"
+    opacity="0.45"
+    letter-spacing="2.5"
+  >GROWING TOGETHER</text>
+</svg>
+
+<script>
+  const animatedLogos = document.querySelectorAll<SVGElement>('.to-better-logo[data-animate]');
+
+  if (animatedLogos.length > 0) {
+    // Dynamically import GSAP only when there's an animated logo on the page
+    const { gsap } = await import('gsap');
+
+    function initLogoAnimation(svg: SVGElement) {
+      const hand = svg.querySelector<SVGGeometryElement>('.logo-hand')!;
+      const arrowLine = svg.querySelector<SVGGeometryElement>('.logo-arrow-line')!;
+      const arrowHead = svg.querySelector<SVGGeometryElement>('.logo-arrow-head')!;
+      const text = svg.querySelector<SVGElement>('.logo-text')!;
+      const tagline = svg.querySelector<SVGElement>('.logo-tagline')!;
+      const underlineGroup = svg.querySelector<SVGElement>('.logo-underline-group')!;
+
+      // Set initial states: paths hidden via strokeDashoffset, others opacity 0
+      [hand, arrowLine, arrowHead].forEach((path) => {
+        const len = path.getTotalLength();
+        gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+      });
+      gsap.set([text, tagline, underlineGroup], { opacity: 0 });
+      gsap.set(underlineGroup, { transformOrigin: 'left center', scaleX: 0 });
+
+      const tl = gsap.timeline({
+        delay: 0.15,
+        onComplete() {
+          // Hover bounce on arrow after draw animation finishes
+          svg.addEventListener('mouseenter', () => {
+            gsap.to([arrowLine, arrowHead], {
+              x: 5, y: -5, duration: 0.22, ease: 'power2.out',
+            });
+          });
+          svg.addEventListener('mouseleave', () => {
+            gsap.to([arrowLine, arrowHead], {
+              x: 0, y: 0, duration: 0.55, ease: 'elastic.out(1, 0.55)',
+            });
+          });
+        },
+      });
+
+      tl
+        // 1. Draw hand curve
+        .to(hand, { strokeDashoffset: 0, duration: 0.55, ease: 'power2.inOut' })
+        // 2. Draw main arrow (overlap)
+        .to(arrowLine, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut' }, '-=0.25')
+        // 3. Arrow head snaps in
+        .to(arrowHead, { strokeDashoffset: 0, duration: 0.35, ease: 'power2.out' }, '-=0.1')
+        // 4. Wordmark slides up + fades in
+        .fromTo(text,
+          { opacity: 0, y: 10 },
+          { opacity: 1, y: 0, duration: 0.3, ease: 'power3.out' }
+        )
+        // 5. Underline extends left→right
+        .to(underlineGroup, {
+          scaleX: 1, opacity: 1, duration: 0.4, ease: 'power2.inOut',
+        }, '-=0.1')
+        // 6. Tagline fades in
+        .to(tagline, { opacity: 0.45, duration: 0.3, ease: 'power2.out' });
+    }
+
+    animatedLogos.forEach((svg) => initLogoAnimation(svg));
+  }
+</script>

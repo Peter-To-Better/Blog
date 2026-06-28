@@ -8,28 +8,36 @@
   }
 
   body {
-    @apply bg-white text-gray-800 dark:bg-gray-950 dark:text-gray-200 transition-colors duration-200;
+    @apply bg-white text-gray-900 dark:bg-[#0c0c0c] dark:text-gray-100 transition-colors duration-200;
   }
 
   ::selection {
-    @apply bg-blue-100 dark:bg-blue-900/50;
+    @apply bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100;
   }
 }
 
 @layer components {
   .prose pre {
-    @apply rounded-lg !bg-[#24292e] dark:!bg-gray-900;
+    @apply rounded-lg !bg-[#24292e] dark:!bg-[#111];
   }
 
   .prose img {
-    @apply rounded-lg shadow-md mx-auto;
+    @apply rounded-lg shadow-sm mx-auto;
+  }
+
+  .prose a {
+    @apply underline underline-offset-2 decoration-gray-300 dark:decoration-gray-600;
   }
 
   .prose h1,
   .prose h2,
   .prose h3,
   .prose h4 {
-    @apply dark:text-gray-100 scroll-mt-20;
+    @apply dark:text-gray-100 scroll-mt-24;
+  }
+
+  .prose h2 {
+    @apply border-b border-gray-100 dark:border-gray-800 pb-2;
   }
 
   .prose p,
@@ -42,7 +50,7 @@
   }
 
   .prose blockquote {
-    @apply dark:border-gray-700 dark:text-gray-400;
+    @apply border-l-2 border-gray-900 dark:border-gray-400 dark:text-gray-400 not-italic;
   }
 
   .prose table th {
@@ -54,6 +62,13 @@
   }
 
   .prose hr {
-    @apply dark:border-gray-800;
+    @apply border-gray-200 dark:border-gray-800;
+  }
+
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+  details:not([open]) .toc-arrow {
+    transform: rotate(-90deg);
   }
 }
