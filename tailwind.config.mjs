@@ -20,8 +20,8 @@ export default {
           css: {
             maxWidth: 'none',
             a: {
-              color: theme('colors.blue.600'),
-              '&:hover': { color: theme('colors.blue.800') },
+              color: theme('colors.gray.900'),
+              '&:hover': { color: theme('colors.gray.600') },
             },
             code: {
               backgroundColor: theme('colors.gray.100'),
@@ -36,8 +36,8 @@ export default {
         invert: {
           css: {
             a: {
-              color: theme('colors.blue.400'),
-              '&:hover': { color: theme('colors.blue.300') },
+              color: theme('colors.gray.100'),
+              '&:hover': { color: theme('colors.gray.300') },
             },
             code: {
               backgroundColor: theme('colors.gray.800'),

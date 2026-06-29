@@ -43,7 +43,7 @@ for (let i = 1; i <= totalPages; i++) {
           class:list={[
             'w-10 h-10 flex items-center justify-center text-sm rounded-lg transition-colors',
             page === currentPage
-              ? 'bg-blue-600 text-white font-medium'
+              ? 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-semibold'
               : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800',
           ]}
           aria-current={page === currentPage ? 'page' : undefined}

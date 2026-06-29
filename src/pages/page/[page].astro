@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PostCard from '../../components/PostCard.astro';
+import PostRow from '../../components/PostRow.astro';
 import Pagination from '../../components/Pagination.astro';
 import { getExcerpt } from '../../utils/helpers';
 
@@ -28,24 +28,30 @@ const { posts, currentPage, totalPages } = Astro.props;
 ---
 
 <BaseLayout title={`第 ${currentPage} 頁`}>
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
-    <h1 class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-10">
-      所有文章 <span class="text-gray-400 font-normal text-lg">({currentPage}/{totalPages})</span>
-    </h1>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-10 pb-16">
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      {posts.map((post: any) => (
-        <PostCard
-          title={post.data.title}
-          pubDate={post.data.pubDate}
-          category={post.data.category}
-          tags={post.data.tags}
-          description={post.data.description || getExcerpt(post.body)}
-          slug={post.id.replace(/\.md$/, '')}
-          body={post.body}
-        />
-      ))}
+    <div class="flex items-center gap-4 mb-8">
+      <h1 class="text-[10px] font-semibold tracking-[0.3em] uppercase text-gray-400 dark:text-gray-500 shrink-0">
+        所有文章
+      </h1>
+      <div class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></div>
+      <span class="text-xs text-gray-300 dark:text-gray-700 font-mono shrink-0">
+        {currentPage} / {totalPages}
+      </span>
     </div>
+
+    {posts.map((post: any, i: number) => (
+      <PostRow
+        index={(currentPage - 1) * 9 + i}
+        title={post.data.title}
+        pubDate={post.data.pubDate}
+        category={post.data.category}
+        tags={post.data.tags}
+        description={post.data.description || getExcerpt(post.body)}
+        slug={post.id.replace(/\.md$/, '')}
+        body={post.body}
+      />
+    ))}
 
     <Pagination currentPage={currentPage} totalPages={totalPages} />
   </div>

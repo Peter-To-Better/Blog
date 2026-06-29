@@ -1,0 +1,63 @@
+---
+import { formatDate, getReadingTime } from '../utils/helpers';
+
+interface Props {
+  title: string;
+  pubDate: Date;
+  category: string;
+  tags: string[];
+  description: string;
+  slug: string;
+  body: string;
+  index: number;
+}
+
+const { title, pubDate, category, tags, description, slug, body, index } = Astro.props;
+const readingTime = getReadingTime(body);
+---
+
+<div class="load-row">
+  <a
+    href={`/posts/${slug}`}
+    class="group flex items-start gap-5 sm:gap-8 py-9 sm:py-10 -mx-4 sm:-mx-6 px-4 sm:px-6 border-b border-gray-100 dark:border-gray-800 hover:bg-gray-50/80 dark:hover:bg-white/[0.02] transition-colors duration-150"
+  >
+    <!-- Row number -->
+    <span class="text-[11px] font-mono tabular-nums text-gray-200 dark:text-gray-800 shrink-0 w-5 leading-none mt-[3px] select-none">
+      {String(index + 1).padStart(2, '0')}
+    </span>
+
+    <!-- Content -->
+    <div class="flex-1 min-w-0">
+      <!-- Meta row -->
+      <div class="flex flex-wrap items-center gap-1.5 text-[11px] text-gray-400 dark:text-gray-500 mb-3">
+        <span class="font-semibold uppercase tracking-widest">{category}</span>
+        <span class="text-gray-200 dark:text-gray-800 select-none">/</span>
+        <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+        <span class="text-gray-200 dark:text-gray-800 select-none">/</span>
+        <span>{readingTime} min read</span>
+      </div>
+
+      <!-- Title -->
+      <h2 class="text-xl sm:text-[1.35rem] font-bold text-gray-900 dark:text-white mb-2.5 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors duration-150 leading-snug">
+        {title}
+      </h2>
+
+      <!-- Description -->
+      <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2 mb-4">
+        {description}
+      </p>
+
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-3">
+        {tags.map((tag) => (
+          <span class="text-[11px] text-gray-400 dark:text-gray-500">#{tag}</span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Arrow indicator -->
+    <div class="shrink-0 mt-[2px] text-gray-300 dark:text-gray-700 group-hover:text-gray-900 dark:group-hover:text-white group-hover:translate-x-1.5 transition-all duration-200 leading-none select-none">
+      →
+    </div>
+  </a>
+</div>
