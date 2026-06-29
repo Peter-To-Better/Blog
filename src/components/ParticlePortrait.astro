@@ -1,0 +1,202 @@
+---
+interface Props {
+  src: string;
+  class?: string;
+}
+const { src, class: className = '' } = Astro.props;
+---
+
+<canvas
+  id="particle-portrait"
+  data-src={src}
+  class={className}
+  aria-label="3D particle portrait"
+></canvas>
+
+<script>
+(async () => {
+  const canvas = document.getElementById('particle-portrait') as HTMLCanvasElement | null;
+  if (!canvas) return;
+
+  const src = canvas.dataset.src!;
+
+  // Wait for CSS layout to assign dimensions
+  await new Promise<void>(resolve => {
+    const check = () => { if (canvas.offsetWidth > 0) resolve(); else requestAnimationFrame(check); };
+    check();
+  });
+
+  const THREE = await import('three');
+
+  // ─── Renderer (linear output to avoid sRGB brightening) ────
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  // Disable sRGB encoding so particle colors render at the exact brightness we set
+  renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+
+  const W = canvas.offsetWidth;
+  const H = canvas.offsetHeight;
+  renderer.setSize(W, H);
+
+  const scene  = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(52, W / H, 0.01, 100);
+  camera.position.z = 3.8;
+
+  // ─── Load + sample image ───────────────────────────────────
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.src = src;
+  await new Promise<void>(r => { img.onload = () => r(); });
+
+  const SW = 200, SH = 200;
+  const off = Object.assign(document.createElement('canvas'), { width: SW, height: SH });
+  const c2  = off.getContext('2d')!;
+  c2.drawImage(img, 0, 0, SW, SH);
+  const { data } = c2.getImageData(0, 0, SW, SH);
+
+  const isDark = document.documentElement.classList.contains('dark');
+
+  const initPos: number[] = [];
+  const finalPos: number[] = [];
+  const colors:   number[] = [];
+
+  for (let y = 0; y < SH; y++) {
+    for (let x = 0; x < SW; x++) {
+      const i  = (y * SW + x) * 4;
+      const r  = data[i]     / 255;
+      const g  = data[i + 1] / 255;
+      const b  = data[i + 2] / 255;
+      const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+
+      // ── Circular mask: skip outer rim (circular crop edge + vignette) ──
+      const nx = x / SW - 0.5;
+      const ny = y / SH - 0.5;
+      const dist = Math.sqrt(nx * nx + ny * ny);
+      if (dist > 0.44) continue;
+
+      // ── Skip dark pixels (pure black corners + dark vignette rim) ──
+      if (lum < 0.14) continue;
+
+      // ── Skip photo background (blue-gray gradient behind person) ──
+      // Background: high lum + blue channel dominant over red
+      if (lum > 0.60 && b > r * 1.04 && b > g * 1.01) continue;
+      // Also skip neutral very-bright gray (no color bias = plain background)
+      if (lum > 0.74 && Math.abs(r - b) < 0.04 && Math.abs(g - b) < 0.04) continue;
+
+      // ── 3D position ──────────────────────────────────────────────────
+      const fx = (x / SW - 0.5) * 3.2;
+      const fy = -(y / SH - 0.5) * 3.2;
+
+      // Face-aware depth: face center (upper 40%) protrudes, rest recedes
+      const faceCY = y / SH - 0.40;  // shifted up to face center
+      const faceDist = Math.sqrt(nx * nx + faceCY * faceCY);
+      const fz = (0.40 - faceDist) * 2.0 + (Math.random() - 0.5) * 0.28;
+
+      finalPos.push(fx, fy, fz);
+      initPos.push(
+        fx + (Math.random() - 0.5) * 14,
+        fy + (Math.random() - 0.5) * 14,
+        fz + (Math.random() - 0.5) * 14,
+      );
+
+      // ── Colors: with LinearSRGBColorSpace, no gamma brightening ──────
+      // Light mode: darker values → all visible on white background
+      // Dark mode : brighter values → all visible on dark background
+      const gl = isDark
+        ? Math.min(1.0, lum * 0.55 + 0.38)   // 0.38 → 0.93 (bright on dark bg)
+        : Math.min(0.55, lum * 0.55 + 0.04);  // 0.04 → 0.59 → clearly visible on white
+      colors.push(gl, gl, gl);
+    }
+  }
+
+  // ─── Geometry ────────────────────────────────────────────────
+  const geo    = new THREE.BufferGeometry();
+  const posArr = new Float32Array(initPos);
+  geo.setAttribute('position', new THREE.BufferAttribute(posArr, 3));
+  geo.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(colors), 3));
+
+  const mat = new THREE.PointsMaterial({
+    size: 0.042,
+    vertexColors: true,
+    sizeAttenuation: true,
+    transparent: true,
+    opacity: 1,
+  });
+
+  const pts = new THREE.Points(geo, mat);
+  scene.add(pts);
+
+  // ─── Animation state ─────────────────────────────────────────
+  const FLY_IN_MS = 2600;
+  let t0: number | null = null;
+  let flyDone = false;
+
+  // ─── Mouse parallax ──────────────────────────────────────────
+  let tRX = 0, tRY = 0, rX = 0, rY = 0;
+  document.addEventListener('mousemove', e => {
+    tRY =  (e.clientX / window.innerWidth  - 0.5) * 1.1;
+    tRX = -(e.clientY / window.innerHeight - 0.5) * 0.7;
+  }, { passive: true });
+
+  // ─── Render loop ─────────────────────────────────────────────
+  let raf = 0;
+
+  function animate(now: number) {
+    raf = requestAnimationFrame(animate);
+    if (document.hidden) return;
+
+    if (!t0) t0 = now;
+    const elapsed = now - t0;
+
+    // Fly-in
+    if (!flyDone) {
+      const t    = Math.min(elapsed / FLY_IN_MS, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      const pos  = geo.attributes.position.array as Float32Array;
+      for (let i = 0; i < pos.length; i++) {
+        pos[i] = initPos[i] + (finalPos[i] - initPos[i]) * ease;
+      }
+      geo.attributes.position.needsUpdate = true;
+      if (t >= 1) flyDone = true;
+    } else {
+      // Subtle Z-breathing after fly-in
+      const bt  = (now - t0 - FLY_IN_MS) * 0.0006;
+      const pos = geo.attributes.position.array as Float32Array;
+      for (let i = 0; i < finalPos.length / 3; i++) {
+        const idx = i * 3;
+        pos[idx + 2] = finalPos[idx + 2] +
+          Math.sin(bt + finalPos[idx] * 1.1 + finalPos[idx + 1] * 0.8) * 0.055;
+      }
+      geo.attributes.position.needsUpdate = true;
+    }
+
+    // Smooth rotation
+    rX += (tRX - rX) * 0.04;
+    rY += (tRY - rY) * 0.04;
+    pts.rotation.x = rX;
+    pts.rotation.y = rY;
+
+    renderer.render(scene, camera);
+  }
+
+  raf = requestAnimationFrame(animate);
+
+  // ─── Resize ──────────────────────────────────────────────────
+  const ro = new ResizeObserver(() => {
+    const nw = canvas.offsetWidth;
+    const nh = canvas.offsetHeight;
+    camera.aspect = nw / nh;
+    camera.updateProjectionMatrix();
+    renderer.setSize(nw, nh);
+  });
+  ro.observe(canvas);
+
+  document.addEventListener('astro:before-swap', () => {
+    cancelAnimationFrame(raf);
+    ro.disconnect();
+    renderer.dispose();
+    geo.dispose();
+    mat.dispose();
+  }, { once: true });
+})();
+</script>

@@ -13,31 +13,38 @@ const currentPath = Astro.url.pathname;
 <header class="sticky top-0 z-50 bg-white/90 dark:bg-[#0c0c0c]/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
   <nav class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
 
-    <!-- Logo: compact arrow icon + text -->
+    <!-- Logo: compact icon (traced from PNG) + text -->
     <a href="/" class="flex items-center gap-2.5 group" aria-label="To_Better 首頁">
-      <!-- Compact arrow icon (matches LogoSVG style, currentColor) -->
+      <!-- Icon: potrace-traced paths 1-2 (hand/arm + chevron), cropped viewBox -->
       <svg
-        viewBox="0 0 44 40"
-        class="h-8 w-auto text-gray-900 dark:text-white shrink-0"
-        fill="none"
+        viewBox="110 0 380 295"
+        class="hd-logo h-8 w-auto text-gray-900 dark:text-white shrink-0"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
       >
-        <path
-          class="hd-hand"
-          d="M 3,34 C 8,28 14,24 22,26 C 27,27 30,22 33,18"
-          stroke="currentColor" stroke-width="2.8" stroke-linecap="round"
-        />
-        <path
-          class="hd-arrow"
-          d="M 10,30 L 38,6"
-          stroke="currentColor" stroke-width="2.8" stroke-linecap="round"
-        />
-        <path
-          class="hd-arrow"
-          d="M 28,2 L 40,6 L 36,18"
-          stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"
-        />
+        <g transform="translate(-410.000000,626.045368) scale(0.100000,-0.100000)" fill="currentColor" stroke="none">
+          <path d="M8558 6227 c-41 -32 -223 -173 -480 -372 -120 -93 -145 -123 -129
+-154 18 -33 36 -40 144 -52 102 -11 107 -13 101 -33 -3 -12 -46 -102 -93 -201
+-211 -437 -437 -670 -766 -788 -92 -33 -215 -59 -460 -97 -362 -57 -576 -124
+-772 -242 -223 -134 -385 -309 -516 -558 -114 -215 -136 -303 -98 -385 58
+-125 214 -152 312 -54 24 24 48 65 69 120 64 167 129 274 230 383 194 207 439
+305 905 361 340 41 575 121 805 273 101 67 291 253 376 367 114 155 240 383
+330 601 20 49 38 91 40 93 2 2 46 -24 97 -58 51 -33 102 -61 113 -61 36 0 57
+34 51 82 -15 121 -130 747 -142 776 -20 44 -59 43 -117 -1z m50 -179 c6 -40
+29 -172 51 -293 22 -121 39 -221 37 -222 -1 -1 -32 18 -69 42 -70 47 -92 53
+-120 33 -9 -7 -52 -94 -96 -193 -277 -627 -553 -919 -1020 -1076 -63 -22 -116
+-38 -117 -36 -2 2 23 18 54 36 183 109 347 267 477 463 35 53 97 132 138 175
+87 93 119 138 185 263 61 115 192 414 192 439 0 32 -34 50 -116 62 -43 6 -80
+12 -81 13 -2 2 72 61 163 132 92 71 197 152 233 181 36 28 69 52 72 52 3 1 11
+-32 17 -71z"/>
+          <path d="M6965 5786 c-57 -21 -727 -701 -751 -763 -25 -65 -16 -153 22 -200
+61 -77 164 -103 249 -64 27 12 125 104 294 277 l254 258 213 -217 c199 -204
+215 -217 241 -211 28 7 240 211 263 254 10 19 -12 44 -243 278 -140 141 -271
+276 -292 300 -75 84 -169 117 -250 88z m115 -112 c14 -10 31 -24 38 -33 7 -9
+121 -124 252 -257 132 -132 240 -245 240 -251 0 -6 -28 -41 -62 -78 l-63 -67
+-227 230 -228 230 -292 -299 c-275 -281 -295 -299 -328 -299 -45 0 -78 23 -96
+66 -10 24 -11 40 -4 59 11 30 666 702 690 709 32 8 57 5 80 -10z"/>
+        </g>
       </svg>
 
       <div class="hidden sm:block leading-tight">
@@ -66,7 +73,7 @@ const currentPath = Astro.url.pathname;
         </a>
       ))}
       <a
-        href="https://github.com/ShouShouRen"
+        href="https://github.com/Peter-To-Better"
         target="_blank"
         rel="noopener noreferrer"
         class="px-3 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-150"
@@ -82,14 +89,29 @@ const currentPath = Astro.url.pathname;
   import gsap from 'gsap';
 
   const headerLogo = document.querySelector('header a[aria-label]');
-  const arrowEls = document.querySelectorAll('header .hd-arrow');
+  const logoEl = document.querySelector<SVGElement>('header .hd-logo');
 
-  if (headerLogo && arrowEls.length) {
+  if (headerLogo && logoEl) {
+    // Page load: icon grows from bottom upward (clip-path reveal)
+    gsap.fromTo(logoEl,
+      { clipPath: 'inset(100% 0% 0% 0%)' },
+      { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.9, ease: 'power3.out', delay: 0.1 }
+    );
+
+    // After reveal: gentle continuous upward float like a wandering hero
+    const floatTween = gsap.to(logoEl, {
+      y: -4, duration: 2.2, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1.1,
+    });
+
     headerLogo.addEventListener('mouseenter', () => {
-      gsap.to(arrowEls, { x: 2, y: -2, duration: 0.2, ease: 'power2.out' });
+      floatTween.pause();
+      gsap.to(logoEl, { x: 3, y: -6, rotation: 5, duration: 0.22, ease: 'power2.out', overwrite: 'auto' });
     });
     headerLogo.addEventListener('mouseleave', () => {
-      gsap.to(arrowEls, { x: 0, y: 0, duration: 0.4, ease: 'elastic.out(1, 0.5)' });
+      gsap.to(logoEl, {
+        x: 0, y: 0, rotation: 0, duration: 0.7, ease: 'elastic.out(1, 0.4)', overwrite: 'auto',
+        onComplete: () => floatTween.restart(),
+      });
     });
   }
 </script>

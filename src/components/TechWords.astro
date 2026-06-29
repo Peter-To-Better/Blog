@@ -1,0 +1,194 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<canvas
+  id="tech-particle-words"
+  class={className}
+  aria-label="Tech keywords particle animation"
+></canvas>
+
+<script>
+(async () => {
+  const canvas = document.getElementById('tech-particle-words') as HTMLCanvasElement | null;
+  if (!canvas) return;
+
+  // Wait for layout
+  await new Promise<void>(resolve => {
+    const check = () => { if (canvas.offsetWidth > 0) resolve(); else requestAnimationFrame(check); };
+    check();
+  });
+
+  const THREE = await import('three');
+
+  const W = canvas.offsetWidth;
+  const H = canvas.offsetHeight;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(W, H);
+  renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+
+  const scene = new THREE.Scene();
+  // Orthographic camera in pixel space: particles at z=0 visible from z=10
+  const camera = new THREE.OrthographicCamera(-W / 2, W / 2, H / 2, -H / 2, 0.1, 100);
+  camera.position.z = 10;
+
+  const WORDS = [
+    'LLM', 'AGENT', 'AI', 'REACT', 'Python',
+    'RAG', 'GPT', 'Claude', 'Vector', 'Prompt',
+    'Next.js', 'FastAPI', 'LangChain', 'Chain',
+    'Streaming', 'Memory', 'Tool', 'Docker',
+    'TypeScript', 'Astro', 'OAuth', 'pnpm',
+  ];
+
+  const N = 3000; // fixed particle count
+
+  // Sample a word into N Three.js positions (centered, pixel space)
+  function sampleWord(word: string): Float32Array {
+    const sw = W, sh = H;
+    const off = Object.assign(document.createElement('canvas'), { width: sw, height: sh });
+    const ctx = off.getContext('2d')!;
+    ctx.clearRect(0, 0, sw, sh);
+
+    // Fit font size to word length
+    const fontSize = Math.min(sh * 0.55, (sw * 0.85) / (word.length * 0.58));
+    ctx.font = `900 ${Math.floor(fontSize)}px ui-monospace, monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#fff';
+    ctx.fillText(word, sw / 2, sh / 2);
+
+    const { data } = ctx.getImageData(0, 0, sw, sh);
+    const pts: number[] = [];
+    const stride = 2;
+    for (let y = 0; y < sh; y += stride) {
+      for (let x = 0; x < sw; x += stride) {
+        if (data[(y * sw + x) * 4 + 3] > 80) {
+          // Convert to centered pixel coords (y flipped for Three.js)
+          pts.push(x - sw / 2, -(y - sh / 2));
+        }
+      }
+    }
+
+    const out = new Float32Array(N * 3);
+    if (pts.length === 0) return out; // fallback: all at origin
+
+    // Fill N positions by sampling from pts (with slight jitter)
+    for (let i = 0; i < N; i++) {
+      const src = (i % (pts.length / 2 | 0)) * 2;
+      out[i * 3]     = pts[src]     + (Math.random() - 0.5) * 1.5;
+      out[i * 3 + 1] = pts[src + 1] + (Math.random() - 0.5) * 1.5;
+      out[i * 3 + 2] = (Math.random() - 0.5) * 8; // slight z-depth
+    }
+    // Shuffle so cycling pattern isn't visible
+    for (let i = N - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i*3],out[i*3+1],out[i*3+2],out[j*3],out[j*3+1],out[j*3+2]] =
+      [out[j*3],out[j*3+1],out[j*3+2],out[i*3],out[i*3+1],out[i*3+2]];
+    }
+    return out;
+  }
+
+  const isDark = document.documentElement.classList.contains('dark');
+  const col = isDark ? 0xd4d4d8 : 0x18181b;
+
+  // Build geometry
+  const initPos = sampleWord(WORDS[0]);
+  const geo = new THREE.BufferGeometry();
+  const posAttr = new THREE.BufferAttribute(new Float32Array(initPos), 3);
+  geo.setAttribute('position', posAttr);
+
+  const mat = new THREE.PointsMaterial({
+    size: 2.2,
+    color: col,
+    sizeAttenuation: false,
+    transparent: true,
+    opacity: isDark ? 0.82 : 0.78,
+  });
+
+  const pts = new THREE.Points(geo, mat);
+  scene.add(pts);
+
+  // Morph state
+  let fromPos = new Float32Array(initPos);
+  let toPos   = new Float32Array(initPos);
+  let morphT  = 1; // 1 = idle (no morph)
+  let morphStart = 0;
+  const MORPH_MS = 1400;
+
+  let wordIdx = 0;
+  let morphTimer: ReturnType<typeof setTimeout>;
+
+  function startMorph() {
+    wordIdx = (wordIdx + 1) % WORDS.length;
+    toPos = sampleWord(WORDS[wordIdx]);
+    // Save current interpolated state as fromPos
+    const arr = posAttr.array as Float32Array;
+    fromPos = new Float32Array(arr);
+    morphT = 0;
+    morphStart = performance.now();
+    morphTimer = setTimeout(startMorph, 2600);
+  }
+
+  morphTimer = setTimeout(startMorph, 2000);
+
+  // Render loop
+  let raf = 0;
+
+  function animate(now: number) {
+    raf = requestAnimationFrame(animate);
+
+    if (morphT < 1) {
+      const raw = Math.min((now - morphStart) / MORPH_MS, 1);
+      // Ease: cubic in-out
+      const t = raw < 0.5 ? 4 * raw * raw * raw : 1 - Math.pow(-2 * raw + 2, 3) / 2;
+      morphT = t;
+
+      const arr = posAttr.array as Float32Array;
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = fromPos[i] + (toPos[i] - fromPos[i]) * t;
+      }
+      posAttr.needsUpdate = true;
+    }
+
+    renderer.render(scene, camera);
+  }
+
+  raf = requestAnimationFrame(animate);
+
+  // Resize
+  const ro = new ResizeObserver(() => {
+    const nw = canvas.offsetWidth;
+    const nh = canvas.offsetHeight;
+    renderer.setSize(nw, nh);
+    camera.left   = -nw / 2;
+    camera.right  =  nw / 2;
+    camera.top    =  nh / 2;
+    camera.bottom = -nh / 2;
+    camera.updateProjectionMatrix();
+  });
+  ro.observe(canvas);
+
+  // Update particle color when dark/light mode toggles
+  const themeObserver = new MutationObserver(() => {
+    const dark = document.documentElement.classList.contains('dark');
+    mat.color.setHex(dark ? 0xd4d4d8 : 0x18181b);
+    mat.opacity = dark ? 0.82 : 0.78;
+  });
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+  document.addEventListener('astro:before-swap', () => {
+    clearTimeout(morphTimer);
+    cancelAnimationFrame(raf);
+    ro.disconnect();
+    themeObserver.disconnect();
+    renderer.dispose();
+    geo.dispose();
+    mat.dispose();
+  }, { once: true });
+})();
+</script>

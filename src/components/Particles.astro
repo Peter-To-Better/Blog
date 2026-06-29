@@ -1,0 +1,124 @@
+---
+---
+<canvas
+  id="hero-particles"
+  class="absolute inset-0 w-full h-full pointer-events-none"
+  aria-hidden="true"
+></canvas>
+
+<script>
+  (function () {
+    const canvas = document.getElementById('hero-particles') as HTMLCanvasElement | null;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d')!;
+    const N = window.innerWidth < 640 ? 26 : 52;
+    const LINK = 115;
+    const MR = 90;
+
+    interface Dot { x: number; y: number; vx: number; vy: number; r: number }
+    let dots: Dot[] = [];
+    let W = 0, H = 0, mx = -9999, my = -9999, raf = 0;
+
+    const isDark = () => document.documentElement.classList.contains('dark');
+    const rgba = (a: number) => isDark() ? `rgba(255,255,255,${a})` : `rgba(0,0,0,${a})`;
+
+    function resize() {
+      W = canvas!.offsetWidth;
+      H = canvas!.offsetHeight;
+      canvas!.width = W;
+      canvas!.height = H;
+    }
+
+    function spawn() {
+      dots = Array.from({ length: N }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.38,
+        vy: (Math.random() - 0.5) * 0.38,
+        r: Math.random() * 1.1 + 0.45,
+      }));
+    }
+
+    function frame() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Draw connecting lines
+      for (let i = 0; i < dots.length - 1; i++) {
+        for (let j = i + 1; j < dots.length; j++) {
+          const dx = dots[i].x - dots[j].x;
+          const dy = dots[i].y - dots[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < LINK) {
+            ctx.strokeStyle = rgba((1 - d / LINK) * 0.1);
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(dots[i].x, dots[i].y);
+            ctx.lineTo(dots[j].x, dots[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Update + draw dots
+      dots.forEach(p => {
+        // Mouse repulsion
+        const dx = p.x - mx;
+        const dy = p.y - my;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < MR && d > 1) {
+          const f = ((MR - d) / MR) * 0.52;
+          p.vx += (dx / d) * f;
+          p.vy += (dy / d) * f;
+        }
+
+        // Dampen + clamp speed
+        p.vx *= 0.97;
+        p.vy *= 0.97;
+        const spd = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (spd > 2.2) { p.vx = (p.vx / spd) * 2.2; p.vy = (p.vy / spd) * 2.2; }
+
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) { p.x = 0; p.vx *= -1; }
+        if (p.x > W) { p.x = W; p.vx *= -1; }
+        if (p.y < 0) { p.y = 0; p.vy *= -1; }
+        if (p.y > H) { p.y = H; p.vy *= -1; }
+
+        ctx.fillStyle = rgba(0.18);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      if (!document.hidden) raf = requestAnimationFrame(frame);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) raf = requestAnimationFrame(frame);
+    });
+
+    // Track mouse on parent section
+    const parent = canvas.parentElement;
+    if (parent) {
+      parent.addEventListener('mousemove', e => {
+        const rect = canvas!.getBoundingClientRect();
+        mx = e.clientX - rect.left;
+        my = e.clientY - rect.top;
+      }, { passive: true });
+      parent.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
+    }
+
+    const ro = new ResizeObserver(() => { resize(); spawn(); });
+    ro.observe(parent ?? canvas);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    }, { once: true });
+
+    resize();
+    spawn();
+    frame();
+  })();
+</script>
