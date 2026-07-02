@@ -5,6 +5,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getExcerpt } from '../../utils/helpers';
 
+function getEpisodeNumber(id: string): number {
+  const match = id.match(/ep-(\d+)/i);
+  return match ? parseInt(match[1]) : Infinity;
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await getCollection('posts');
   const categories = [...new Set(posts.map((post) => post.data.category))];
@@ -15,7 +20,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
       category,
       posts: posts
         .filter((post) => post.data.category === category)
-        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+        .sort((a, b) => {
+          const epA = getEpisodeNumber(a.id);
+          const epB = getEpisodeNumber(b.id);
+          if (epA !== Infinity || epB !== Infinity) return epA - epB;
+          return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+        }),
     },
   }));
 };
