@@ -242,6 +242,22 @@ print(answer.content)
 
 ---
 
+## 本篇程式碼
+
+本篇的多模態 RAG 完整管線已整理成可直接執行的程式碼：
+
+👉 **[GitHub：langchain-rag-lab / ep3_multimodal_rag](https://github.com/Peter-To-Better/langchain-rag-lab/tree/main/ep3_multimodal_rag)**
+
+一行指令跑完整個流程：
+```bash
+git clone https://github.com/Peter-To-Better/langchain-rag-lab.git
+cd langchain-rag-lab && uv sync
+ollama pull llama3.2-vision && ollama pull llama3.1 && ollama pull nomic-embed-text
+uv run python ep3_multimodal_rag/pipeline.py --pdf your_report.pdf --question "第三季營收如何？"
+```
+
+---
+
 ## 延伸閱讀
 
 - [Ollama llama3.2-vision 模型頁](https://ollama.com/library/llama3.2-vision)

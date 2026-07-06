@@ -185,6 +185,21 @@ print(result)
 
 ---
 
+## 本篇程式碼
+
+RAGAS 評估腳本已整理完成，含範例資料集，一行指令跑評估：
+
+👉 **[GitHub：langchain-rag-lab / ep4_evaluation](https://github.com/Peter-To-Better/langchain-rag-lab/tree/main/ep4_evaluation)**
+
+```bash
+git clone https://github.com/Peter-To-Better/langchain-rag-lab.git
+cd langchain-rag-lab && uv sync
+ollama pull llama3.1 && ollama pull nomic-embed-text
+uv run python ep4_evaluation/evaluate.py
+```
+
+---
+
 ## 延伸閱讀
 
 - [RAGAS 官方文件 — Evaluate a simple RAG system](https://docs.ragas.io/en/stable/getstarted/rag_eval/)

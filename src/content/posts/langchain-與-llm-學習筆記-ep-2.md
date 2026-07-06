@@ -53,6 +53,8 @@ splitter = SemanticChunker(
 docs = splitter.create_documents([long_text])
 ```
 
+![語意分割執行結果](/images/llm-ep2-semantic.png)
+
 **父子分割（Parent Document Retriever）**：這招很關鍵。核心矛盾是——**chunk 切小一點，檢索比較準；但 chunk 太小，餵給 LLM 的上下文又不夠。** 父子分割同時拿到兩者的好處：
 
 - **檢索時**用「小 chunk」（子文件）去比對，命中率高、雜訊少。
@@ -70,6 +72,8 @@ retriever = ParentDocumentRetriever(
     parent_splitter=parent_splitter # 切大（如 2000 字）
 )
 ```
+
+![父子文件檢索執行結果](/images/llm-ep2-parent-doc.png)
 
 ### 2. 上下文檢索（Contextual Retrieval）—— Anthropic 2024 的關鍵改進
 
@@ -127,6 +131,8 @@ vector = vectorstore.as_retriever(search_kwargs={"k": 5})  # 語意
 # weights 控制兩者的權重，可依資料特性調整
 hybrid = EnsembleRetriever(retrievers=[bm25, vector], weights=[0.4, 0.6])
 ```
+
+![混合檢索執行結果](/images/llm-ep2-hybrid-search.png)
 
 ### 2. 查詢轉換（Query Transformation）—— 別讓爛問題拖垮檢索
 
@@ -264,11 +270,25 @@ query_embeddings = model(**processor.process_queries(["第二季毛利率是多�
 
 ---
 
+## 本篇程式碼
+
+本篇所有技術（語意分割、父子文件、混合檢索、多重查詢、重排序）都有完整可執行的示範：
+
+👉 **[GitHub：langchain-rag-lab / ep2_advanced_retrieval](https://github.com/Peter-To-Better/langchain-rag-lab/tree/main/ep2_advanced_retrieval)**
+
+用 Ollama 在本地跑，不需要任何 API Key：
+```bash
+git clone https://github.com/Peter-To-Better/langchain-rag-lab.git
+cd langchain-rag-lab && uv sync
+ollama pull nomic-embed-text && ollama pull llama3.1
+uv run python ep2_advanced_retrieval/03_hybrid_search.py
+```
+
+---
+
 ## 延伸閱讀
 
 - [Anthropic — Introducing Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval)
 - [ColPali: Efficient Document Retrieval with Vision Language Models (arXiv 2407.01449)](https://arxiv.org/abs/2407.01449)
 - [Multimodal Document RAG with Llama 3.2 Vision and ColQwen2 — Together AI](https://www.together.ai/blog/multimodal-document-rag-with-llama-3-2-vision-and-colqwen2)
 - [Optimizing RAG with Hybrid Search & Reranking — VectorHub](https://superlinked.com/vectorhub/articles/optimizing-rag-with-hybrid-search-reranking)
-- [LangChain v1 Quickstart 官方文件](https://docs.langchain.com/oss/python/langchain/quickstart)
-- [LangChain v1 Migration Guide（retrievers 已移至 langchain-classic）](https://docs.langchain.com/oss/python/migrate/langchain-v1)
