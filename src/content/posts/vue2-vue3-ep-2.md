@@ -1,7 +1,7 @@
 ---
 title: "Vue2 + Vue3 Ep-2"
 pubDate: 2023-09-15 11:40:12
-description: "1.創建階段（Creation）： beforeCreate：在實例創建之前被調用，此時數據觀測和事件還未初始化。 created：在實例創建之後被調用，此時數據觀測已初始化，但 DOM 還未生成。"
+description: "Vue 生命週期完整解析：beforeCreate、created、beforeMount、mounted、beforeUpdate、updated、beforeDestroy 各階段用途與觸發時機，附實作範例與圖解。"
 author: "Peter"
 tags: ["Vue2 + Vue3"]
 category: "Vue"

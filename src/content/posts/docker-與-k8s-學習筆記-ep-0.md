@@ -1,7 +1,7 @@
 ---
 title: "Docker 與 K8s 學習筆記 Ep-0"
 pubDate: 2025-02-21 21:39:15
-description: "了解什麼是 Docker ， Docker 為我們帶來什麼好處解決什麼問題？用生活化的方式帶你理解容器化技術，無論你是新手還是老手都能快速理解， Docker 為你在開發上帶來的便利性。"
+description: "用生活化比喻解釋 Docker 是什麼、容器化技術解決哪些開發痛點，以及 Docker 和虛擬機的本質差別。完全沒碰過容器的新手也能快速看懂。"
 author: "Peter"
 tags: ["Docker & K8s"]
 category: "Docker & K8s"

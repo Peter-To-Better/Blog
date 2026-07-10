@@ -1,7 +1,7 @@
 ---
 title: "Docker 與 K8s 學習筆記 Ep-1"
 pubDate: 2025-02-23 14:17:54
-description: "帶你從安裝 Docker 開始，並介紹一些基本的 Docker 操作指令，幫助你快速上手容器化技術。"
+description: "手把手從 Docker Desktop 安裝開始，帶你跑 docker pull、run、ps、stop、rm 等常用指令，跟著做就能在本機啟動你的第一個容器。"
 author: "Peter"
 tags: ["Docker & K8s"]
 category: "Docker & K8s"

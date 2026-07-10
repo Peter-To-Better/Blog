@@ -1,7 +1,7 @@
 ---
 title: "TypeScript 從 0 開始 Ep-0"
 pubDate: 2025-02-10 16:32:00
-description: "在這篇文章中，我們將介紹 JavaScript 和 TypeScript 的區別，為什麼你應該學習 TypeScript，並簡單解釋 TypeScript 的運作原理。如何使用 Vite 快速啟動一個 TypeScript 專案，並分享一個官方的 TypeScript 線上編輯平台。"
+description: "搞懂 TypeScript 和 JavaScript 的本質差別、為什麼前端工程師都在學 TS，並用 Vite 建立你的第一個 TypeScript 專案，附官方線上編輯器介紹。"
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"

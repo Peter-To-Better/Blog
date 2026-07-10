@@ -1,7 +1,7 @@
 ---
 title: "Git"
 pubDate: 2024-03-14 11:40:12
-description: "cherry-pick 指令用於將其他分支的一個或多個提交(commits)合併到目前的分支。它是 Git 提供的一種方便的整合方式,可以在不合併整個分支的情況下,只合併某些特定的 commit。"
+description: "Git cherry-pick 完整教學：不合併整個分支，只把指定 commit 搬到目前分支。附雜湊值查法、多個 commit 一次 cherry-pick、衝突處理步驟說明。"
 author: "Peter"
 tags: ["git"]
 category: "git"

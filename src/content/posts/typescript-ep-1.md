@@ -1,7 +1,7 @@
 ---
 title: "TypeScript 從 0 開始 Ep-1"
 pubDate: 2025-02-10 16:32:00
-description: "TypeScript 是 JavaScript 的超集（Superset），它為 JavaScript 添加了靜態型別檢查和其他現代程式設計功能。透過 TypeScript，開發者可以在編譯階段就發現潛在的錯誤，提升程式碼的品質、可維護性和可讀性。在本篇中，會介紹 TypeScript 中的變數宣告與型別系統，包括 `"
+description: "TypeScript 型別系統入門：string、number、boolean、any、unknown、void、never 各有什麼用途、any 和 unknown 差在哪？附完整範例說明每種型別的使用時機。"
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"

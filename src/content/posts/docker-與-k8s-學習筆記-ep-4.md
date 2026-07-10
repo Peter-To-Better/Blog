@@ -1,7 +1,7 @@
 ---
 title: "Docker 與 K8s 學習筆記 Ep-4"
 pubDate: 2025-03-24 22:29:52
-description: "在實際應用場景中，單一容器往往無法滿足所有需求，複雜的應用常需要多個容器來協同工作像是： - 一個 Web 應用容器需要與資料庫容器通訊 - 微服務架構中的多個服務需要互相調用 - 前端容器需要與後端 API 容器互動 本篇將詳細介紹 Docker 中實現跨容器通訊的幾種主要方式。"
+description: "單一容器不夠用時怎麼辦？本篇教你 Docker Network 跨容器通訊原理，並用 docker-compose.yml 把前後端與資料庫三個容器用一行指令全部啟動。"
 author: "Peter"
 tags: ["Docker & K8s"]
 category: "Docker & K8s"

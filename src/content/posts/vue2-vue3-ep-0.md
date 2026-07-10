@@ -1,7 +1,7 @@
 ---
 title: "Vue2 + Vue3 Ep-0"
 pubDate: 2023-08-02 11:13:26
-description: "Vue 是三大前端框架（Vue、React、Angular）中學習門檻較低的一個選擇。因此當時我選擇 Vue 為我的首要前端框架。Vue 是一套輕量級、支援雙向數據綁定的框架，同時具備組件化開發、虛擬 DOM 等特點。"
+description: "Vue 入門教學：雙向數據綁定、v-if 條件渲染、v-for 列表渲染、v-on 事件綁定一次學會，最後從零實作一個 Todo List，Vue2 與 Vue3 語法對照。"
 author: "Peter"
 tags: ["Vue2 + Vue3"]
 category: "Vue"

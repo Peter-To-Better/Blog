@@ -1,7 +1,7 @@
 ---
 title: "Vue2 + Vue3 Ep-1"
 pubDate: 2023-08-08 16:03:07
-description: "之前我們有講過 click 現在我們來補充一些鍵盤上的事件與修飾符這邊我們就介紹 keyup 結合 enter 修飾符的用法，更多修飾符請看[https://v2.vuejs.org/v2/guide/events#Event-Modifiers](https://v2.vuejs.org/v2/guide/event"
+description: "Vue 鍵盤事件與修飾符完整教學：keyup.enter 偵測 Enter 鍵、.stop .prevent .once 事件修飾符用法，附 Vue2 與 Vue3 語法差異對照與實作範例。"
 author: "Peter"
 tags: ["Vue2 + Vue3"]
 category: "Vue"

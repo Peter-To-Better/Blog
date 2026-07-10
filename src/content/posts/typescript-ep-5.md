@@ -1,7 +1,7 @@
 ---
 title: "TypeScript 從 0 開始 Ep-5"
 pubDate: 2025-02-19 11:34:49
-description: "在上一篇教學中，我們介紹了 TypeScript 中的 Generics（泛型）、Type Guarding（型別守衛） 以及 ES6 Modules（模組系統），，接下來本我們繼續進一步探討 TypeScript 中的 **Decorators（裝飾器）**、**Namespaces（命名空間）** 以及 **Uti"
+description: "TypeScript 進階功能：Decorator 裝飾器語法與應用場景、Namespace 命名空間，以及 Partial、Required、Pick、Omit 等 Utility Types 實用教學。"
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"

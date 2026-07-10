@@ -1,7 +1,7 @@
 ---
 title: "TypeScript 從 0 開始 Ep-3"
 pubDate: 2025-02-17 11:25:25
-description: "在上一篇教學中，我們介紹了 TypeScript 中的函式、介面與型別別名，這些功能幫助我們更好的組織程式碼並提升型別安全性，接下來本我們繼續進一步探討 TypeScript 中的 **Enums（列舉）** 和 **Tuples（元組）**，它們能夠幫助你更精確地定義資料結構與型別。"
+description: "TypeScript Enum 列舉與 Tuple 元組完整教學：什麼時候用 enum、const enum 效能差別、tuple 如何固定陣列型別，附實際開發中的應用範例。"
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"

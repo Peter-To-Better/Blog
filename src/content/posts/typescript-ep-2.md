@@ -1,7 +1,7 @@
 ---
 title: "TypeScript 從 0 開始 Ep-2"
 pubDate: 2025-02-16 09:34:52
-description: "在上一篇教學中，我們介紹了 TypeScript 的基礎變數宣告與型別系統，包括 `number`、`string`、`boolean`、`any`、`unknown`、`void` 和 `never` 等型別。本篇將進一步探討 TypeScript 中的 **函式（Functions）**、**介面（Interfac"
+description: "TypeScript 函式型別、Interface 介面與 Type Alias 型別別名完整教學，搞懂 interface vs type 的使用時機與差異，讓物件型別定義更清晰。"
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"

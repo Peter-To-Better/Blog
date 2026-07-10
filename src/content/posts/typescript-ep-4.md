@@ -1,7 +1,7 @@
 ---
 title: "TypeScript 從 0 開始 Ep-4"
 pubDate: 2025-02-18 20:59:32
-description: "在上一篇教學中，我們介紹了 TypeScript 中的**Enums（列舉）** 和 **Tuples（元組）**，這些功能幫助，能夠幫助你更精確地定義資料結構與型別，接下來本我們繼續進一步探討 TypeScript 中的 Generics（泛型）、Type Guarding（型別守衛） 以及 ES6 Modules（"
+description: "TypeScript 泛型（Generics）讓函式可重用不同型別、型別守衛（Type Guard）確保執行時安全，搭配 ES6 import/export 模組系統完整教學與範例。"
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"

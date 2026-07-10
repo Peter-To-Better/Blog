@@ -1,7 +1,7 @@
 ---
 title: "關於我"
 pubDate: 2023-07-29 09:13:59
-description: "嗨大家好！我是瘦瘦仁，這是我的技術部落格，這裡會分享許多前端或網站等知識，也會紀錄著我學習過程中的內容筆記與大家分享。"
+description: "嗨，我是 Peter，歡迎來到 peter-to-better 技術部落格。這裡分享 LangChain、Docker、TypeScript、Vue 等學習筆記，記錄工程師成長過程，與你一起變好。"
 author: "Peter"
 tags: ["about"]
 category: "uncategorized"

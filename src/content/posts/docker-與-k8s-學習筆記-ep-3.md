@@ -1,7 +1,7 @@
 ---
 title: "Docker 與 K8s 學習筆記 Ep-3"
 pubDate: 2025-02-25 21:57:39
-description: "前面介紹了很多指令，在這篇會做一個統整，好讓大家需要使用到指令時，可以直接到這一篇文章查看怎麼使用，除此之外文章最後也會教大家怎麼將自己的 Docker Image 推上 Docker Hub，方便分享與部署。"
+description: "Docker 常用指令速查表，涵蓋 image 管理、container 操作、volume 掛載，附完整 docker push 到 Docker Hub 的推送流程，方便隨時查閱。"
 author: "Peter"
 tags: ["Docker & K8s"]
 category: "Docker & K8s"
