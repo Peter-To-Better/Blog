@@ -5,7 +5,7 @@ description: "在上一篇教學中，我們介紹了 TypeScript 中的**Enums�
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"
-keywords: "TypeScript 從 0 開始 Ep-4"
+keywords: "TypeScript Generics 教學, TypeScript 泛型是什麼, Type Guard 教學, TypeScript typeof instanceof, TypeScript ES6 Modules, import export TypeScript, TypeScript 泛型函式"
 draft: false
 ---
 

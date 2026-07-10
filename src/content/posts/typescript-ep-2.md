@@ -5,7 +5,7 @@ description: "在上一篇教學中，我們介紹了 TypeScript 的基礎變數
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"
-keywords: "TypeScript 從 0 開始 Ep-2"
+keywords: "TypeScript 函式教學, TypeScript Interface 教學, TypeScript Type Alias 差別, interface vs type 差別, TypeScript 函式型別, TypeScript 物件型別, TypeScript 進階型別"
 draft: false
 ---
 

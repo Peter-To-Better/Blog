@@ -5,7 +5,7 @@ description: "前面介紹了很多指令，在這篇會做一個統整，好讓
 author: "Peter"
 tags: ["Docker & K8s"]
 category: "Docker & K8s"
-keywords: "Docker 與 K8s 學習筆記 Ep-3"
+keywords: "Docker 指令大全, docker push Docker Hub, Docker Hub 上傳教學, docker tag 指令, docker login 教學, Docker 指令整理, Docker 常用指令速查"
 draft: false
 ---
 

@@ -5,7 +5,7 @@ description: "帶你從安裝 Docker 開始，並介紹一些基本的 Docker �
 author: "Peter"
 tags: ["Docker & K8s"]
 category: "Docker & K8s"
-keywords: "Docker 與 K8s 學習筆記 Ep-1"
+keywords: "Docker 安裝教學, Docker 基本指令, docker pull push run 教學, docker ps 指令, docker stop rm 指令, Docker Desktop 安裝, Docker 指令教學繁體中文"
 draft: false
 ---
 

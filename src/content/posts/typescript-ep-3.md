@@ -5,7 +5,7 @@ description: "在上一篇教學中，我們介紹了 TypeScript 中的函式、
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"
-keywords: "TypeScript 從 0 開始 Ep-3"
+keywords: "TypeScript Enum 教學, TypeScript Tuple 教學, TypeScript 列舉是什麼, Enum vs Union Type, TypeScript 元組用法, TypeScript 資料結構, const enum 教學"
 draft: false
 ---
 

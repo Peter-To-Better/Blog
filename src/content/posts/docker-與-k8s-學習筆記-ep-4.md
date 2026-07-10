@@ -5,7 +5,7 @@ description: "在實際應用場景中，單一容器往往無法滿足所有需
 author: "Peter"
 tags: ["Docker & K8s"]
 category: "Docker & K8s"
-keywords: "Docker 與 K8s 學習筆記 Ep-4"
+keywords: "Docker 多容器通訊, Docker Network 教學, Docker Compose 教學, docker-compose.yml 範例, Container 跨容器通訊, 微服務 Docker 教學, Docker bridge network"
 draft: false
 ---
 

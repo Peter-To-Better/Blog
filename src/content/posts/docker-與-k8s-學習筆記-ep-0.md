@@ -5,7 +5,7 @@ description: "了解什麼是 Docker ， Docker 為我們帶來什麼好處解�
 author: "Peter"
 tags: ["Docker & K8s"]
 category: "Docker & K8s"
-keywords: "Docker 與 K8s 學習筆記 Ep-0"
+keywords: "Docker 是什麼, 容器化技術教學, Docker 教學繁體中文, 為什麼要用 Docker, 虛擬機 vs 容器差別, Docker 入門, Container 是什麼"
 draft: false
 ---
 

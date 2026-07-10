@@ -5,7 +5,7 @@ description: "TypeScript 是 JavaScript 的超集（Superset），它為 JavaScr
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"
-keywords: "TypeScript 從 0 開始 Ep-1"
+keywords: "TypeScript 型別系統, TypeScript 變數宣告, TypeScript any unknown 差別, TypeScript void never 教學, TypeScript string number boolean, 靜態型別檢查教學, TypeScript 基礎型別"
 draft: false
 ---
 

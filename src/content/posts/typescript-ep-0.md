@@ -5,7 +5,7 @@ description: "在這篇文章中，我們將介紹 JavaScript 和 TypeScript 的
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"
-keywords: "TypeScript 從 0 開始 Ep-0"
+keywords: "TypeScript 是什麼, TypeScript 入門教學, JavaScript 和 TypeScript 差別, TypeScript 為什麼要學, Vite TypeScript 專案, TypeScript Playground, TypeScript 繁體中文教學"
 draft: false
 ---
 

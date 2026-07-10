@@ -5,7 +5,7 @@ description: "在上一篇教學中，我們介紹了 TypeScript 中的 Generics
 author: "Peter"
 tags: ["TypeScript"]
 category: "TypeScript"
-keywords: "TypeScript 從 0 開始 Ep-5"
+keywords: "TypeScript Decorator 教學, TypeScript 裝飾器是什麼, TypeScript Namespace 教學, TypeScript Utility Types, Partial Required Pick Omit 教學, TypeScript 進階功能, TypeScript 裝飾器範例"
 draft: false
 ---
 

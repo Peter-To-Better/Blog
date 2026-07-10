@@ -5,7 +5,7 @@ description: "了解映像（Image）與容器（Container）的差別，並且�
 author: "Peter"
 tags: ["Docker & K8s"]
 category: "Docker & K8s"
-keywords: "Docker 與 K8s 學習筆記 Ep-2"
+keywords: "Dockerfile 教學, Docker Image 是什麼, Docker Container 差別, Docker Image vs Container, Node.js Dockerfile 範例, docker build 指令, COPY RUN CMD 指令"
 draft: false
 ---
 
