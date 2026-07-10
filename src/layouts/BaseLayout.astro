@@ -9,14 +9,16 @@ interface Props {
   description?: string;
   image?: string;
   keywords?: string;
+  type?: string;
+  publishedTime?: Date;
 }
 
-const { title, description, image, keywords } = Astro.props;
+const { title, description, image, keywords, type, publishedTime } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="zh-TW">
-  <BaseHead title={title} description={description} image={image} keywords={keywords} />
+  <BaseHead title={title} description={description} image={image} keywords={keywords} type={type} publishedTime={publishedTime} />
   <body class="min-h-screen flex flex-col">
     <Header />
     <main class="flex-1">

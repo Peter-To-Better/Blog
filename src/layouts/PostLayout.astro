@@ -80,7 +80,7 @@ const breadcrumbSchema = {
 };
 ---
 
-<BaseLayout title={title} description={description} image={image} keywords={keywords}>
+<BaseLayout title={title} description={description} image={image} keywords={keywords} type="article" publishedTime={pubDate}>
   <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
