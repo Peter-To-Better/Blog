@@ -4,4 +4,4 @@ Allow: /archives/
 Allow: /tags/
 Allow: /categories/
 
-Sitemap: https://shouren-blog.lanya.dev/sitemap-index.xml
+Sitemap: https://peter-to-better.com/sitemap-index.xml

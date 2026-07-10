@@ -5,6 +5,7 @@ description: "cherry-pick 指令用於將其他分支的一個或多個提交(co
 author: "Peter"
 tags: ["git"]
 category: "git"
+keywords: "git cherry-pick 教學, cherry-pick 用法, git 選擇性合併 commit, git 合併特定 commit, git 指令教學"
 draft: false
 ---
 

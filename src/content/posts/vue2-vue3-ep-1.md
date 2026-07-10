@@ -5,6 +5,7 @@ description: "之前我們有講過 click 現在我們來補充一些鍵盤上�
 author: "Peter"
 tags: ["Vue2 + Vue3"]
 category: "Vue"
+keywords: "Vue 按鍵修飾符, Vue keyup enter, Vue 事件修飾符教學, Vue2 Vue3 事件, v-on 修飾符"
 draft: false
 ---
 

@@ -5,6 +5,7 @@ description: "1.創建階段（Creation）： beforeCreate：在實例創建之�
 author: "Peter"
 tags: ["Vue2 + Vue3"]
 category: "Vue"
+keywords: "Vue 生命週期, Vue lifecycle hooks, beforeCreate created mounted 差別, Vue2 Vue3 生命週期比較, Vue 元件生命週期教學"
 draft: false
 ---
 
