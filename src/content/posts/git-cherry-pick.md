@@ -11,36 +11,109 @@ draft: false
 
 ## Cherry Pick
 
-cherry-pick 指令用於將其他分支的一個或多個提交(commits)合併到目前的分支。它是 Git 提供的一種方便的整合方式,可以在不合併整個分支的情況下,只合併某些特定的 commit。
+`git cherry-pick` 指令用於將其他分支的一個或多個指定 commit 合併到目前的分支，不需要合併整個分支。
 
 <!-- more -->
 
-### 使用場景
+### 什麼時候會用到？
 
-當有兩個分支 A 和 B,如果 A 分支需要合併 B 分支的某個 commit,就可以使用 cherry-pick 指令,將 B 分支的指定 commit 合併到 A 分支上。
+**場景一：hotfix 需要同步到其他分支**
 
-### 操作步驟
+你在 `main` 上修了一個緊急 bug（commit `abc123`），但 `develop` 分支也需要這個修復，不想整個 merge，就可以用 cherry-pick 只把那一個 commit 搬過去。
 
-1. 先切換到 B 分支,使用`git log`指令找到需要 cherry-pick 的 commit 的雜湊值(Hash),並複製該雜湊值,或者使用`Fork、GitLens`等圖形化工具來更快的找到雜湊值(Hash)。
+**場景二：從廢棄分支救出某個功能**
+
+某個功能分支因為方向改變被放棄了，但裡面有一兩個 commit 是獨立且有用的，可以用 cherry-pick 把它們挑出來。
+
+**場景三：整理 commit 到 release 分支**
+
+只想把 `develop` 上已驗證的特定 commit 放進 `release`，而不是全部合併進去。
+
+---
+
+### 基本用法
+
+**Step 1**：在來源分支找到目標 commit 的雜湊值（Hash）
 
 ```bash
-git checkout B
-git log
+git checkout feature-branch
+git log --oneline
 ```
 
-2. 切換回 A 分支,執行`git cherry-pick`指令,並貼上前面複製的雜湊值。
+輸出範例：
+```
+abc1234 fix: 修正登入驗證邏輯
+def5678 feat: 新增使用者頭像上傳
+```
+
+**Step 2**：切換到目標分支，執行 cherry-pick
 
 ```bash
-git checkout A
-git cherry-pick <commit-hash>
+git checkout main
+git cherry-pick abc1234
 ```
 
-如果 cherry-pick 操作成功,Git 會將 B 分支的指定 commit 合併到 A 分支的最新 commit 上。如果出現衝突,需要手動解決衝突,然後使用`git cherry-pick --continue`繼續 cherry-pick 操作。
+成功後，該 commit 會被複製到 `main`，產生一個新的 commit（hash 不同，但內容相同）。
+
+---
+
+### 一次 cherry-pick 多個 commit
+
+**方法一：列出多個 hash**
+
+```bash
+git cherry-pick abc1234 def5678 ghi9012
+```
+
+**方法二：使用範圍語法 `A..B`**
+
+cherry-pick `commit-A` 之後到 `commit-B` 之間的所有 commit（不包含 A，包含 B）：
+
+```bash
+git cherry-pick abc1234..ghi9012
+```
+
+---
+
+### 常用選項
+
+**`--no-commit`：只套用變更，不自動 commit**
+
+適合需要先檢查或合併多個變更再一起 commit 的情況：
+
+```bash
+git cherry-pick abc1234 --no-commit
+# 確認變更後手動 commit
+git commit -m "chore: apply selected fixes"
+```
+
+**`--edit`：套用後開啟編輯器修改 commit message**
+
+```bash
+git cherry-pick abc1234 --edit
+```
+
+---
+
+### 處理衝突
+
+cherry-pick 時如果遇到衝突，Git 會暫停並提示你手動解決：
+
+```bash
+# 1. 解決衝突後，標記為已解決
+git add <衝突的檔案>
+
+# 2. 繼續 cherry-pick
+git cherry-pick --continue
+
+# 或者放棄這次 cherry-pick，回到執行前的狀態
+git cherry-pick --abort
+```
+
+---
 
 ### 注意事項
 
-- cherry-pick 會將指定 commit 合併到目前的分支,而不會合併該 commit 之前的任何 commit。
-- cherry-pick 後,提交的作者仍然是原始 commit 的作者。
-- cherry-pick 可以一次性合併多個 commit,只需在命令列中添加多個雜湊值即可。
-
-透過 cherry-pick 指令,可以在不合併整個分支的情況下,靈活地合併其他分支的部分提交,使程式碼集成更加方便和精確。
+- cherry-pick 後產生的 commit **hash 會不同**，但內容相同，原始 commit 的作者資訊會保留。
+- 頻繁使用 cherry-pick 可能導致重複 commit，後續 merge 時產生衝突，建議只在明確需要的場景使用。
+- 使用 `Fork`、`GitLens`、`SourceTree` 等圖形化工具能更直覺地找到 commit hash 並執行 cherry-pick。

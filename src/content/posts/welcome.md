@@ -5,36 +5,40 @@ description: "嗨，我是 Peter，歡迎來到 peter-to-better 技術部落格�
 author: "Peter"
 tags: ["about"]
 category: "uncategorized"
-keywords: "瘦瘦仁的前端部落 ,瘦瘦仁, 關於我, 專業技術, 前端開發, HTML, CSS, JavaScript, JQuery, Bootstrap, Tailwind, Vue.js, Nuxt.js"
+keywords: "Peter Chen, 關於我, peter-to-better, 軟體工程師, LangChain 教學, RAG 教學, Docker 教學, TypeScript 教學, Harness Engineering"
 draft: false
 ---
 
 # 關於我
 
-嗨大家好！我是瘦瘦仁，這是我的技術部落格，這裡會分享許多前端或網站等知識，也會紀錄著我學習過程中的內容筆記與大家分享。
+嗨，我是 Peter，一個持續在變好的軟體工程師，這是我的技術部落格 **peter-to-better**。
+
+這裡記錄我在工作和學習中真正踩過的坑、實際用過的工具，以及搞懂某個概念後想說「早知道有人這樣解釋就好了」的那些內容。
 
 <!-- more -->
 
-## 專業技術
+## 現在在研究什麼
 
-我專注於網頁相關技術，擁有豐富的前端開發經驗。以下是我熟練掌握的技術：
+- **LangChain & RAG**：從基礎 RAG 到進階檢索、多模態 RAG、RAGAS 評估，整個系列都附完整 Python 程式碼，本地 Ollama 免費跑。
+- **Harness Engineering**：2026 最熱門的 AI 工程方法論，AGENTS.md、Hooks、Sub-agents、MCP 全部實作在 claude-harness-template 裡。
+- **Docker & K8s**：從容器基礎到 Kubernetes 部署，DevOps 實務導向。
+- **TypeScript**：型別系統到進階功能，寫過 Vue + TS 的人都能直接上手。
+- **OpenSpec 重構**：用 AI 輔助把老專案（PHP Laravel + Next.js）一步步重構的實戰紀錄。
 
-1. **HTML / CSS**: 在前端開發中，熟練的 HTML 和 CSS 是基本功，讓我能將設計稿轉換為精美的網頁。
+## 技術棧
 
-2. **JavaScript / JQuery**: JavaScript 是我第一個學習的程式語言，無論是網頁互動、API 串接、行動應用開發、伺服器端開發......都能慣用。
+**後端 / AI**：Python、LangChain、Ollama、FastAPI、Laravel  
+**前端**：TypeScript、Vue.js、Next.js、Tailwind CSS  
+**DevOps**：Docker、Kubernetes、Harness CI/CD  
+**工具**：Claude Code、Git、Nx Monorepo
 
-3. **Bootstrap / Tailwind**: 我擅長使用 Bootstrap 和 Tailwind 這兩個 CSS FrameWork，來建構 RWD 網站。
+## 為什麼叫 peter-to-better
 
-4. **Vue.js**: Vue.js 是我最喜歡的前端框架之一，我擅長使用 Vue.js 來構建交互性強、高效的前端應用。
-
-5. **Nuxt.js(研究中)**: 最近，我對 Nuxt.js 進行深入研究，希望能更好地將 Vue.js 應用到實際項目中。
-
-## 為何要創部落格
-
-因為想豐富暑假生活，決定創建部落格，將自己所學的知識與大家分享並記錄下來。我希望透過這個平台能夠與更多人交流，一同成長。
+因為我相信工程師的成長是持續的過程，不是某一天突然「學會了」，而是每天比昨天多理解一點點。這個部落格記錄的就是這個過程 — 與你一起變好。
 
 ## 興趣與愛好
-- 研究技術
+
+- 研究 AI 新工具
 - 健身
 - 打球
 - 看電影
