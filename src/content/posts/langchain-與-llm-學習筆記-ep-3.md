@@ -1,11 +1,11 @@
 ---
 title: "LangChain 與 LLM 學習筆記 Ep-3"
 pubDate: 2026-06-17 13:00:00
-description: "動手實作多模態 RAG：用 uv 建立專案、搭配本地 Ollama 模型，做出一個能讀「含圖表 PDF」的 RAG 系統。採用 Ep-2 介紹的「圖片轉述」架構，把 PDF 裡的圖表先用視覺模型描述成文字再入庫。"
+description: "多模態 RAG 實作教學：用 LangChain + Ollama 視覺模型讀取含圖表的 PDF，圖片先用 llama3.2-vision 轉成文字描述再建向量索引，含完整 Python 程式碼，不需要任何付費 API。"
 author: "Peter"
 tags: ["LangChain & LLM"]
 category: "LangChain & LLM"
-keywords: "LangChain 與 LLM 學習筆記, 多模態 RAG, Ollama, uv, 圖片轉述, PyMuPDF"
+keywords: "多模態 RAG 教學, PDF 圖表 RAG, Ollama 視覺模型, llama3.2-vision 教學, PyMuPDF 教學, LangChain 多模態, 圖片轉述 RAG, 本地多模態 LLM"
 draft: false
 ---
 

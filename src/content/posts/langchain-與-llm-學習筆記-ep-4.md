@@ -1,11 +1,11 @@
 ---
 title: "LangChain 與 LLM 學習筆記 Ep-4"
 pubDate: 2026-06-17 14:00:00
-description: "怎麼量化你的 RAG 到底準不準？本篇用 RAGAS 框架搭配本地 Ollama 模型，介紹檢索與生成兩個層面的核心指標（Context Precision、Context Recall、Faithfulness、Answer Relevancy），並實作一套能用數據驅動優化決策的評估流程。"
+description: "RAG 評估教學：用 RAGAS + Ollama 量化你的 RAG 系統準確率。四個核心指標 Faithfulness、Answer Relevancy、Context Precision、Context Recall，附完整 Python 程式碼，不需要 OpenAI API。"
 author: "Peter"
 tags: ["LangChain & LLM"]
 category: "LangChain & LLM"
-keywords: "LangChain 與 LLM 學習筆記, RAG 評估, RAGAS, Faithfulness, Context Precision, Ollama"
+keywords: "RAG 評估教學, RAGAS 教學, RAG 準確率評估, Faithfulness 是什麼, Context Precision 是什麼, LangChain RAG 評估, Ollama RAGAS, RAG 指標"
 draft: false
 ---
 

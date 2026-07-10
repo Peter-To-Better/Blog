@@ -247,22 +247,7 @@ const breadcrumbSchema = {
       <!-- Giscus Comments -->
       <div class="mt-10" id="comments">
         <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">留言討論</h2>
-        <script
-          src="https://giscus.app/client.js"
-          data-repo="Peter-To-Better/Blog"
-          data-repo-id="R_kgDOKA-1VA"
-          data-category="General"
-          data-category-id="DIC_kwDOKA-1VM4DAmJ1"
-          data-mapping="pathname"
-          data-strict="0"
-          data-reactions-enabled="1"
-          data-emit-metadata="0"
-          data-input-position="top"
-          data-theme="preferred_color_scheme"
-          data-lang="zh-TW"
-          crossorigin="anonymous"
-          async
-        ></script>
+        <div id="giscus-container"></div>
       </div>
     </footer>
   </article>
@@ -282,6 +267,38 @@ const breadcrumbSchema = {
 
   details summary::-webkit-details-marker { display: none; }
   details:not([open]) .toc-arrow { transform: rotate(-90deg); }
+
+  /* 程式碼複製按鈕 */
+  pre:not(.mermaid) {
+    position: relative;
+  }
+  .copy-code-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.72rem;
+    line-height: 1.4;
+    background: rgba(255, 255, 255, 0.08);
+    color: #aaa;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+    user-select: none;
+  }
+  pre:hover .copy-code-btn {
+    opacity: 1;
+  }
+  .copy-code-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+  }
+  .copy-code-btn.copied {
+    color: #6ee7b7;
+    border-color: #6ee7b7;
+  }
 </style>
 
 <script>
@@ -307,6 +324,24 @@ const breadcrumbSchema = {
 </script>
 
 <script>
+  // 程式碼區塊複製按鈕
+  document.querySelectorAll('pre:not(.mermaid)').forEach((pre) => {
+    const btn = document.createElement('button');
+    btn.textContent = '複製';
+    btn.className = 'copy-code-btn';
+    btn.addEventListener('click', async () => {
+      const text = (pre.querySelector('code') as HTMLElement)?.innerText ?? '';
+      await navigator.clipboard.writeText(text);
+      btn.textContent = '已複製！';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = '複製';
+        btn.classList.remove('copied');
+      }, 2000);
+    });
+    pre.appendChild(btn);
+  });
+
   if (document.querySelector('pre.mermaid')) {
     const { default: mermaid } = await import('mermaid');
     const isDark = document.documentElement.classList.contains('dark');
@@ -317,4 +352,45 @@ const breadcrumbSchema = {
     });
     await mermaid.run({ querySelector: 'pre.mermaid' });
   }
+</script>
+
+<script>
+  function getGiscusTheme() {
+    return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+  }
+
+  function loadGiscus() {
+    const container = document.getElementById('giscus-container');
+    if (!container) return;
+    const script = document.createElement('script');
+    script.src = 'https://giscus.app/client.js';
+    script.setAttribute('data-repo', 'Peter-To-Better/Blog');
+    script.setAttribute('data-repo-id', 'R_kgDOKA-1VA');
+    script.setAttribute('data-category', 'General');
+    script.setAttribute('data-category-id', 'DIC_kwDOKA-1VM4DAmJ1');
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'top');
+    script.setAttribute('data-theme', getGiscusTheme());
+    script.setAttribute('data-lang', 'zh-TW');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+    container.appendChild(script);
+  }
+
+  function updateGiscusTheme() {
+    const iframe = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+    iframe?.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme: getGiscusTheme() } } },
+      'https://giscus.app'
+    );
+  }
+
+  loadGiscus();
+
+  // Sync with blog dark mode toggle
+  const observer = new MutationObserver(() => updateGiscusTheme());
+  observer.observe(document.documentElement, { attributeFilter: ['class'] });
 </script>

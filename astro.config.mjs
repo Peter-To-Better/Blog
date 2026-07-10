@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import remarkMermaid from './src/plugins/remark-mermaid.mjs';
 
 export default defineConfig({
-  site: 'https://shouren-blog.lanya.dev',
+  site: 'https://peter-to-better.com',
   integrations: [
     tailwind(),
     sitemap({

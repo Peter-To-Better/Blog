@@ -1,11 +1,11 @@
 ---
 title: "LangChain 與 LLM 學習筆記 Ep-2"
 pubDate: 2026-06-17 12:00:00
-description: "深入進階 RAG：用混合檢索、查詢改寫、重排序與 Anthropic 上下文檢索把準確度往上拉，並實作能處理圖片、表格與文件影像的多模態 RAG（含 CLIP、圖片轉述、ColPali/ColQwen 三種架構比較）。"
+description: "進階 RAG 教學：語意分割、混合檢索（BM25 + 向量 + RRF）、Multi-Query、HyDE、Cross-Encoder Reranking，加上 Anthropic Contextual Retrieval 與多模態 RAG 三種架構（CLIP、圖片轉述、ColPali）完整對比。"
 author: "Peter"
 tags: ["LangChain & LLM"]
 category: "LangChain & LLM"
-keywords: "LangChain 與 LLM 學習筆記, 進階 RAG, 混合檢索, Reranking, 多模態 RAG, ColPali"
+keywords: "進階 RAG 教學, 混合檢索 BM25, RAG Reranking 教學, HyDE 是什麼, Multi-Query Retriever, Semantic Chunking, 多模態 RAG, ColPali ColQwen, LangChain 進階 RAG, Contextual Retrieval"
 draft: false
 ---
 
@@ -60,10 +60,8 @@ docs = splitter.create_documents([long_text])
 - **檢索時**用「小 chunk」（子文件）去比對，命中率高、雜訊少。
 - **餵給 LLM 時**回傳該 chunk 所屬的「大段落」（父文件），確保上下文完整。
 
-> 📦 **LangChain v1 套件提醒**：從 LangChain 1.0 起，核心 `langchain` 套件只保留 `init_chat_model`、`create_agent` 等 agent 基礎元件，本篇用到的各種 retriever（`ParentDocumentRetriever`、`EnsembleRetriever`、`MultiQueryRetriever`、`ContextualCompressionRetriever`）都已移到 **`langchain-classic`** 套件。請先 `pip install langchain-classic`，並從 `langchain_classic.retrievers` 匯入。
-
 ```python
-from langchain_classic.retrievers import ParentDocumentRetriever
+from langchain.retrievers import ParentDocumentRetriever
 
 retriever = ParentDocumentRetriever(
     vectorstore=vectorstore,        # 存小 chunk 的向量
@@ -121,7 +119,7 @@ retriever = ParentDocumentRetriever(
 兩邊各自排序後，用 **RRF（Reciprocal Rank Fusion，倒數排名融合）** 合併分數，取得一份兼顧「字面」與「語意」的清單。
 
 ```python
-from langchain_classic.retrievers import EnsembleRetriever
+from langchain.retrievers import EnsembleRetriever
 from langchain_community.retrievers import BM25Retriever
 
 bm25 = BM25Retriever.from_documents(docs)      # 關鍵字
@@ -143,7 +141,7 @@ hybrid = EnsembleRetriever(retrievers=[bm25, vector], weights=[0.4, 0.6])
 - **查詢分解（Decomposition）**：把複雜的多跳問題（multi-hop）拆成數個子問題，逐一檢索再彙整，適合「A 和 B 的差異是什麼」這種需要多份資料的問題。
 
 ```python
-from langchain_classic.retrievers.multi_query import MultiQueryRetriever
+from langchain.retrievers.multi_query import MultiQueryRetriever
 from langchain.chat_models import init_chat_model
 
 retriever = MultiQueryRetriever.from_llm(
@@ -164,7 +162,7 @@ retriever = MultiQueryRetriever.from_llm(
 所以策略是：用便宜快速的 Bi-Encoder 先粗篩一大批，再用昂貴精準的 Cross-Encoder 對這一小批做精排。
 
 ```python
-from langchain_classic.retrievers import ContextualCompressionRetriever
+from langchain.retrievers import ContextualCompressionRetriever
 from langchain_cohere import CohereRerank
 
 compressor = CohereRerank(model="rerank-v3.5", top_n=5)  # 從候選中精選 5 筆

@@ -5,12 +5,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getExcerpt } from '../../utils/helpers';
 
-function getEpisodeNumber(id: string): number {
-  const match = id.match(/ep-(\d+)/i);
-  return match ? parseInt(match[1]) : Infinity;
-}
-
 export const getStaticPaths: GetStaticPaths = async () => {
+  function getEpisodeNumber(id: string): number {
+    const match = id.match(/ep-(\d+)/i);
+    return match ? parseInt(match[1]) : Infinity;
+  }
+
   const posts = await getCollection('posts');
   const categories = [...new Set(posts.map((post) => post.data.category))];
 

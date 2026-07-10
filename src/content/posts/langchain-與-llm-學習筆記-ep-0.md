@@ -1,11 +1,11 @@
 ---
 title: "LangChain 與 LLM 學習筆記 Ep-0"
 pubDate: 2025-05-05 15:34:14
-description: "本篇將介紹大型語言模型（LLM）的基本概念，並深入說明 LangChain 框架的核心元件與應用方式，探討 AI Agent 的運作邏輯與 MCP（Model Context Protocol）標準。"
+description: "5 分鐘看懂 LLM、LangChain、AI Agent 與 MCP 的關係：什麼是 Context Window、token 限制，LangChain 怎麼幫你串接模型，以及 Anthropic MCP 協議解決什麼問題。"
 author: "Peter"
 tags: ["LangChain & LLM"]
 category: "LangChain & LLM"
-keywords: "LangChain 與 LLM 學習筆記"
+keywords: "LLM 是什麼, LangChain 是什麼, AI Agent 教學, MCP 是什麼, Context Window 是什麼, token 限制, LangChain 框架介紹, Anthropic MCP"
 draft: false
 ---
 
@@ -19,18 +19,43 @@ draft: false
 
 大型語言模型（LLM，Large Language Model）是基於深度學習的自然語言處理模型，透過大量文本資料訓練而成，具備理解、生成和處理人類語言的能力。常見的 LLM 包括：
 
-- OpenAI 的 GPT 系列（如 GPT-3.5、GPT-4）
-- Meta 的 LLaMA 系列
-- Anthropic 的 Claude
-- Google 的 Gemini
+- OpenAI 的 GPT-4o / GPT-4.1 系列
+- Meta 的 LLaMA 3.1 / 3.3 系列（開源）
+- Anthropic 的 Claude Haiku / Sonnet / Opus 系列
+- Google 的 Gemini 2.5 Pro / Flash 系列
+- Alibaba 的 Qwen3 系列（開源，中文能力強）
 
 這些模型能完成各種語言任務，如問答、翻譯、摘要、程式碼生成等。
+
+### Context Window（上下文視窗）
+
+LLM 有一個關鍵限制：**Context Window（上下文視窗）**，也就是模型一次能「看進去」的最大文字量。
+
+LLM 不是以字元為單位處理文字，而是以 **token** 為單位。token 是模型的基本處理單元，大約等於 0.75 個英文單字，或 1–2 個中文字。你傳入的 prompt 加上模型生成的回覆，**兩者加起來不能超過 Context Window 的上限**。
+
+各家主流模型的上限差距很大：
+
+| 模型 | Context Window | 約等於多少中文字 |
+| :--- | :--- | :--- |
+| GPT-4o | 128K token | 約 96,000 字 |
+| GPT-4.1 | 1M token | 約 750,000 字 |
+| Claude Sonnet 4.6 | 1M token | 約 750,000 字 |
+| Claude Opus 4.6 | 1M token | 約 750,000 字 |
+| Gemini 2.5 Pro | 1M–2M token | 約 75 萬–150 萬字 |
+| qwen3:8b（本地） | 256K token | 約 192,000 字 |
+
+看起來很大？一份 100 頁的 Word 文件大約有 50,000–80,000 字，雖然塞得進現在的模型，但更重要的是——**把整份文件全部丟給模型並不是好策略**：
+
+- token 數越多，推理越慢、API 費用越高
+- LLM 在超長 context 中，對中間段落的注意力會明顯下降，容易「看而不見」——這個現象有個名字叫 **Lost in the Middle**（[Liu et al., 2023](https://arxiv.org/abs/2307.03172)）
+
+**這正是下一篇 Ep-1 要介紹的 RAG 存在的核心原因**：與其把整份文件塞進 context，不如先「找出最相關的幾段」，只把那幾段當作參考資料傳給 LLM。這樣既精準又省 token。
 
 ---
 
 ## 什麼是 LangChain？
 
-LangChain 是專為 LLM 應用開發設計的框架，協助開發者打造基於大型語言模型的應用程式。LLM 是經過大量資料預先訓練的大型深度學習模型，能根據使用者查詢生成回應，例如回答問題或從文本提示中建立影像。
+LangChain 是專為 LLM 應用開發設計的框架，協助開發者打造基於大型語言模型的應用程式。它把常見的開發流程——呼叫模型、管理 prompt、串接工具、實作 RAG——封裝成可組合的元件，讓你不用從零開始重複造輪子。
 
 ### LangChain 主要元件與功能
 
@@ -39,7 +64,7 @@ LangChain 是專為 LLM 應用開發設計的框架，協助開發者打造基�
 - **提示範本（Prompt Templates）**
   預先建構的提示結構，讓開發者一致地格式化查詢，用於聊天機器人、特定指令傳遞，且可跨應用與模型重複使用。
 - **代理程式（Agents）**
-  代理有很多種類型可以參考[代理類型](https://python.langchain.com/v0.1/docs/modules/agents/agent_types/)，能讓語言模型根據使用者輸入、可用工具及中繼步驟，自主決定最佳回應流程自動化。
+  代理有很多種類型可以參考[代理類型](https://python.langchain.com/docs/concepts/agents/)，能讓語言模型根據使用者輸入、可用工具及中繼步驟，自主決定最佳回應流程自動化。
 - **擷取模組（Retrieval）**
   有不同的 loader 來實作 RAG，透過字詞內嵌建立語義表示，並將資訊儲存在本地或雲端向量資料庫像是[Pinecone](https://www.pinecone.io/)，提升回應的精確度與時效性。
 - **記憶體（Memory）**
