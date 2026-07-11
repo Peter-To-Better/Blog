@@ -3,13 +3,13 @@ title: "Docker 與 K8s 學習筆記 Ep-0"
 pubDate: 2025-02-21 21:39:15
 description: "用生活化比喻解釋 Docker 是什麼、容器化技術解決哪些開發痛點，以及 Docker 和虛擬機的本質差別。完全沒碰過容器的新手也能快速看懂。"
 author: "Peter"
-tags: ["Docker & K8s"]
+tags: ["Docker & K8s", "Docker", "容器化", "DevOps"]
 category: "Docker & K8s"
 keywords: "Docker 是什麼, 容器化技術教學, Docker 教學繁體中文, 為什麼要用 Docker, 虛擬機 vs 容器差別, Docker 入門, Container 是什麼"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 了解什麼是 Docker ， Docker 為我們帶來什麼好處解決什麼問題？用生活化的方式帶你理解容器化技術，無論你是新手還是老手都能快速理解， Docker 為你在開發上帶來的便利性。
 
@@ -102,6 +102,12 @@ Docker 其實就是一個工具，它簡化了容器的創建與管理。
 
 Docker 讓應用程式能夠以容器的形式運行，確保環境的一致性、可移植性和獨立性。它的概念類似於野餐籃或貨櫃，將所有需要的東西打包好，無論在哪裡都能保證相同的執行結果。
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [Docker 官方文件 - What is Docker](https://docs.docker.com/get-started/docker-overview/)
+
+---
+
+## 系列文章導覽
+
+- 下一篇：[Docker 與 K8s 學習筆記 Ep-1：安裝 Docker 與基本指令](/posts/docker-與-k8s-學習筆記-ep-1)

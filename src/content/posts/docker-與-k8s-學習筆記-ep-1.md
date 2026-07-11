@@ -3,13 +3,13 @@ title: "Docker 與 K8s 學習筆記 Ep-1"
 pubDate: 2025-02-23 14:17:54
 description: "手把手從 Docker Desktop 安裝開始，帶你跑 docker pull、run、ps、stop、rm 等常用指令，跟著做就能在本機啟動你的第一個容器。"
 author: "Peter"
-tags: ["Docker & K8s"]
+tags: ["Docker & K8s", "Docker", "容器化", "DevOps"]
 category: "Docker & K8s"
 keywords: "Docker 安裝教學, Docker 基本指令, docker pull push run 教學, docker ps 指令, docker stop rm 指令, Docker Desktop 安裝, Docker 指令教學繁體中文"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 帶你從安裝 Docker 開始，並介紹一些基本的 Docker 操作指令，幫助你快速上手容器化技術。
 
@@ -107,3 +107,10 @@ docker rmi nginx
 當然，上面講的這些操作，我們都可以在 Docker Desktop 找到，並且直接透過 GUI 的方式操作，這邊我就不操作，但大家可以在操作指令時打開 Docker Desktop 來觀察這些操作在 GUI 上的變化，就會知道什麼指令對應到什麼樣的功能。
 
 ![Docker Desktop GUI](/images/Docker-GUI.png)
+
+---
+
+## 系列文章導覽
+
+- 上一篇：[Docker 與 K8s 學習筆記 Ep-0：Docker 是什麼](/posts/docker-與-k8s-學習筆記-ep-0)
+- 下一篇：[Docker 與 K8s 學習筆記 Ep-2：Image 與 Container 差別與 Dockerfile](/posts/docker-與-k8s-學習筆記-ep-2)

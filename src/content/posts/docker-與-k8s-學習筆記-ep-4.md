@@ -3,13 +3,13 @@ title: "Docker 與 K8s 學習筆記 Ep-4"
 pubDate: 2025-03-24 22:29:52
 description: "單一容器不夠用時怎麼辦？本篇教你 Docker Network 跨容器通訊原理，並用 docker-compose.yml 把前後端與資料庫三個容器用一行指令全部啟動。"
 author: "Peter"
-tags: ["Docker & K8s"]
+tags: ["Docker & K8s", "Docker", "Docker Compose", "容器化"]
 category: "Docker & K8s"
 keywords: "Docker 多容器通訊, Docker Network 教學, Docker Compose 教學, docker-compose.yml 範例, Container 跨容器通訊, 微服務 Docker 教學, Docker bridge network"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 在實際應用場景中，單一容器往往無法滿足所有需求，複雜的應用常需要多個容器來協同工作像是：
 
@@ -160,3 +160,9 @@ docker run -d \
 
 - [Docker 官方網路文件](https://docs.docker.com/network/)
 - [容器網路接口(CNI)規範](https://github.com/containernetworking/cni)
+
+---
+
+## 系列文章導覽
+
+- 上一篇：[Docker 與 K8s 學習筆記 Ep-3：Docker 指令速查與推上 Docker Hub](/posts/docker-與-k8s-學習筆記-ep-3)
