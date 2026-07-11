@@ -3,7 +3,7 @@ title: "Vue2 + Vue3 Ep-0"
 pubDate: 2023-08-02 11:13:26
 description: "Vue 入門教學：雙向數據綁定、v-if 條件渲染、v-for 列表渲染、v-on 事件綁定一次學會，最後從零實作一個 Todo List，Vue2 與 Vue3 語法對照。"
 author: "Peter"
-tags: ["Vue2 + Vue3"]
+tags: ["Vue2 + Vue3", "Vue", "Vue3", "前端框架"]
 category: "Vue"
 keywords: "Vue2, Vue3, 前端框架, 雙向數據綁定, Vue基礎, 條件渲染, 事件綁定, 屬性綁定, 循環渲染, 雙向綁定, Todo List 範例"
 draft: false
@@ -727,3 +727,9 @@ key 屬性是用來區分不同迭代項目的唯一性，key 可以優化渲染
   </body>
 </html>
 ```
+
+---
+
+## 系列文章導覽
+
+- 下一篇：[Vue2 + Vue3 Ep-1：按鍵修飾符、樣式綁定與 Computed](/posts/vue2-vue3-ep-1)

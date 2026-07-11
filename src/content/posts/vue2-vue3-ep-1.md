@@ -3,7 +3,7 @@ title: "Vue2 + Vue3 Ep-1"
 pubDate: 2023-08-08 16:03:07
 description: "Vue 鍵盤事件與修飾符完整教學：keyup.enter 偵測 Enter 鍵、.stop .prevent .once 事件修飾符用法，附 Vue2 與 Vue3 語法差異對照與實作範例。"
 author: "Peter"
-tags: ["Vue2 + Vue3"]
+tags: ["Vue2 + Vue3", "Vue", "Vue3", "前端框架"]
 category: "Vue"
 keywords: "Vue 按鍵修飾符, Vue keyup enter, Vue 事件修飾符教學, Vue2 Vue3 事件, v-on 修飾符"
 draft: false
@@ -647,3 +647,10 @@ Watch 用於監視 Vue 的數據的變，當被監視的數據變化時，可以
   </script>
 </html>
 ```
+
+---
+
+## 系列文章導覽
+
+- 上一篇：[Vue2 + Vue3 Ep-0：Vue 基礎與常用指令](/posts/vue2-vue3-ep-0)
+- 下一篇：[Vue2 + Vue3 Ep-2：Vue 生命週期](/posts/vue2-vue3-ep-2)
