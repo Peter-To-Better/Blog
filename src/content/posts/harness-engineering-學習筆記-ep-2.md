@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering 學習筆記 Ep-2"
 pubDate: 2026-05-12 10:30:00
-description: "本篇將深入介紹 Harness 中威力最大、也最危險的元件 — Hooks（生命週期鉤子）。從 Anthropic 在 2026 年 1 月正式推出的 12 個生命週期事件、PreToolUse 的封鎖機制、Exit Code 2 的決定性意義，到一份能套用在大型 NX Monorepo 的生產級 hook 設定，徹底搞懂怎麼用 hook 把「拜託 Agent」變成「不做到就動不了」。"
+description: "Claude Code Hooks 怎麼用？一次搞懂 12 個生命週期事件、PreToolUse 封鎖機制與 Exit Code 2 的決定性意義，把「拜託 Agent」變成「不做到就動不了」。附 5 個 NX Monorepo 生產級 hook 範例。"
 author: "Peter"
 tags: ["Harness Engineering"]
 category: "Harness Engineering"
@@ -9,7 +9,7 @@ keywords: "Claude Code Hooks, PreToolUse, PostToolUse, Harness Engineering, AI A
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 本篇將深入介紹 Harness 中威力最大、也最危險的元件 — Hooks（生命週期鉤子）。從 Anthropic 在 2026 年 1 月正式推出的 12 個生命週期事件、PreToolUse 的封鎖機制、Exit Code 2 的決定性意義，到一份能套用在大型 NX Monorepo 的生產級 hook 設定，徹底搞懂怎麼用 hook 把「拜託 Agent」變成「不做到就動不了」。
 
@@ -229,7 +229,7 @@ Hook 很強，但它**不是萬靈丹**。以下情境用 hook 反而會傷自�
 
 下一篇我們會聊另一個威力同等強大、但思路完全不同的元件 — **Sub-agents（子代理）**，怎麼用「context firewall」這個觀念，讓你的 Agent 在跑長任務時不會越跑越笨。
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [Hooks reference - Claude Code 官方文件](https://code.claude.com/docs/en/hooks)
 - [Claude Code Hooks: The Deterministic Control Layer for AI Agents - Dotzlaw](https://www.dotzlaw.com/insights/claude-hooks/)

@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering 學習筆記 Ep-7"
 pubDate: 2026-05-16 19:30:00
-description: "Ep-2 講了 Hooks 的觀念,Ep-6 引出了 MCP 的雛形,這一集把兩者真正落地進 template — 寫出兩個 PreToolUse hook 把 HARD 規則變成「動不了」的決定性約束,並用 .mcp.json 示範怎麼把外部工具(資料庫、GitHub)接進 sub-agent 的能力範圍。"
+description: "Claude Code Hooks 與 MCP 怎麼落地？本集寫出兩個 PreToolUse hook，用 exit code 2 把 HARD 規則變成「動不了」的決定性約束，並用 .mcp.json 把資料庫、GitHub 等外部工具接進 sub-agent。附完整設定範例。"
 author: "Peter"
 tags: ["Harness Engineering"]
 category: "Harness Engineering"
@@ -9,7 +9,7 @@ keywords: "Claude Code Hooks, PreToolUse, .claude/settings.json, MCP, Model Cont
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 Ep-2 講了 Hooks 的觀念,Ep-6 引出了 MCP 的雛形,這一集把兩者真正落地進 template — 寫出兩個 **PreToolUse hook** 把 HARD 規則變成「動不了」的決定性約束,並用 `.mcp.json` 示範怎麼把外部工具(資料庫、GitHub)接進 sub-agent 的能力範圍。
 
@@ -218,7 +218,7 @@ Hook 跟 MCP 是「**邊界**」— Hook 設下不能做的,MCP 拉進可以做�
 
 下一篇 **Ep-8 — CI 整合 + 公開釋出**:把 `.github/workflows/` 補上一份 pnpm-friendly 的 CI(取代 Ep-7 開頭刪掉的 Nx 預設版),把 hooks 的決定性約束延伸到 PR 層,然後正式把 template 標 v1.0.0 公開釋出 — **系列收尾**。
 
-# 延伸閱讀
+## 延伸閱讀
 
 ### Claude Code 官方
 

@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering 學習筆記 Ep-3"
 pubDate: 2026-05-12 22:00:00
-description: "前面三集我們把 Harness Engineering 的世界觀、AGENTS.md 與 Hooks 都學了一輪，理論到此告一段落。從這一集開始，我們要把學到的東西實體化 — 動手打造一份名為 claude-harness-template 的開源模板，專為 Nx + NestJS + GraphQL + Next.js 設計，讓你 clone 之後直接用 Claude Code 開發整個系統。"
+description: "理論學完，開始動手打造 claude-harness-template 開源模板，專為 Nx + NestJS + GraphQL + Next.js 設計，clone 後直接用 Claude Code 開發。本集先講骨架、五條設計原則與後續五集 roadmap。"
 author: "Peter"
 tags: ["Harness Engineering"]
 category: "Harness Engineering"
@@ -9,7 +9,7 @@ keywords: "claude-harness-template, Harness Engineering, AI Agent, Claude Code, 
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 前面三集我們把 Harness Engineering 的世界觀、AGENTS.md 與 Hooks 都學了一輪，理論到此告一段落。從這一集開始，我們要把學到的東西實體化 — 動手打造一份名為 **claude-harness-template** 的開源模板，**專為 Nx + NestJS + GraphQL + Next.js stack 設計**，讓你 clone 之後直接用 Claude Code 開發整個系統。本篇先做計畫介紹：要解決什麼問題、骨架長什麼樣、設計原則、以及接下來幾集的 roadmap。
 
@@ -193,7 +193,7 @@ claude-harness-template/
 
 我們開工吧。
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [Claude Code Sub-agents 官方文件](https://docs.claude.com/en/docs/claude-code/sub-agents)
 - [Skill Issue: Harness Engineering for Coding Agents - HumanLayer](https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents)
