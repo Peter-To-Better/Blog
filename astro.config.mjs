@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
+import { unified } from '@astrojs/markdown-remark';
 import remarkMermaid from './src/plugins/remark-mermaid.mjs';
 
 export default defineConfig({
@@ -12,7 +13,9 @@ export default defineConfig({
     }),
   ],
   markdown: {
-    remarkPlugins: [remarkMermaid],
+    processor: unified({
+      remarkPlugins: [remarkMermaid],
+    }),
     shikiConfig: {
       theme: 'github-dark',
     },
