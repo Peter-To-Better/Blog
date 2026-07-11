@@ -3,13 +3,13 @@ title: "TypeScript 從 0 開始 Ep-4"
 pubDate: 2025-02-18 20:59:32
 description: "TypeScript 泛型（Generics）讓函式可重用不同型別、型別守衛（Type Guard）確保執行時安全，搭配 ES6 import/export 模組系統完整教學與範例。"
 author: "Peter"
-tags: ["TypeScript"]
+tags: ["TypeScript", "前端", "型別", "泛型"]
 category: "TypeScript"
 keywords: "TypeScript Generics 教學, TypeScript 泛型是什麼, Type Guard 教學, TypeScript typeof instanceof, TypeScript ES6 Modules, import export TypeScript, TypeScript 泛型函式"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 在上一篇教學中，我們介紹了 TypeScript 中的**Enums（列舉）** 和 **Tuples（元組）**，這些功能幫助，能夠幫助你更精確地定義資料結構與型別，接下來本我們繼續進一步探討 TypeScript 中的 Generics（泛型）、Type Guarding（型別守衛） 以及 ES6 Modules（模組系統）。
 
@@ -284,10 +284,17 @@ console.log(multiply(2, 3)); // 6
 
 ---
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [TypeScript 官方文件 - Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html)
 - [TypeScript 官方文件 - Type Guards](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
 - [TypeScript 官方文件 - Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
+
+---
+
+## 系列文章導覽
+
+- 上一篇：[TypeScript 從 0 開始 Ep-3：Enums 與 Tuples](/posts/typescript-ep-3)
+- 下一篇：[TypeScript 從 0 開始 Ep-5：裝飾器、命名空間與 Utility Types](/posts/typescript-ep-5)
 
 ---

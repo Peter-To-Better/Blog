@@ -3,19 +3,19 @@ title: "TypeScript 從 0 開始 Ep-1"
 pubDate: 2025-02-10 16:32:00
 description: "TypeScript 型別系統入門：string、number、boolean、any、unknown、void、never 各有什麼用途、any 和 unknown 差在哪？附完整範例說明每種型別的使用時機。"
 author: "Peter"
-tags: ["TypeScript"]
+tags: ["TypeScript", "前端", "型別"]
 category: "TypeScript"
 keywords: "TypeScript 型別系統, TypeScript 變數宣告, TypeScript any unknown 差別, TypeScript void never 教學, TypeScript string number boolean, 靜態型別檢查教學, TypeScript 基礎型別"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 TypeScript 是 JavaScript 的超集（Superset），它為 JavaScript 添加了靜態型別檢查和其他現代程式設計功能。透過 TypeScript，開發者可以在編譯階段就發現潛在的錯誤，提升程式碼的品質、可維護性和可讀性。在本篇中，會介紹 TypeScript 中的變數宣告與型別系統，包括 `number`、`string`、`boolean`、`any`、`unknown`、`void` 和 `never` 等型別。
 
 <!-- more -->
 
-# 變數與型別
+## 變數與型別
 
 TypeScript 的核心特性之一就是「型別系統」，它允許開發者在宣告變數時明確指定型別，避免許多常見的錯誤。我們將逐步介紹如何宣告變數、陣列和物件，並解釋一些常見的型別用法。
 
@@ -164,8 +164,15 @@ TypeScript 的型別系統不僅能幫助你在開發階段發現錯誤，還能
 
 ---
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [TypeScript 官方文件](https://www.typescriptlang.org/docs/)
 - [TypeScript 型別推論與註記](https://www.typescriptlang.org/docs/handbook/type-inference.html)
 - [TypeScript 中的聯合型別與交叉型別](https://www.typescriptlang.org/docs/handbook/unions-and-intersections.html)
+
+---
+
+## 系列文章導覽
+
+- 上一篇：[TypeScript 從 0 開始 Ep-0：TypeScript 是什麼](/posts/typescript-ep-0)
+- 下一篇：[TypeScript 從 0 開始 Ep-2：函式、介面與型別別名](/posts/typescript-ep-2)
