@@ -320,74 +320,136 @@ ollama pull nomic-embed-text
 
 ### 完整程式碼
 
-上面每個步驟的程式碼片段，串在一起就是這樣：
+前面各步驟的邏輯，在 repo 裡包成函式、加上 CLI 參數（`--pdf` / `--question` / `--rebuild` / `--top-k`），就是這支可以直接執行的 `ep1_basic_rag/rag.py`：
 
 ```python
-import fitz  # uv add pymupdf
+"""
+Ep-1 基礎 RAG 完整管線
+對應文章：https://peter-to-better.com/posts/langchain-與-llm-學習筆記-ep-1
+
+最陽春的 RAG 示範：PDF 載入 → 分割 → 嵌入 → 索引 → 檢索 → 生成
+完整對應 Ep-1 文章的八個步驟，不含任何進階技巧。
+
+使用方式：
+    # 第一次：建索引並提問
+    uv run python ep1_basic_rag/rag.py --pdf tax-guide.pdf --question "撫養父母的免稅額條件是什麼？"
+
+    # 之後：直接提問（索引已存在）
+    uv run python ep1_basic_rag/rag.py --question "哪些人不需要辦理綜合所得稅申報？"
+
+    # 換 PDF 時：強制重建索引
+    uv run python ep1_basic_rag/rag.py --pdf new_doc.pdf --question "..." --rebuild
+
+預備：
+    ollama pull llama3.1          # 文字生成
+    ollama pull nomic-embed-text  # 嵌入向量
+"""
+
+import argparse
+import sys
+from pathlib import Path
+
+import fitz  # PyMuPDF
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama, OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-# ── 設定 ─────────────────────────────────────────────────────────────
-PDF_PATH   = "tax-guide.pdf"
-CHROMA_DIR = "./chroma_db"
+CHROMA_DIR = "./chroma_db_ep1"
 EMBED_MODEL = "nomic-embed-text"
-LLM_MODEL   = "llama3.1"
+LLM_MODEL = "llama3.1"
 
 PROMPT = ChatPromptTemplate.from_template(
-    "你是文件問答助理，只根據以下參考資料回答問題，"
-    "不確定就直接說不知道，不要補充資料以外的內容。\n\n"
-    "參考資料：\n{context}\n\n問題：{question}"
+    "你是一個文件問答助理，只能根據以下參考資料回答問題，"
+    "不確定就直接說不知道，不要補充資料外的內容。\n\n"
+    "參考資料：\n{context}\n\n"
+    "問題：{question}"
 )
 
-# ── 步驟 1：載入 PDF ──────────────────────────────────────────────────
-print("步驟 1｜載入 PDF...")
-doc = fitz.open(PDF_PATH)
-pages = []
-for i, page in enumerate(doc):
-    text = page.get_text().strip()
-    if text:
-        pages.append(Document(
-            page_content=text,
-            metadata={"source": PDF_PATH, "page": i + 1},
-        ))
-print(f"  載入完成：{len(pages)} 頁")
 
-# ── 步驟 2：分割 ──────────────────────────────────────────────────────
-print("步驟 2｜分割文字...")
-splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=80)
-chunks = splitter.split_documents(pages)
-print(f"  分割完成：{len(chunks)} 個 chunk")
+def load_pdf(pdf_path: str) -> list[Document]:
+    """步驟 1：載入 PDF，每頁轉成一份 Document。"""
+    doc = fitz.open(pdf_path)
+    pages = []
+    for page_num, page in enumerate(doc):
+        text = page.get_text().strip()
+        if text:
+            pages.append(Document(
+                page_content=text,
+                metadata={"source": Path(pdf_path).name, "page": page_num + 1},
+            ))
+    print(f"  載入完成：共 {len(pages)} 頁有效文字（跳過空白頁）")
+    return pages
 
-# ── 步驟 3 + 4：嵌入 → 索引 ──────────────────────────────────────────
-print("步驟 3+4｜嵌入向量並建立索引...")
-embeddings = OllamaEmbeddings(model=EMBED_MODEL)
-vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory=CHROMA_DIR)
-print(f"  ✓ 索引建立完成，已存至 {CHROMA_DIR}/")
 
-# ── 步驟 5：檢索前處理（基礎版略過）──────────────────────────────────
+def build_index(pdf_path: str) -> Chroma:
+    """步驟 1-4：載入 → 分割 → 嵌入 → 索引"""
+    print(f"步驟 1｜載入 PDF：{pdf_path}")
+    pages = load_pdf(pdf_path)
 
-# ── 步驟 6：檢索 ──────────────────────────────────────────────────────
-question = "撫養父母的免稅額條件是什麼？"
-print(f"\n問題：{question}\n")
-retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
-docs = retriever.invoke(question)
-pages_hit = sorted({d.metadata["page"] for d in docs})
-print(f"步驟 6｜向量檢索（top-4）...")
-print(f"  撈到 {len(docs)} 個 chunk，來自第 {pages_hit} 頁")
+    print("步驟 2｜分割文字...")
+    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=80)
+    chunks = splitter.split_documents(pages)
+    print(f"  分割完成：{len(chunks)} 個 chunk（每塊約 500 字，overlap 80 字）")
 
-# ── 步驟 7：檢索後處理（基礎版略過）──────────────────────────────────
+    print(f"步驟 3+4｜嵌入向量並建立索引（{EMBED_MODEL}）...")
+    embeddings = OllamaEmbeddings(model=EMBED_MODEL)
+    vectorstore = Chroma.from_documents(
+        chunks, embeddings, persist_directory=CHROMA_DIR
+    )
+    print(f"  ✓ 索引建立完成，已存至 {CHROMA_DIR}/")
+    return vectorstore
 
-# ── 步驟 8：生成 ──────────────────────────────────────────────────────
-print("步驟 8｜生成回答...")
-context = "\n\n".join(
-    f"[第 {d.metadata['page']} 頁]\n{d.page_content}" for d in docs
-)
-llm = ChatOllama(model=LLM_MODEL, temperature=0)
-answer = llm.invoke(PROMPT.format(context=context, question=question))
-print(f"\n回答：\n{answer.content}")
+
+def load_vectorstore() -> Chroma:
+    embeddings = OllamaEmbeddings(model=EMBED_MODEL)
+    return Chroma(persist_directory=CHROMA_DIR, embedding_function=embeddings)
+
+
+def query_rag(question: str, vectorstore: Chroma, top_k: int = 4) -> str:
+    """步驟 6+8：向量檢索 → 生成回答（步驟 5 前處理與步驟 7 後處理在這裡省略）"""
+    print(f"步驟 6｜向量檢索（top-{top_k}）...")
+    retriever = vectorstore.as_retriever(search_kwargs={"k": top_k})
+    docs = retriever.invoke(question)
+    pages_hit = ", ".join(sorted({str(d.metadata["page"]) for d in docs}))
+    print(f"  撈到 {len(docs)} 個 chunk，來自第 {pages_hit} 頁")
+
+    context = "\n\n".join(
+        f"[第 {d.metadata['page']} 頁]\n{d.page_content}" for d in docs
+    )
+
+    print(f"步驟 8｜生成回答（{LLM_MODEL}）...")
+    llm = ChatOllama(model=LLM_MODEL, temperature=0)
+    return llm.invoke(PROMPT.format(context=context, question=question)).content
+
+
+def main():
+    parser = argparse.ArgumentParser(description="基礎 RAG 管線（Ep-1）")
+    parser.add_argument("--pdf", help="PDF 檔案路徑")
+    parser.add_argument("--question", required=True, help="查詢問題")
+    parser.add_argument("--rebuild", action="store_true", help="強制重建索引")
+    parser.add_argument("--top-k", type=int, default=4, help="撈回幾筆 chunk（預設 4）")
+    args = parser.parse_args()
+
+    need_build = args.rebuild or not Path(CHROMA_DIR).exists()
+
+    if need_build:
+        if not args.pdf:
+            print("錯誤：第一次建索引需要提供 --pdf 參數")
+            sys.exit(1)
+        vectorstore = build_index(args.pdf)
+    else:
+        print(f"索引已存在，直接載入 {CHROMA_DIR}/")
+        vectorstore = load_vectorstore()
+
+    print(f"\n問題：{args.question}\n")
+    answer = query_rag(args.question, vectorstore, top_k=args.top_k)
+    print(f"\n回答：\n{answer}")
+
+
+if __name__ == "__main__":
+    main()
 ```
 
 ---
