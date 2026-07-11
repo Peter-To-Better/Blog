@@ -1,5 +1,5 @@
 ---
-title: "LangChain 與 LLM 學習筆記 番外篇 — 我的電腦能跑哪些本地模型？"
+title: "我的電腦能跑哪些本地 LLM？量化與記憶體對照"
 pubDate: 2026-07-07 00:00:00
 description: "不知道你的電腦能跑哪些 LLM？說清楚量化格式（FP32 / Q4_K_M / Q8_0）差在哪、記憶體怎麼估算，附 Apple Silicon / NVIDIA / 純 CPU 場景對照表與 willitrunai 工具介紹，選對再動手。"
 author: "Peter"
@@ -9,13 +9,15 @@ keywords: "LLM 量化是什麼, Q4_K_M 是什麼, Q8_0 差異, GGUF 格式說明
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 知道自己的電腦能跑哪些 Ollama 模型，選對再動手。
 
 <!-- more -->
 
 這篇是 [Ep-1：RAG 技術架構](/posts/langchain-與-llm-學習筆記-ep-1) 的番外補充。Ep-1 在選模型時有一張 RAM 對照表，但背後的邏輯——量化格式是什麼、不同硬體有哪些限制——值得單獨說清楚。
+
+> **延伸閱讀**：這篇談的是「你的硬體跑不跑得動」（量化格式與記憶體規格對照）；另一篇[番外篇：RAG 該選哪個模型？](/posts/langchain-與-llm-學習筆記-番外-模型怎麼選)談的是「該選哪個模型比較準」（用 MTEB、Chatbot Arena 排行榜評估品質）。建議先用這篇確認硬體能跑的範圍，再去那篇挑品質最好的選項。
 
 ---
 

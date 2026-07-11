@@ -9,7 +9,7 @@ keywords: "多模態 RAG 教學, PDF 圖表 RAG, Ollama 視覺模型, llama3.2-v
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 [Ep-2](/posts/langchain-與-llm-學習筆記-ep-2) 講了一堆進階 RAG 的理論，這篇終於要**動手了**。我們要做一個能讀「含圖表 PDF」的 RAG 系統，而且全部用**本地的 Ollama 模型**跑，不花一毛 API 錢。架構選的是 Ep-2 第四節提到、最務實的**「圖片轉述（Captioning）」**那一套。
 
@@ -258,7 +258,7 @@ uv run python ep3_multimodal_rag/pipeline.py --pdf your_report.pdf --question "�
 
 ---
 
-## 延伸閱讀
+### 延伸閱讀
 
 - [Ollama llama3.2-vision 模型頁](https://ollama.com/library/llama3.2-vision)
 - [LangChain — OllamaEmbeddings 官方文件](https://docs.langchain.com/oss/python/integrations/embeddings/ollama)

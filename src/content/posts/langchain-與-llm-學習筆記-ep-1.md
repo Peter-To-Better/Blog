@@ -9,7 +9,7 @@ keywords: "RAG 教學, LangChain RAG, RAG 是什麼, 向量資料庫教學, Chro
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 了解 RAG 應用的技術架構
 

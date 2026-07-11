@@ -9,7 +9,7 @@ keywords: "LLM 是什麼, LangChain 是什麼, AI Agent 教學, MCP 是什麼, C
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 本篇將介紹大型語言模型（LLM）的基本概念，並深入說明 LangChain 框架的核心元件與應用方式，探討 AI Agent 的運作邏輯與 MCP（Model Context Protocol）標準。
 
@@ -102,7 +102,7 @@ MCP 是由 Anthropic 於 2024 年推出的開放標準協議，用來標準化 A
 - **Client（客戶端）**：像是主機中的橋樑元件，負責在 AI 應用和 MCP Server 之間建立並維護通訊，你可以把它想像成筆電上的 USB 插槽和驅動程式，專門負責發送請求並接收回應，確保筆電能正確操作連接的外部裝置。
 - **Server（伺服器）**：提供具體功能和數據的服務端，像是 Slack、Gmail、Google 日曆或本地檔案系統，它們就像連接到筆電的滑鼠、鍵盤或外接硬碟，是實際執行任務和提供資料的設備。
 
-## 延伸閱讀
+### 延伸閱讀
 
 - [LangChain 官方文件](https://python.langchain.com/)
 - [白話科技｜ Google 推 A2A，大戰 MCP！MCP 是什麼？定義、實例一次看懂](https://www.bnext.com.tw/article/82706/what-is-mcp?)

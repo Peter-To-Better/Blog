@@ -1,5 +1,5 @@
 ---
-title: "LangChain 與 LLM 學習筆記 番外篇 — 這個系列用什麼模型？為什麼？"
+title: "RAG 該選哪個模型？MTEB 與 Chatbot Arena 挑選法"
 pubDate: 2026-07-07 00:00:00
 description: "LangChain RAG 要選哪個模型？用 MTEB 排行榜挑嵌入模型、Chatbot Arena 挑生成模型，解釋為什麼選 nomic-embed-text 和 llama3.1:8b，附本地 vs 付費 API 完整對比表與一鍵切換程式碼。"
 author: "Peter"
@@ -9,7 +9,7 @@ keywords: "MTEB 排行榜 嵌入模型, Chatbot Arena 排行, nomic-embed-text �
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 說清楚這個系列為什麼選 `nomic-embed-text` 和 `llama3.1:8b`，以及怎麼用業界標準評估模型。
 
@@ -26,6 +26,8 @@ draft: false
 **所以這個系列的選擇很直接：全程用本地 [Ollama](https://ollama.com/) 跑，不需要任何 API Key，不花一毛錢。** 你可以放心地跑一百次、改一百次，帳單永遠是 $0。
 
 不確定自己的硬體能不能跑？先看[番外篇：我的電腦能跑哪些本地模型？](/posts/langchain-與-llm-學習筆記-番外-本地模型怎麼選)
+
+> **延伸閱讀**：這篇談的是「該選哪個模型比較準」（用 MTEB、Chatbot Arena 排行榜評估品質）；另一篇[番外篇：我的電腦能跑哪些本地模型？](/posts/langchain-與-llm-學習筆記-番外-本地模型怎麼選)談的是「你的硬體跑不跑得動」（量化格式與記憶體規格對照）。兩篇搭配著看：先確認硬體跑得動，再從跑得動的選項裡挑最準的。
 
 ---
 

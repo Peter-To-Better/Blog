@@ -9,12 +9,21 @@ keywords: "進階 RAG 教學, 混合檢索 BM25, RAG Reranking 教學, HyDE 是�
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
-[Ep-1](/posts/langchain-與-llm-學習筆記-ep-1) 我們把 RAG 的骨架搭起來了，但「能跑」跟「準確」是兩回事。這篇要深入兩件事：
+[Ep-1](/posts/langchain-與-llm-學習筆記-ep-1) 我們用一份**報稅 PDF** 跑通了一支 `rag.py`，把 RAG 的八個步驟（[載入](/posts/langchain-與-llm-學習筆記-ep-1#1-載入) → [分割](/posts/langchain-與-llm-學習筆記-ep-1#2-分割) → [嵌入](/posts/langchain-與-llm-學習筆記-ep-1#3-嵌入embedding) → [索引](/posts/langchain-與-llm-學習筆記-ep-1#4-索引) → [檢索](/posts/langchain-與-llm-學習筆記-ep-1#6-檢索) → [生成](/posts/langchain-與-llm-學習筆記-ep-1#8-生成)）串成骨架。但「能跑」跟「準確」是兩回事——拿 Ep-1 那支去問細一點的問題，很容易撈錯段落。這篇要深入兩件事：
 
 1. **怎麼讓檢索更準** —— 從分割、混合檢索、查詢改寫、重排序到 Anthropic 的上下文檢索（Contextual Retrieval）。
 2. **怎麼處理多模態檔案** —— 當文件裡有圖片、表格、掃描檔、流程圖時，純文字向量的 RAG 該怎麼進化。
+
+而且這篇不是另起爐灶：**下面每一招，都是在補強 Ep-1 某一個步驟**——尤其是 Ep-1 的 `rag.py` 裡註明「直接略過」的[步驟 5 檢索前處理](/posts/langchain-與-llm-學習筆記-ep-1#5-檢索前處理)與[步驟 7 檢索後處理](/posts/langchain-與-llm-學習筆記-ep-1#7-檢索後處理)，這篇會把它們補起來。對照著看：
+
+| Ep-1 步驟 | 當時的做法 / 弱點 | Ep-2 對應的進階招式 |
+| :--- | :--- | :--- |
+| [步驟 2 分割](/posts/langchain-與-llm-學習筆記-ep-1#2-分割) | 固定字數硬切，概念被劈開、chunk 失去上下文 | 語意分割、父子分割、上下文檢索 |
+| [步驟 6 檢索](/posts/langchain-與-llm-學習筆記-ep-1#6-檢索) | 只有純向量 Top-k，對精確字詞弱 | 混合檢索（BM25 + 向量 + RRF） |
+| [步驟 5 檢索前處理](/posts/langchain-與-llm-學習筆記-ep-1#5-檢索前處理) | Ep-1 直接略過 | 查詢改寫（Multi-Query / HyDE） |
+| [步驟 7 檢索後處理](/posts/langchain-與-llm-學習筆記-ep-1#7-檢索後處理) | Ep-1 直接略過 | 重排序（Cross-Encoder Rerank） |
 
 <!-- more -->
 
@@ -38,7 +47,7 @@ draft: false
 
 ### 1. 別再用固定長度硬切 —— 語意分割與父子分割
 
-Ep-1 提到最陽春的切法是「固定字數 + overlap」，但這很容易把一個完整概念從中間劈開。進階做法有兩種：
+Ep-1 的[步驟 2 分割](/posts/langchain-與-llm-學習筆記-ep-1#2-分割)用最陽春的「固定字數 + overlap」，但這很容易把一個完整概念從中間劈開——像報稅說明裡「扶養親屬免稅額」的認定條件，剛好被切成兩半，其中一半就再也檢索不到。進階做法有兩種：
 
 **語意分割（Semantic Chunking）**：不看字數，而是看「語意是否連續」。它會逐句計算向量相似度，當相鄰句子的語意距離突然變大（代表話題轉換），就在那裡切一刀。
 
@@ -109,7 +118,7 @@ retriever = ParentDocumentRetriever(
 
 ### 1. 混合檢索（Hybrid Search）—— 語意 + 關鍵字，兩個都要
 
-純向量檢索有個致命弱點：**對「精確字詞」很弱**。當使用者搜尋產品型號 `RTX-4090`、錯誤碼 `ERR_0x80`、人名這類東西時，語意相似度反而不可靠——這正是傳統關鍵字檢索（BM25）的強項。
+Ep-1 的[步驟 6 檢索](/posts/langchain-與-llm-學習筆記-ep-1#6-檢索)只用純向量，而純向量檢索有個致命弱點：**對「精確字詞」很弱**。當使用者搜尋產品型號 `RTX-4090`、錯誤碼 `ERR_0x80`、人名，或報稅文件裡「幼兒學前特別扣除額」「6 歲以下」這種精確詞時，語意相似度反而不可靠——這正是傳統關鍵字檢索（BM25）的強項。
 
 混合檢索就是**同時跑兩種檢索再合併**：
 
@@ -134,7 +143,7 @@ hybrid = EnsembleRetriever(retrievers=[bm25, vector], weights=[0.4, 0.6])
 
 ### 2. 查詢轉換（Query Transformation）—— 別讓爛問題拖垮檢索
 
-使用者的提問常常很口語、很模糊，直接拿去檢索效果很差。幾種改寫策略：
+還記得 Ep-1 的[步驟 5 檢索前處理](/posts/langchain-與-llm-學習筆記-ep-1#5-檢索前處理)嗎？當時我們直接略過——這一節就是把它補上。使用者的提問常常很口語、很模糊，直接拿去檢索效果很差。幾種改寫策略：
 
 - **Multi-Query（多重查詢）**：用 LLM 把一個問題改寫成多個角度的版本，分別檢索後合併去重，大幅提升 Recall。
 - **HyDE（假設性文件嵌入）**：反直覺但很有效——先讓 LLM「**假裝**」生成一段答案，再用這段假答案去做向量檢索。因為「答案」在向量空間裡會比「問題」更靠近真正的答案文件。
@@ -152,7 +161,7 @@ retriever = MultiQueryRetriever.from_llm(
 
 ### 3. 重排序（Reranking）—— 檢索的「第二道把關」
 
-這是 CP 值最高的精準度提升手段。前面的混合檢索負責**「廣撒網」**（撈回 50 筆候選，重 Recall），重排序則負責**「精挑細選」**（從 50 筆裡選出真正最相關的 5 筆，重 Precision）。
+同樣地，Ep-1 的[步驟 7 檢索後處理](/posts/langchain-與-llm-學習筆記-ep-1#7-檢索後處理)也是略過的——重排序就是最值得補上的後處理，也是 CP 值最高的精準度提升手段。前面的混合檢索負責**「廣撒網」**（撈回 50 筆候選，重 Recall），重排序則負責**「精挑細選」**（從 50 筆裡選出真正最相關的 5 筆，重 Precision）。
 
 關鍵差別在於模型架構：
 
@@ -183,6 +192,8 @@ flowchart TD
     C --> D["父文件還原，補回完整上下文<br/>（可選）"]
     D --> E["餵給 LLM 生成"]
 ```
+
+換句話說，這條管線就是把 Ep-1 的骨架，在[步驟 5 檢索前處理](/posts/langchain-與-llm-學習筆記-ep-1#5-檢索前處理)、[步驟 6 檢索](/posts/langchain-與-llm-學習筆記-ep-1#6-檢索)、[步驟 7 檢索後處理](/posts/langchain-與-llm-學習筆記-ep-1#7-檢索後處理)三個地方各塞一個增強模組——資料還是同一份報稅 PDF，變的只是「怎麼撈、撈完怎麼排」。
 
 不用一次全上。**投資報酬率排序我會建議：先做「重排序」與「混合檢索」（最有感），行有餘力再加「上下文檢索」與「查詢改寫」。**
 
@@ -259,7 +270,7 @@ query_embeddings = model(**processor.process_queries(["第二季毛利率是多�
 
 ## 小結
 
-這篇我們把 RAG 從「能跑」推到「夠準、夠全」：
+這篇我們把 [Ep-1](/posts/langchain-與-llm-學習筆記-ep-1) 那支跑得動的報稅 PDF RAG，從「能跑」推到「夠準、夠全」：
 
 - **精準度**：索引階段用「父子分割 + 上下文檢索」保住脈絡；查詢階段用「混合檢索撈得廣 → 重排序排得準」，再用查詢改寫補強模糊提問。
 - **多模態**：依資料型態選擇「圖片轉述 / CLIP 統一嵌入 / ColPali 文件影像檢索」，讓 RAG 看得懂表格與圖。
@@ -284,7 +295,7 @@ uv run python ep2_advanced_retrieval/03_hybrid_search.py
 
 ---
 
-## 延伸閱讀
+### 延伸閱讀
 
 - [Anthropic — Introducing Contextual Retrieval](https://www.anthropic.com/news/contextual-retrieval)
 - [ColPali: Efficient Document Retrieval with Vision Language Models (arXiv 2407.01449)](https://arxiv.org/abs/2407.01449)
