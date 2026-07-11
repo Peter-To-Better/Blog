@@ -1,5 +1,5 @@
 ---
-title: "Git"
+title: "Git Cherry-Pick 教學：挑選指定 Commit 完整步驟"
 pubDate: 2024-03-14 11:40:12
 description: "Git cherry-pick 完整教學：不合併整個分支，只把指定 commit 搬到目前分支。附雜湊值查法、多個 commit 一次 cherry-pick、衝突處理步驟說明。"
 author: "Peter"
