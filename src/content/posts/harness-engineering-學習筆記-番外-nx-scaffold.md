@@ -1,7 +1,7 @@
 ---
-title: "Harness Engineering 學習筆記 番外篇 — Nx 前後端 Scaffold 建構紀錄"
+title: "Nx 前後端 Scaffold 建構紀錄｜Harness 番外"
 pubDate: 2026-05-16 14:00:00
-description: "claude-harness-template 內的 Nx workspace 是怎麼從零搭建出來的？本篇是一份完整可重現的指令清單 — 從 create-nx-workspace、生 NestJS server / Next.js client、加 lib，到 NestJS 與 Next.js 兩種不同的 port 設定模式，照著跑就能複製出同樣的骨架。"
+description: "Nx workspace 怎麼從零搭建？本篇是一份完整可重現的 9 步指令清單，從 create-nx-workspace、生 NestJS server 與 Next.js client、加 lib，到兩種不同的 port 設定模式，照著跑就能複製骨架。"
 author: "Peter"
 tags: ["Harness Engineering"]
 category: "Harness Engineering"
@@ -9,7 +9,7 @@ keywords: "Nx Monorepo, NestJS, Next.js, create-nx-workspace, @nx/nest, @nx/next
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 `claude-harness-template` 內的 Nx workspace 是怎麼從零搭建出來的？本篇是一份**完整可重現的指令清單** — 從 `create-nx-workspace`、生 NestJS server / Next.js client、加 lib，到 NestJS 與 Next.js 兩種不同的 port 設定模式，照著跑就能複製出同樣的骨架。
 
@@ -296,7 +296,7 @@ pnpm client   # → http://localhost:4500       (Next.js)
 
 > 這份 scaffold 不是「一勞永逸的 template」,而是「**一份可被 Claude Code 用 SDD 流程持續擴張的起點**」— 接下來無論你想加 GraphQL、TypeORM、Apollo Client、Chakra UI、auth、CI...都用 `/spec → /plan → /implement` 一個個進來,由 harness 把關品質。
 
-# 延伸閱讀
+## 延伸閱讀
 
 ### Nx
 

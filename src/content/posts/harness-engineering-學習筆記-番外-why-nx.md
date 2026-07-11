@@ -1,7 +1,7 @@
 ---
-title: "Harness Engineering 學習筆記 番外篇 — 為什麼選 Nx？它到底幫你做了什麼"
+title: "為什麼選 Nx？它到底幫你做了什麼｜Harness 番外"
 pubDate: 2026-05-16 16:30:00
-description: "上一篇番外把 Nx workspace 從零搭起來,但很多人會問 — 為什麼要用 Nx？它跟一般 monorepo 工具(Turborepo、Lerna、pnpm workspace)差在哪？對 Claude Code 開發又有什麼特別好處？本篇用 nx.dev 官方論述為基底,把 Nx 的核心能力與適用情境一次講清楚。"
+description: "為什麼要用 Nx？它跟 Turborepo、Lerna、pnpm workspace 差在哪，對 Claude Code 開發又有什麼好處？本篇一次講清楚 Nx 五大核心能力、Inferred Tasks，以及什麼時候「不該」用 Nx。"
 author: "Peter"
 tags: ["Harness Engineering"]
 category: "Harness Engineering"
@@ -9,7 +9,7 @@ keywords: "Nx Monorepo, Nx 是什麼, Nx vs Turborepo, Nx Cloud, nx affected, Nx
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 上一篇番外把 Nx workspace 從零搭起來,但很多人會問 — **為什麼要用 Nx**？它跟一般 monorepo 工具(Turborepo、Lerna、pnpm workspace)差在哪？對 Claude Code 開發又有什麼特別好處？本篇用 nx.dev 官方論述為基底,把 Nx 的核心能力與適用情境一次講清楚。
 
@@ -169,7 +169,7 @@ AGENTS.md                                ← Nx 自管理的 agent 規則區塊
 
 下一篇回到主線 — **Ep-6:Skills + Sub-agent vs Skill 對比**,把這篇提到的 `dep-auditor` 做出來,順便揭示 Claude Code 把 `.claude/commands/` 併入 `.claude/skills/` 之後的最新寫法。
 
-# 延伸閱讀
+## 延伸閱讀
 
 ### Nx 官方
 

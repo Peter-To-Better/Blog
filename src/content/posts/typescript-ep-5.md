@@ -3,13 +3,13 @@ title: "TypeScript 從 0 開始 Ep-5"
 pubDate: 2025-02-19 11:34:49
 description: "TypeScript 進階功能：Decorator 裝飾器語法與應用場景、Namespace 命名空間，以及 Partial、Required、Pick、Omit 等 Utility Types 實用教學。"
 author: "Peter"
-tags: ["TypeScript"]
+tags: ["TypeScript", "前端", "型別", "進階"]
 category: "TypeScript"
 keywords: "TypeScript Decorator 教學, TypeScript 裝飾器是什麼, TypeScript Namespace 教學, TypeScript Utility Types, Partial Required Pick Omit 教學, TypeScript 進階功能, TypeScript 裝飾器範例"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 在上一篇教學中，我們介紹了 TypeScript 中的 Generics（泛型）、Type Guarding（型別守衛） 以及 ES6 Modules（模組系統），，接下來本我們繼續進一步探討 TypeScript 中的 **Decorators（裝飾器）**、**Namespaces（命名空間）** 以及 **Utility Types（實用型別）**。
 
@@ -278,10 +278,16 @@ const user: UserWithoutEmail = {
 
 ---
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [TypeScript 官方文件 - Decorators](https://www.typescriptlang.org/docs/handbook/decorators.html)
 - [TypeScript 官方文件 - Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
 - [TypeScript 官方文件 - Utility Types](https://www.typescriptlang.org/docs/handbook/utility-types.html)
+
+---
+
+## 系列文章導覽
+
+- 上一篇：[TypeScript 從 0 開始 Ep-4：泛型、型別守衛與模組系統](/posts/typescript-ep-4)
 
 ---

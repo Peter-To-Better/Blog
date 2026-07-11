@@ -3,13 +3,13 @@ title: "Docker 與 K8s 學習筆記 Ep-2"
 pubDate: 2025-02-24 22:47:34
 description: "釐清 Docker Image 和 Container 的本質差異，並實作一個 Node.js 應用的 Dockerfile，學會 FROM、COPY、RUN、CMD 四個核心指令。"
 author: "Peter"
-tags: ["Docker & K8s"]
+tags: ["Docker & K8s", "Docker", "容器化", "Dockerfile"]
 category: "Docker & K8s"
 keywords: "Dockerfile 教學, Docker Image 是什麼, Docker Container 差別, Docker Image vs Container, Node.js Dockerfile 範例, docker build 指令, COPY RUN CMD 指令"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 了解映像（Image）與容器（Container）的差別，並且實作一個 NodeJs 應用撰寫專案專屬的 Dockerfile。
 
@@ -224,7 +224,14 @@ docker rm <container_id>
 
 ---
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [Docker 官方文件 - Dockerfile 參考](https://docs.docker.com/engine/reference/builder/)
 - [Node.js 官方映像](https://hub.docker.com/_/node)
+
+---
+
+## 系列文章導覽
+
+- 上一篇：[Docker 與 K8s 學習筆記 Ep-1：安裝 Docker 與基本指令](/posts/docker-與-k8s-學習筆記-ep-1)
+- 下一篇：[Docker 與 K8s 學習筆記 Ep-3：Docker 指令速查與推上 Docker Hub](/posts/docker-與-k8s-學習筆記-ep-3)

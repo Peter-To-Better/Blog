@@ -3,7 +3,7 @@ title: "Vue2 + Vue3 Ep-2"
 pubDate: 2023-09-15 11:40:12
 description: "Vue 生命週期完整解析：beforeCreate、created、beforeMount、mounted、beforeUpdate、updated、beforeDestroy 各階段用途與觸發時機，附實作範例與圖解。"
 author: "Peter"
-tags: ["Vue2 + Vue3"]
+tags: ["Vue2 + Vue3", "Vue", "Vue3", "前端框架"]
 category: "Vue"
 keywords: "Vue 生命週期, Vue lifecycle hooks, beforeCreate created mounted 差別, Vue2 Vue3 生命週期比較, Vue 元件生命週期教學"
 draft: false
@@ -265,3 +265,9 @@ npm install -g @vue/cli # OR yarn global add @vue/cli
 3. src 下可以看到有 assets 可以放一些圖片或 CSS
 4. 而 components 資料夾放置共用組件
 5. App.vue 是 Vue 應用程式的根節點
+
+---
+
+## 系列文章導覽
+
+- 上一篇：[Vue2 + Vue3 Ep-1：按鍵修飾符、樣式綁定與 Computed](/posts/vue2-vue3-ep-1)

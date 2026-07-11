@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering 學習筆記 Ep-1"
 pubDate: 2026-05-09 14:30:00
-description: "本篇將深入介紹 Harness Engineering 中最基礎也最容易被誤用的元件 — AGENTS.md，從這個格式的起源、被超過 60,000 個專案採用的標準寫法，到 ETH Zurich 研究揭露的「寫太多反而更糟」殘酷數據，最後手把手帶你寫出一份精簡有效的 AGENTS.md。"
+description: "AGENTS.md 怎麼寫才有效？ETH Zurich 研究揭露「寫太多反而讓成功率下降」的殘酷數據，還有寫進去的工具被用 160 倍的規則。附一份 80 行實例，手把手帶你寫出精簡有效的 AGENTS.md。"
 author: "Peter"
 tags: ["Harness Engineering"]
 category: "Harness Engineering"
@@ -9,7 +9,7 @@ keywords: "AGENTS.md, Harness Engineering, AI Agent, Claude Code, Codex, GitHub 
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 本篇將深入介紹 Harness Engineering 中最基礎也最容易被誤用的元件 — AGENTS.md，從這個格式的起源、被超過 60,000 個專案採用的標準寫法，到 ETH Zurich 研究揭露的「寫太多反而更糟」殘酷數據，最後手把手帶你寫出一份精簡有效的 AGENTS.md。
 
@@ -242,7 +242,7 @@ source of truth 是 `tsconfig.base.json`，以下僅供快速查找：
 
 下一篇會接著聊 Harness 裡威力最大、也最危險的元件 — **Hooks（生命週期鉤子）**，怎麼用 hook 把「拜託你 commit 前跑測試」變成「不跑就 commit 不了」的決定性約束。
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [AGENTS.md 官方網站](https://agents.md/)
 - [How to write a great agents.md: Lessons from over 2,500 repositories - GitHub Blog](https://github.blog/ai-and-ml/github-copilot/how-to-write-a-great-agents-md-lessons-from-over-2500-repositories/)

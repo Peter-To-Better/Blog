@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering 學習筆記 Ep-5"
 pubDate: 2026-05-13 10:00:00
-description: "Sub-agent 解決了 Context Firewall，但還有一個更大的問題沒處理 — Agent 寫的程式碼，跟你腦袋裡想要的東西一直「飄」。本集導入 2026 最熱門的方法論 Spec-Driven Development（SDD），把 /spec、/plan、/implement 三個 slash command 加進 claude-harness-template，從此每個 feature 都有一份可被 review、可進版控的「契約」。"
+description: "Agent 寫的程式碼一直「飄」離初衷？本集導入 2026 最熱門的 Spec-Driven Development（SDD），把 /spec、/plan、/implement 三個 slash command 加進 template，讓每個 feature 都有可被 review、可進版控的契約。"
 author: "Peter"
 tags: ["Harness Engineering"]
 category: "Harness Engineering"
@@ -9,7 +9,7 @@ keywords: "Spec-Driven Development, SDD, Claude Code Slash Commands, .claude/com
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 Sub-agent 解決了 Context Firewall，但還有一個更大的問題沒處理 — **Agent 寫的程式碼，跟你腦袋裡想要的東西一直「飄」**。本集導入 2026 最熱門的方法論 **Spec-Driven Development（SDD）**，把 `/spec`、`/plan`、`/implement` 三個 slash command 加進 `claude-harness-template`，從此每個 feature 都有一份可被 review、可進版控的「契約」。
 
@@ -231,7 +231,7 @@ EARS 把模糊的「我希望 archive 後 user 看不到」變成 **明確、可
 
 下一篇 **Ep-6 — Skills：Sub-agent vs Skill 完整對比 + dep-auditor 實作**，會把這集用的 commands 升級成 skills 的 SKILL.md 寫法，並且做出一個會跑 CVE 檢查的 `dep-auditor` 範例 — 同時當 Sub-agent + Skill **合用**的活案例。
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [GitHub Spec-Kit — Toolkit for Spec-Driven Development](https://github.com/github/spec-kit)
 - [GitHub Blog: Spec-driven development with AI](https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/)

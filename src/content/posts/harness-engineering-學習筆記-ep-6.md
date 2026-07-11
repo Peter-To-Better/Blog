@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering 學習筆記 Ep-6"
 pubDate: 2026-05-16 18:00:00
-description: "Ep-4 做了 sub-agents、Ep-5 做了 slash commands，這一集補上 Harness 的最後一塊拼圖 — Skills。本篇釐清 Sub-agent 與 Skill 到底差在哪、為什麼 Claude Code 把 slash commands 併進了 skills，並動手做一個 dep-auditor 來示範「Sub-agent + Skill 合用」的經典模式。"
+description: "Claude Code Skill 與 Sub-agent 到底差在哪？一次搞懂 progressive disclosure、為什麼 slash commands 併進了 skills，並動手做一個 dep-auditor 示範「Sub-agent + Skill 合用」的經典模式。附五元件決策表。"
 author: "Peter"
 tags: ["Harness Engineering"]
 category: "Harness Engineering"
@@ -9,7 +9,7 @@ keywords: "Claude Code Skills, SKILL.md, Sub-agent vs Skill, progressive disclos
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 Ep-4 做了 sub-agents、Ep-5 做了 slash commands，這一集補上 Harness 的最後一塊拼圖 — **Skills**。本篇釐清 Sub-agent 與 Skill 到底差在哪、為什麼 Claude Code 把 slash commands 併進了 skills，並動手做一個 `dep-auditor` 來示範「**Sub-agent + Skill 合用**」的經典模式。
 
@@ -221,7 +221,7 @@ AGENTS.md 升到 v0.5.0,sub-agent 表多一列 `dep-auditor`,並新增「Skills�
 
 下一篇 **Ep-7 — Hooks 整合 × MCP**,會把 Ep-2 講過的 hook 觀念真正落地進 `.claude/settings.json`,並加上 MCP server 設定 — 讓 template 的「決定性約束」那一層補完。
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [Claude Code Skills 官方文件](https://code.claude.com/docs/en/skills)
 - [Claude Code Sub-agents 官方文件](https://code.claude.com/docs/en/sub-agents)

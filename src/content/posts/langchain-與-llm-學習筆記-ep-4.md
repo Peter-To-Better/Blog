@@ -9,7 +9,7 @@ keywords: "RAG 評估教學, RAGAS 教學, RAG 準確率評估, Faithfulness 是
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 [Ep-3](/posts/langchain-與-llm-學習筆記-ep-3) 結尾留了一個尷尬的問題：我們做了一堆優化（混合檢索、重排序、圖片轉述），但**怎麼知道到底有沒有變好？** 這篇就要回答這件事——用 **RAGAS** 這個專門評估 RAG 的框架，把「準不準」變成可以量化的數字，一樣全部跑在本地 Ollama 上。
 
@@ -200,7 +200,7 @@ uv run python ep4_evaluation/evaluate.py
 
 ---
 
-## 延伸閱讀
+### 延伸閱讀
 
 - [RAGAS 官方文件 — Evaluate a simple RAG system](https://docs.ragas.io/en/stable/getstarted/rag_eval/)
 - [RAGAS — List of available metrics](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/)

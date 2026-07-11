@@ -5,11 +5,11 @@ description: "前端是什麼？從 HTML、CSS、JavaScript 到 Vue.js、React �
 author: "Peter"
 tags: []
 category: "uncategorized"
-keywords: "前端, 網站, 什麼是前端, 應用程式, 外觀設計, 佈局, 互動元素, 動態效果, 使用者體驗, HTML, CSS, JavaScript, 前端框架, Vue.js, React, Angular, 響應式設計, 使用者體驗設計"
+keywords: "什麼是前端, 前端是什麼, 前端工程師, HTML CSS JavaScript, 前端框架, 響應式設計, 使用者體驗"
 draft: true
 ---
 
-# 什麼是前端
+## 什麼是前端
 
 前端是指與使用者直接互動的部分，例如：網站或應用程式。它涵蓋了設計網頁的外觀、佈局和互動元素，同時實現了動態效果，以提供更好的使用者體驗。簡而言之，前端是創造引人入勝且互動性強的網頁界面的關鍵。
 

@@ -1,15 +1,15 @@
 ---
-title: "AI 時代的重構姿勢:OpenSpec × Claude Code 實戰 Ep-5"
+title: "OpenSpec 重構老專案 Ep-5:交易核心與競態防線"
 pubDate: 2026-06-14 00:00:00
-description: "phase-2-carbon-listings 一天從 propose 跑到 archive。10 個 design 決策挑 4 個講透:**角色推導用 row 存在性而不是 enum**、**state machine + saving listener 雙保險**、**同時購買的競態用 DB::transaction + lockForUpdate + UNIQUE 三層防線**、**`/me` 不開新端點直接 spread role flag**。69 個 Pest 測試怎麼被 8 個 task group 推著長出來,前端 8 個 surface 怎麼用一個 `serverGet` helper 把 RSC + cookie 接住。最後 archive 儀式:delta spec sync 回 `specs/auth` + 整本 `specs/carbon-listings` 落地。"
+description: "碳匯交易核心一天從 propose 跑到 archive。挑 4 個設計決策講透：角色用 row 存在性推導、state machine 雙保險、同時購買競態用 DB transaction + lockForUpdate + UNIQUE 三層防線擋住。想學 Laravel 併發防護就看這篇。"
 author: "Peter"
 tags: ["重構筆記", "OpenSpec", "Laravel", "Next.js", "State Machine"]
 category: "重構筆記"
-keywords: "OpenSpec, Laravel 12, state machine, transitionTo, saving boot listener, lockForUpdate, UNIQUE constraint race, role inference, EXISTS subquery, /me endpoint, Next.js 16 RSC, server fetch, axios, withCredentials, withXSRFToken, Sanctum SPA, Pest, Carbon-ESG"
+keywords: "OpenSpec, Laravel 12, state machine, lockForUpdate, race condition, role inference, Next.js 16 RSC, Sanctum SPA, Pest, Carbon-ESG"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 [Ep-4](/posts/openspec-重構老專案-ep-4/) 結尾 phase-1 還停在「design 寫完 ready to apply」,中間我把 `/opsx:apply` 跑完、archive 進 `openspec/specs/auth/`,active change 槽位再次空出來。然後今天直接接 **phase-2-carbon-listings** — 整個專案的**商業核心**:landowner 上架碳匯 → admin 審 → buyer 買 → 系統 mark sold。一天從 propose 跑到 archive,69 個 Pest passing,前端 8 個 surface 全部 tsc clean。
 

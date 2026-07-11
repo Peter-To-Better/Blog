@@ -1,15 +1,15 @@
 ---
-title: "AI 時代的重構姿勢:OpenSpec × Claude Code 實戰 Ep-2"
+title: "OpenSpec 重構老專案 Ep-2:裝好 PHP 與 Composer"
 pubDate: 2026-06-12 21:00:00
-description: '動工 Laravel 前,先把 PHP 8 與 Composer 兩張入場券辦好。本篇用一個 Node.js 寫慣的人能秒懂的角度,拆解這兩個工具到底在做什麼、為什麼非裝不可、怎麼在 macOS / Linux / Windows 各自一行裝起來,並把我們即將用來 scaffold 後端的那條 `composer create-project laravel/laravel backend "^12.0"` 一個一個 token 拆給你看。'
+description: "動工 Laravel 前，先把 PHP 8 與 Composer 兩張入場券辦好。這篇用 Node.js 開發者秒懂的對照，帶你在 macOS / Linux / Windows 各自一行裝起來，還把 composer create-project 每個 token 拆給你看。照著裝完就能跑。"
 author: "Peter"
 tags: ["重構筆記", "OpenSpec", "PHP", "Laravel"]
 category: "重構筆記"
-keywords: "PHP, Composer, PHP 8, Laravel 12, brew install php, macOS PHP, Ubuntu PHP, Laravel Herd, composer create-project, PHP package manager, AI Coding, Claude Code, Carbon-ESG"
+keywords: "PHP, Composer, PHP 8, Laravel 12, brew install php, Laravel Herd, composer create-project, Carbon-ESG"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 [Ep-1](/posts/openspec-重構老專案-ep-1/) 我們把 OpenSpec 紀律架好了,接下來 phase-0 第一個會動到磁碟的 task 是:
 

@@ -1,15 +1,15 @@
 ---
-title: "AI 時代的重構姿勢:OpenSpec × Claude Code 實戰 Ep-6"
+title: "OpenSpec 重構老專案 Ep-6:揪出潛伏一年的 Sanctum bug"
 pubDate: 2026-06-17 00:00:00
-description: "phase-3-jobs 把第四個行為角色 worker 接進來:`saving` listener 之外再加一個 `saved` listener 做 cross-table 副作用、apply 中途把 `WorkerJob.rejected` 從 spec 砍掉、multipart 上傳的 FormRequest 紅線。最痛快的一段是抓到一個 phase-1 就埋下的 latent bug — server-side `fetch()` 沒帶 `Referer` 害 Sanctum stateful middleware 不認得 SPA session,整個 SSR 認證鏈靜默斷掉,直到 phase-3 因為新增的 `getApplicationStatusFromCookies` 把它逼出來。19 個 backend e2e + 13 個 frontend e2e + 133 個 Pest 一次過。"
+description: "第四個角色 worker 接進來，卻踩到 phase-1 就埋下的潛伏 bug：server-side fetch 沒帶 Referer，Sanctum 不認 SPA session，SSR 認證鏈靜默斷掉。這篇完整記錄排查路徑，還講 saved listener 與 multipart 上傳的安全紅線。"
 author: "Peter"
 tags: ["重構筆記", "OpenSpec", "Laravel", "Next.js", "Sanctum", "Multipart"]
 category: "重構筆記"
-keywords: "OpenSpec, phase-3-jobs, Laravel 12 saving saved listener, WorkerJob state machine, multipart FormRequest, image mimes validation, Sanctum stateful, EnsureFrontendRequestsAreStateful, SANCTUM_STATEFUL_DOMAINS, Referer header, SSR fetch, RSC cookie forwarding, role inference, Carbon-ESG, Claude Code"
+keywords: "OpenSpec, Laravel 12, saved listener, multipart FormRequest, Sanctum stateful, SANCTUM_STATEFUL_DOMAINS, Referer header, RSC cookie forwarding, Carbon-ESG"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 [Ep-5](/posts/openspec-重構老專案-ep-5/) 收尾 phase-2-carbon-listings archive、active change 槽位空出來。phase-3 接手的是 Carbon-ESG **第四個行為角色 worker** — 工人申請、認領「需要維護的土地」、提交前後照片、admin 審核回報。一天從 propose 跑到 verify(archive 還沒按,等明天看 UI 沒問題再按),backend 133 Pest 全綠、frontend tsc clean、curl 模擬完整 SPA flow 19 步 + 13 個 protected route 全綠。
 

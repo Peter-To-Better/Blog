@@ -1,15 +1,15 @@
 ---
-title: "關於我"
+title: "關於我 — Peter｜peter-to-better 技術部落格"
 pubDate: 2023-07-29 09:13:59
 description: "嗨，我是 Peter，歡迎來到 peter-to-better 技術部落格。這裡分享 LangChain、Docker、TypeScript、Vue 等學習筆記，記錄工程師成長過程，與你一起變好。"
 author: "Peter"
 tags: ["about"]
-category: "uncategorized"
+category: "關於"
 keywords: "Peter Chen, 關於我, peter-to-better, 資訊工程學生, Web 開發, LangChain, RAG, AI Agent, Next.js, NestJS"
 draft: false
 ---
 
-# 關於我
+## 關於我
 
 嗨，我是 Peter。
 

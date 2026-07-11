@@ -1,15 +1,15 @@
 ---
-title: "AI 時代的重構姿勢:OpenSpec × Claude Code 實戰 Ep-1"
+title: "OpenSpec 重構老專案 Ep-1:init 與 profile 設定"
 pubDate: 2026-06-11 22:00:00
-description: "本篇將拆解當下最輕量的 spec-driven development 工具 OpenSpec 的兩個入門指令 — 從 openspec init 在你 repo 內安插的目錄、到 openspec config profile 為什麼把「安裝在哪」(Delivery)跟「有哪些可用 workflow」(Workflows)切成兩個獨立維度設定。看完你就能解讀為什麼 /opsx:propose 在 Claude Code 一打就出現，而你某個同事的 Cursor 卻沒有。"
+description: "用 spec-driven development 工具 OpenSpec 重構跑了兩年的老專案。這篇拆解 openspec init 跟 config profile 兩個入門指令，帶你搞懂 Delivery 與 Workflows 兩個維度怎麼決定你有哪些指令。跟著裝一次就上手。"
 author: "Peter"
 tags: ["重構筆記", "OpenSpec"]
 category: "重構筆記"
-keywords: "OpenSpec, openspec init, openspec config profile, spec-driven development, brownfield refactor, AI Coding, Claude Code, Codex, Cursor, Carbon-ESG, Next.js, Laravel"
+keywords: "OpenSpec, openspec init, openspec config profile, spec-driven development, brownfield refactor, Claude Code, Carbon-ESG"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 本篇將拆解當下最輕量的 spec-driven development 工具 OpenSpec 的兩個入門指令 — 從 `openspec init` 在你 repo 內安插的目錄、到 `openspec config profile` 為什麼把「**安裝在哪**」(Delivery)跟「**有哪些可用 workflow**」(Workflows)切成兩個獨立維度設定。看完你就能解讀為什麼 `/opsx:propose` 在 Claude Code 一打就出現，而你某個同事的 Cursor 卻沒有。
 

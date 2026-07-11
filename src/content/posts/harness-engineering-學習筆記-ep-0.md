@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering 學習筆記 Ep-0"
 pubDate: 2026-05-09 10:00:00
-description: "本篇將介紹 2026 年最熱門的 AI 工程概念 — Harness Engineering，從 Mitchell Hashimoto 提出的起源、核心公式 Agent = Model + Harness，到 Prompt、Context、Harness 三層工程的差異，帶你理解為什麼這個詞會在短短九十天內成為整個 AI 產業的共同語言。"
+description: "Harness Engineering 是什麼？從 Mitchell Hashimoto 的起源到核心公式 Agent = Model + Harness，一次搞懂 Prompt、Context、Harness 三層工程差在哪，以及它為何九十天橫掃 AI 產業。附騎馬比喻。"
 author: "Peter"
 tags: ["Harness Engineering"]
 category: "Harness Engineering"
@@ -9,7 +9,7 @@ keywords: "Harness Engineering, AI Agent, Mitchell Hashimoto, Prompt Engineering
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 本篇將介紹 2026 年最熱門的 AI 工程概念 — Harness Engineering，從 Mitchell Hashimoto 提出的起源、核心公式 Agent = Model + Harness，到 Prompt、Context、Harness 三層工程的差異，帶你理解為什麼這個詞會在短短九十天內成為整個 AI 產業的共同語言。
 
@@ -135,7 +135,7 @@ Harness Engineering 是 2026 年 AI 工程的新顯學，它的核心精神可�
 
 下一篇會深入聊 **AGENTS.md 應該怎麼寫**、為什麼人類手寫的 AGENTS.md 總是比 LLM 自動生成的好用，以及一份精簡 AGENTS.md 的實作範例。
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [Harness Engineering: Leveraging Codex in an Agent-First World - OpenAI](https://openai.com/index/harness-engineering/)
 - [Skill Issue: Harness Engineering for Coding Agents - HumanLayer](https://www.humanlayer.dev/blog/skill-issue-harness-engineering-for-coding-agents)

@@ -3,13 +3,13 @@ title: "TypeScript 從 0 開始 Ep-3"
 pubDate: 2025-02-17 11:25:25
 description: "TypeScript Enum 列舉與 Tuple 元組完整教學：什麼時候用 enum、const enum 效能差別、tuple 如何固定陣列型別，附實際開發中的應用範例。"
 author: "Peter"
-tags: ["TypeScript"]
+tags: ["TypeScript", "前端", "型別", "資料結構"]
 category: "TypeScript"
 keywords: "TypeScript Enum 教學, TypeScript Tuple 教學, TypeScript 列舉是什麼, Enum vs Union Type, TypeScript 元組用法, TypeScript 資料結構, const enum 教學"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 在上一篇教學中，我們介紹了 TypeScript 中的函式、介面與型別別名，這些功能幫助我們更好的組織程式碼並提升型別安全性，接下來本我們繼續進一步探討 TypeScript 中的 **Enums（列舉）** 和 **Tuples（元組）**，它們能夠幫助你更精確地定義資料結構與型別。
 
@@ -191,10 +191,17 @@ console.log(x, y); // 10, 20
 
 ---
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [TypeScript 官方文件 - Enums](https://www.typescriptlang.org/docs/handbook/enums.html)
 - [TypeScript 官方文件 - Tuples](https://www.typescriptlang.org/docs/handbook/2/objects.html#tuple-types)
 - [TypeScript 中的 Enums 與 Tuples 應用實例](https://www.typescriptlang.org/docs/handbook/advanced-types.html)
+
+---
+
+## 系列文章導覽
+
+- 上一篇：[TypeScript 從 0 開始 Ep-2：函式、介面與型別別名](/posts/typescript-ep-2)
+- 下一篇：[TypeScript 從 0 開始 Ep-4：泛型、型別守衛與模組系統](/posts/typescript-ep-4)
 
 ---

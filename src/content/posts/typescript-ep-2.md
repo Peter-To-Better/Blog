@@ -3,19 +3,19 @@ title: "TypeScript 從 0 開始 Ep-2"
 pubDate: 2025-02-16 09:34:52
 description: "TypeScript 函式型別、Interface 介面與 Type Alias 型別別名完整教學，搞懂 interface vs type 的使用時機與差異，讓物件型別定義更清晰。"
 author: "Peter"
-tags: ["TypeScript"]
+tags: ["TypeScript", "前端", "型別", "Interface"]
 category: "TypeScript"
 keywords: "TypeScript 函式教學, TypeScript Interface 教學, TypeScript Type Alias 差別, interface vs type 差別, TypeScript 函式型別, TypeScript 物件型別, TypeScript 進階型別"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 在上一篇教學中，我們介紹了 TypeScript 的基礎變數宣告與型別系統，包括 `number`、`string`、`boolean`、`any`、`unknown`、`void` 和 `never` 等型別。本篇將進一步探討 TypeScript 中的 **函式（Functions）**、**介面（Interfaces）** 以及 **型別別名（Type Aliases）**，這些功能能夠幫助你更好地組織程式碼並提升型別安全性。
 
 <!-- more -->
 
-# 函式（Functions）
+## 函式（Functions）
 
 TypeScript 中的函式與 JavaScript 的函式非常相似，但多了型別註記的功能，我們可以為函式的參數和回傳值指定型別，來確保函式的輸入和輸出符合預期。
 
@@ -108,7 +108,7 @@ console.log(subtract(10, 5)); // 5
 
 ---
 
-# 介面（Interfaces）與型別別名（Type Aliases）
+## 介面（Interfaces）與型別別名（Type Aliases）
 
 TypeScript 提供了兩種方式來定義自訂型別：**介面（Interfaces）** 和 **型別別名（Type Aliases）**。這兩者非常相似，但在某些情境下有不同的使用方式。
 
@@ -274,11 +274,18 @@ const user: User = {
 
 ---
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [TypeScript 官方文件 - 函式](https://www.typescriptlang.org/docs/handbook/functions.html)
 - [TypeScript 官方文件 - 介面](https://www.typescriptlang.org/docs/handbook/interfaces.html)
 - [TypeScript 官方文件 - 型別別名](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-aliases)
 - [TypeScript 中的介面 vs 型別別名](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces)
+
+---
+
+## 系列文章導覽
+
+- 上一篇：[TypeScript 從 0 開始 Ep-1：變數宣告與型別系統](/posts/typescript-ep-1)
+- 下一篇：[TypeScript 從 0 開始 Ep-3：Enums 與 Tuples](/posts/typescript-ep-3)
 
 ---

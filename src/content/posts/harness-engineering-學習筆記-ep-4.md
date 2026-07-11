@@ -1,7 +1,7 @@
 ---
 title: "Harness Engineering 學習筆記 Ep-4"
 pubDate: 2026-05-12 23:15:00
-description: "Ep-3 介紹完 claude-harness-template 計畫，這一集正式動工。本篇先講清楚 Sub-agent 與 Context Firewall 的核心觀念，然後直接導覽 template 裡 6 個專為 Nx + NestJS + GraphQL + Next.js 設計的 sub-agent，並提煉出四條跨 agent 共用的設計模式。"
+description: "Claude Code Sub-agent 怎麼用？一次搞懂 Context Firewall 如何對抗 Context Rot、不讓主對話越跑越笨，並導覽 template 裡 6 個 Nx + NestJS + GraphQL + Next.js 專用 sub-agent 與四條共用設計模式。"
 author: "Peter"
 tags: ["Harness Engineering"]
 category: "Harness Engineering"
@@ -9,7 +9,7 @@ keywords: "Claude Code Sub-agents, Context Firewall, Context Rot, .claude/agents
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 Ep-3 介紹完 `claude-harness-template` 計畫，這一集正式動工。本篇先講清楚 Sub-agent 與 **Context Firewall** 的核心觀念，然後直接導覽 template 裡 **6 個專為 Nx + NestJS + GraphQL + Next.js 設計的 sub-agent**，並提煉出四條跨 agent 共用的設計模式。
 
@@ -265,7 +265,7 @@ Nx workspace 最常見的問題是有人手動 `mkdir libs/foo` 然後忘記改 
 
 下一篇 **Ep-5 — SDD：Spec-Driven Development × Slash Commands**，會加入「規格驅動開發」這個近期業界很紅的方法論，把 `/spec`、`/plan`、`/implement` 三個 slash command 串起整個從需求到實作的流程，並在 template 加上 `.claude/commands/` 目錄。
 
-# 延伸閱讀
+## 延伸閱讀
 
 - [Claude Code Sub-agents 官方文件](https://code.claude.com/docs/en/sub-agents)
 - [Context Window Visualization - Claude Code Docs](https://code.claude.com/docs/en/context-window)
