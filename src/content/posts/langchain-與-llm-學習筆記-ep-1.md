@@ -151,10 +151,10 @@ from langchain_chroma import Chroma
 vectorstore = Chroma.from_documents(
     documents=chunks,
     embedding=embeddings,
-    persist_directory="./chroma_db",
+    persist_directory="./chroma_db_ep1",
 )
 # 向量存到磁碟，下次可以直接載入，不用重新嵌入
-# 載入方式：Chroma(persist_directory="./chroma_db", embedding_function=embeddings)
+# 載入方式：Chroma(persist_directory="./chroma_db_ep1", embedding_function=embeddings)
 ```
 
 #### 為什麼選 Chroma？各種向量資料庫的差異
@@ -182,7 +182,7 @@ pgvector 是正當的選擇——尤其是你的系統本來就在用 PostgreSQL
 ```python
 # 原本（Chroma 本地）
 from langchain_chroma import Chroma
-vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory="./chroma_db")
+vectorstore = Chroma.from_documents(chunks, embeddings, persist_directory="./chroma_db_ep1")
 
 # 換成 pgvector（需要跑 PostgreSQL + pgvector 擴充）
 # uv add langchain-postgres
