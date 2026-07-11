@@ -1,15 +1,15 @@
 ---
-title: "AI 時代的重構姿勢:OpenSpec × Claude Code 實戰 Ep-3"
+title: "OpenSpec 重構老專案 Ep-3:Next.js 16 前端開工"
 pubDate: 2026-06-12 23:00:00
-description: "Carbon-ESG 前端開工。本篇拆解 `pnpm create next-app` 那一行指令背後的 8 個 flag、pnpm 11 的 onlyBuiltDependencies 為什麼會卡住 sharp/unrs-resolver、Node 24 上的 .nvmrc 怎麼降版、以及把預設 starter 替換成「14 行能看到後端 API URL」的最小首頁。最後用一個 axios client 先預告 Sanctum SPA 模式的 cookie 契約,完整對接留到 Ep-4 拆。"
+description: "前端用 pnpm create next-app 開工。這篇拆解那行指令背後的 8 個 flag，教你解 pnpm 11 卡住 sharp 的 approve-builds 陷阱、Node 版本怎麼對齊、首頁怎麼砍到 14 行驗證後端。踩坑實錄一次講完。"
 author: "Peter"
 tags: ["重構筆記", "OpenSpec", "Next.js", "React"]
 category: "重構筆記"
-keywords: "Next.js 16, pnpm create next-app, React 19, App Router, Turbopack, Tailwind v4, Sanctum SPA, axios withCredentials, withXSRFToken, sharp build scripts, pnpm onlyBuiltDependencies, ondrej PPA, nvm, Carbon-ESG"
+keywords: "Next.js 16, pnpm create next-app, React 19, App Router, Turbopack, Tailwind v4, pnpm approve-builds, Carbon-ESG"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 [Ep-2](/posts/openspec-重構老專案-ep-2/) 把後端 scaffold 推完了,Ep-3 換前端。一條 `pnpm create next-app` 指令,看似一鍵搞定,實際上**藏了五件事值得停下來想**:
 

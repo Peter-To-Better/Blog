@@ -1,15 +1,15 @@
 ---
-title: "AI 時代的重構姿勢:OpenSpec × Claude Code 實戰 Ep-4"
+title: "OpenSpec 重構老專案 Ep-4:用 propose 設計 Sanctum 認證"
 pubDate: 2026-06-13 00:00:00
-description: "phase-1-auth-sanctum 開工。/opsx:propose 一條指令背後 4 個 artifact 各在做什麼、Sanctum SPA 模式為什麼比 token 模式適合 Carbon-ESG、`SESSION_DOMAIN` / `SANCTUM_STATEFUL_DOMAINS` / `cors.php` / `withCredentials` 四個觸點為什麼被寫進 spec 級別 requirement、以及 Next.js 16 App Router 上 `useSession()` 怎麼設計成 SSR-friendly 的雙形態 hook。本篇純設計 walkthrough,實作 transcript + Network panel debug clinic 留 Ep-5。"
+description: "認證功能開工。這篇用 /opsx:propose 走一次設計，帶你看 4 個 artifact 各在做什麼、Sanctum SPA 為什麼贏過 token 模式，還把最容易踩坑的「四觸點對齊」釘進 spec 級 requirement。純設計 walkthrough，看完就懂為什麼先寫 spec。"
 author: "Peter"
 tags: ["重構筆記", "OpenSpec", "Laravel", "Sanctum", "Next.js"]
 category: "重構筆記"
-keywords: "Sanctum SPA, statefulApi, SANCTUM_STATEFUL_DOMAINS, SESSION_DOMAIN, CSRF, withCredentials, useSession, Next.js 16 App Router, RSC, axios interceptor, OpenSpec, /opsx:propose, Carbon-ESG"
+keywords: "Sanctum SPA, statefulApi, SANCTUM_STATEFUL_DOMAINS, SESSION_DOMAIN, useSession, Next.js 16 App Router, /opsx:propose, Carbon-ESG"
 draft: false
 ---
 
-# 本篇重點
+## 本篇重點
 
 [Ep-3](/posts/openspec-重構老專案-ep-3/) 結尾留下一個沒兌現的承諾:**「`lib/api.ts` 的 axios 已經對 Sanctum 比好手勢,但 Sanctum 那邊到底有沒有接住」** — 這篇就是接住的開始。phase-0 archive 之後 active change 槽位空了,自然接的下一個 change 叫 `phase-1-auth-sanctum`。
 
