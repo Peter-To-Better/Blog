@@ -1,11 +1,11 @@
 ---
 title: "OpenSpec 重構老專案 Ep-3:Next.js 16 前端開工"
 pubDate: 2026-06-12 23:00:00
-description: "前端用 pnpm create next-app 開工。這篇拆解那行指令背後的 8 個 flag，教你解 pnpm 11 卡住 sharp 的 approve-builds 陷阱、Node 版本怎麼對齊、首頁怎麼砍到 14 行驗證後端。踩坑實錄一次講完。"
+description: "前端用 pnpm create next-app 開工。這篇拆解那行指令背後的 8 個 flag，完整解掉 ERR_PNPM_IGNORED_BUILDS（Ignored build scripts: sharp）的 approve-builds 陷阱、Node 版本怎麼對齊、首頁怎麼砍到 14 行驗證後端。"
 author: "Peter"
 tags: ["重構筆記", "OpenSpec", "Next.js", "React"]
 category: "重構筆記"
-keywords: "Next.js 16, pnpm create next-app, React 19, App Router, Turbopack, Tailwind v4, pnpm approve-builds, Carbon-ESG"
+keywords: "Next.js 16, pnpm create next-app, React 19, App Router, Turbopack, Tailwind v4, pnpm approve-builds, ERR_PNPM_IGNORED_BUILDS, Ignored build scripts sharp, Carbon-ESG"
 draft: false
 ---
 
@@ -70,7 +70,7 @@ pnpm create next-app@latest frontend \
 | `--use-pnpm` | 用 pnpm 跑 install,不要 npm | 對齊 [Ep-1 鎖死決策](/posts/openspec-重構老專案-ep-1/) 的「frontend 用 pnpm」 |
 | `--yes` | 跳過所有互動式提問,全用 flag 預設值 | 給 CI / scripted scaffold 用。沒這個 flag 你會被問 7 次 yes/no |
 
-## 第一個坑:`Aborting installation` — pnpm 11 擋住了 native build
+## 第一個坑:`ERR_PNPM_IGNORED_BUILDS` Ignored build scripts — pnpm 11 擋住了 native build
 
 第一次跑會看到這段:
 

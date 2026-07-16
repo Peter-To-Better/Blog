@@ -8,8 +8,17 @@ interface Props {
   publishedTime?: Date;
 }
 
-const siteTitle = 'peter-to-better';
-const siteDescription = '一個變好變強的部落格 — 技術分享與成長的天地';
+const siteTitle = 'Peter To Better';
+const siteTagline = '從前端、後端到 AI 開發的繁中技術筆記';
+const siteDescription = '從前端、後端、AI 開發到 Docker/K8s 維運，把學會的都寫成繁體中文技術筆記，一個變好變強的部落格。';
+
+const websiteSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Peter To Better',
+  alternateName: ['peter-to-better', 'Peter-To-Better'],
+  url: Astro.site?.toString(),
+});
 
 const {
   title,
@@ -20,7 +29,7 @@ const {
   publishedTime,
 } = Astro.props;
 
-const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+const fullTitle = title ? `${title} | ${siteTitle}` : `${siteTitle}｜${siteTagline}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -37,6 +46,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <meta name="author" content="Peter" />
   {keywords && <meta name="keywords" content={keywords} />}
   <link rel="canonical" href={canonicalURL} />
+  {Astro.url.pathname === '/' && <script type="application/ld+json" set:html={websiteSchema} />}
 
   <!-- Open Graph -->
   <meta property="og:type" content={type} />
