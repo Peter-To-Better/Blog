@@ -1,5 +1,5 @@
 ---
-title: "LangChain 與 LLM 學習筆記 Ep-4"
+title: "RAG 評估教學：RAGAS 四大指標實作｜LangChain 筆記 Ep-4"
 pubDate: 2026-06-17 14:00:00
 description: "RAG 評估教學：用 RAGAS + Ollama 量化你的 RAG 系統準確率。四個核心指標 Faithfulness、Answer Relevancy、Context Precision、Context Recall，附完整 Python 程式碼，不需要 OpenAI API。"
 author: "Peter"

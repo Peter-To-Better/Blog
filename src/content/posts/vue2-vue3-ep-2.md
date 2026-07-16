@@ -1,5 +1,5 @@
 ---
-title: "Vue2 + Vue3 Ep-2"
+title: "Vue 生命週期完整解析｜Vue2+Vue3 Ep-2"
 pubDate: 2023-09-15 11:40:12
 description: "Vue 生命週期完整解析：beforeCreate、created、beforeMount、mounted、beforeUpdate、updated、beforeDestroy 各階段用途與觸發時機，附實作範例與圖解。"
 author: "Peter"

@@ -1,5 +1,5 @@
 ---
-title: "TypeScript 從 0 開始 Ep-3"
+title: "TypeScript Enum 與 Tuple 完整教學｜TS 從 0 開始 Ep-3"
 pubDate: 2025-02-17 11:25:25
 description: "TypeScript Enum 列舉與 Tuple 元組完整教學：什麼時候用 enum、const enum 效能差別、tuple 如何固定陣列型別，附實際開發中的應用範例。"
 author: "Peter"

@@ -1,5 +1,5 @@
 ---
-title: "LangChain 與 LLM 學習筆記 Ep-3"
+title: "多模態 RAG 教學：讓 LLM 讀懂含圖表 PDF｜LangChain 筆記 Ep-3"
 pubDate: 2026-06-17 13:00:00
 description: "多模態 RAG 實作教學：用 LangChain + Ollama 視覺模型讀取含圖表的 PDF，圖片先用 llama3.2-vision 轉成文字描述再建向量索引，含完整 Python 程式碼，不需要任何付費 API。"
 author: "Peter"
@@ -11,7 +11,9 @@ draft: false
 
 ## 本篇重點
 
-[Ep-2](/posts/langchain-與-llm-學習筆記-ep-2) 講了一堆進階 RAG 的理論，這篇終於要**動手了**。我們要做一個能讀「含圖表 PDF」的 RAG 系統，而且全部用**本地的 Ollama 模型**跑，不花一毛 API 錢。架構選的是 Ep-2 第四節提到、最務實的**「圖片轉述（Captioning）」**那一套。
+[Ep-2](/posts/langchain-與-llm-學習筆記-ep-2) 把進階檢索的每個技術都實作過了——語意分割、混合檢索、重排序、上下文檢索。但那些都是純文字。這篇要處理 Ep-2 沒碰到的東西：**當文件裡有圖片、表格、掃描檔時，純文字向量的 RAG 該怎麼進化**。
+
+我們要做一個能讀「含圖表 PDF」的 RAG 系統，而且全部用**本地的 Ollama 模型**跑，不花一毛 API 錢。架構選的是最務實的**「圖片轉述（Captioning）」**那一套。
 
 <!-- more -->
 

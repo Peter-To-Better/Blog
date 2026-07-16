@@ -1,5 +1,5 @@
 ---
-title: "TypeScript 從 0 開始 Ep-0"
+title: "TypeScript 是什麼？與 JavaScript 差別＋Vite 建置｜TS 從 0 開始 Ep-0"
 pubDate: 2025-02-10 16:32:00
 description: "搞懂 TypeScript 和 JavaScript 的本質差別、為什麼前端工程師都在學 TS，並用 Vite 建立你的第一個 TypeScript 專案，附官方線上編輯器介紹。"
 author: "Peter"

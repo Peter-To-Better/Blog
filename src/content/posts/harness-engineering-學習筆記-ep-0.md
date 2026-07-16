@@ -1,5 +1,5 @@
 ---
-title: "Harness Engineering 學習筆記 Ep-0"
+title: "Harness Engineering 是什麼？AI Agent 的第三層工程｜Harness 筆記 Ep-0"
 pubDate: 2026-05-09 10:00:00
 description: "Harness Engineering 是什麼？從 Mitchell Hashimoto 的起源到核心公式 Agent = Model + Harness，一次搞懂 Prompt、Context、Harness 三層工程差在哪，以及它為何九十天橫掃 AI 產業。附騎馬比喻。"
 author: "Peter"

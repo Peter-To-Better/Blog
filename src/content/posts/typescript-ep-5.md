@@ -1,5 +1,5 @@
 ---
-title: "TypeScript 從 0 開始 Ep-5"
+title: "TypeScript Decorator 與 Utility Types 教學｜TS 從 0 開始 Ep-5"
 pubDate: 2025-02-19 11:34:49
 description: "TypeScript 進階功能：Decorator 裝飾器語法與應用場景、Namespace 命名空間，以及 Partial、Required、Pick、Omit 等 Utility Types 實用教學。"
 author: "Peter"

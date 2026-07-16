@@ -1,5 +1,5 @@
 ---
-title: "Harness Engineering 學習筆記 Ep-3"
+title: "打造 Claude Code 開發模板：claude-harness-template｜Harness 筆記 Ep-3"
 pubDate: 2026-05-12 22:00:00
 description: "理論學完，開始動手打造 claude-harness-template 開源模板，專為 Nx + NestJS + GraphQL + Next.js 設計，clone 後直接用 Claude Code 開發。本集先講骨架、五條設計原則與後續五集 roadmap。"
 author: "Peter"

@@ -1,5 +1,5 @@
 ---
-title: "Harness Engineering 學習筆記 Ep-2"
+title: "Claude Code Hooks 教學：12 個生命週期事件｜Harness 筆記 Ep-2"
 pubDate: 2026-05-12 10:30:00
 description: "Claude Code Hooks 怎麼用？一次搞懂 12 個生命週期事件、PreToolUse 封鎖機制與 Exit Code 2 的決定性意義，把「拜託 Agent」變成「不做到就動不了」。附 5 個 NX Monorepo 生產級 hook 範例。"
 author: "Peter"

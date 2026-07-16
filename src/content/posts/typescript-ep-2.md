@@ -1,5 +1,5 @@
 ---
-title: "TypeScript 從 0 開始 Ep-2"
+title: "TypeScript Interface 與 Type Alias 差異教學｜TS 從 0 開始 Ep-2"
 pubDate: 2025-02-16 09:34:52
 description: "TypeScript 函式型別、Interface 介面與 Type Alias 型別別名完整教學，搞懂 interface vs type 的使用時機與差異，讓物件型別定義更清晰。"
 author: "Peter"

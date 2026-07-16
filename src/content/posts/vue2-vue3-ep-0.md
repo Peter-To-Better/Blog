@@ -1,5 +1,5 @@
 ---
-title: "Vue2 + Vue3 Ep-0"
+title: "Vue 入門教學：指令、綁定與 Todo List 實作｜Vue2+Vue3 Ep-0"
 pubDate: 2023-08-02 11:13:26
 description: "Vue 入門教學：雙向數據綁定、v-if 條件渲染、v-for 列表渲染、v-on 事件綁定一次學會，最後從零實作一個 Todo List，Vue2 與 Vue3 語法對照。"
 author: "Peter"

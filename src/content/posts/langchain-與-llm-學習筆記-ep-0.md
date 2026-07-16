@@ -1,5 +1,5 @@
 ---
-title: "LangChain 與 LLM 學習筆記 Ep-0"
+title: "LLM、LangChain、AI Agent 與 MCP 是什麼？｜LangChain 筆記 Ep-0"
 pubDate: 2025-05-05 15:34:14
 description: "5 分鐘看懂 LLM、LangChain、AI Agent 與 MCP 的關係：什麼是 Context Window、token 限制，LangChain 怎麼幫你串接模型，以及 Anthropic MCP 協議解決什麼問題。"
 author: "Peter"

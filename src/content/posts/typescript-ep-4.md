@@ -1,5 +1,5 @@
 ---
-title: "TypeScript 從 0 開始 Ep-4"
+title: "TypeScript 泛型與型別守衛教學｜TS 從 0 開始 Ep-4"
 pubDate: 2025-02-18 20:59:32
 description: "TypeScript 泛型（Generics）讓函式可重用不同型別、型別守衛（Type Guard）確保執行時安全，搭配 ES6 import/export 模組系統完整教學與範例。"
 author: "Peter"

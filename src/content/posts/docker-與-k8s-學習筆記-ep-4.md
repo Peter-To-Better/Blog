@@ -1,5 +1,5 @@
 ---
-title: "Docker 與 K8s 學習筆記 Ep-4"
+title: "Docker Compose 與跨容器通訊教學｜Docker 與 K8s 筆記 Ep-4"
 pubDate: 2025-03-24 22:29:52
 description: "單一容器不夠用時怎麼辦？本篇教你 Docker Network 跨容器通訊原理，並用 docker-compose.yml 把前後端與資料庫三個容器用一行指令全部啟動。"
 author: "Peter"

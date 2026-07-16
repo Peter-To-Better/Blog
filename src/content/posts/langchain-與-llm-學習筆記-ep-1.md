@@ -1,5 +1,5 @@
 ---
-title: "LangChain 與 LLM 學習筆記-Ep-1"
+title: "RAG 入門教學：LangChain + Ollama 實作 8 步驟｜LangChain 筆記 Ep-1"
 pubDate: 2025-10-15 23:35:40
 description: "RAG 教學：用 LangChain + Ollama 把「載入→分割→嵌入→索引→檢索→生成」8 個步驟串成可跑的 Python 程式，搭配 Chroma 向量資料庫，本地免費跑 llama3.1，附完整程式碼。"
 author: "Peter"
@@ -465,9 +465,9 @@ uv run python ep1_basic_rag/rag.py \
 
 ```
 步驟 1｜載入 PDF：tax-guide.pdf
-  載入完成：共 38 頁有效文字
+  載入完成：共 3 頁有效文字
 步驟 2｜分割文字...
-  分割完成：204 個 chunk（每塊約 500 字，overlap 80 字）
+  分割完成：44 個 chunk（每塊約 500 字，overlap 80 字）
 步驟 3+4｜嵌入向量並建立索引（nomic-embed-text）...
   ✓ 索引建立完成，已存至 chroma_db_ep1/
 

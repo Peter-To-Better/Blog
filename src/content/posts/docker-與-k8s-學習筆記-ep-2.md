@@ -1,5 +1,5 @@
 ---
-title: "Docker 與 K8s 學習筆記 Ep-2"
+title: "Dockerfile 教學：Image 與 Container 差別｜Docker 與 K8s 筆記 Ep-2"
 pubDate: 2025-02-24 22:47:34
 description: "釐清 Docker Image 和 Container 的本質差異，並實作一個 Node.js 應用的 Dockerfile，學會 FROM、COPY、RUN、CMD 四個核心指令。"
 author: "Peter"
