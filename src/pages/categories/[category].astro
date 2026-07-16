@@ -11,7 +11,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     return match ? parseInt(match[1]) : Infinity;
   }
 
-  const posts = await getCollection('posts');
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
   const categories = [...new Set(posts.map((post) => post.data.category))];
 
   return categories.map((category) => ({

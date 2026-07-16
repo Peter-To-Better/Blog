@@ -6,7 +6,7 @@ import PostCard from '../../components/PostCard.astro';
 import { getExcerpt } from '../../utils/helpers';
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await getCollection('posts');
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
   const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
 
   return tags.map((tag) => ({
