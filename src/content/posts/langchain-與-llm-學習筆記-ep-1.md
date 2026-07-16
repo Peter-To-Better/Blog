@@ -465,9 +465,9 @@ uv run python ep1_basic_rag/rag.py \
 
 ```
 步驟 1｜載入 PDF：tax-guide.pdf
-  載入完成：共 38 頁有效文字
+  載入完成：共 3 頁有效文字
 步驟 2｜分割文字...
-  分割完成：204 個 chunk（每塊約 500 字，overlap 80 字）
+  分割完成：44 個 chunk（每塊約 500 字，overlap 80 字）
 步驟 3+4｜嵌入向量並建立索引（nomic-embed-text）...
   ✓ 索引建立完成，已存至 chroma_db_ep1/
 
