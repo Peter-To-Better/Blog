@@ -1,5 +1,5 @@
 ---
-title: "Vue2 + Vue3 Ep-1"
+title: "Vue 鍵盤事件與修飾符教學｜Vue2+Vue3 Ep-1"
 pubDate: 2023-08-08 16:03:07
 description: "Vue 鍵盤事件與修飾符完整教學：keyup.enter 偵測 Enter 鍵、.stop .prevent .once 事件修飾符用法，附 Vue2 與 Vue3 語法差異對照與實作範例。"
 author: "Peter"

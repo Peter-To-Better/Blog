@@ -1,5 +1,5 @@
 ---
-title: "LangChain 與 LLM 學習筆記-Ep-1"
+title: "RAG 入門教學：LangChain + Ollama 實作 8 步驟｜LangChain 筆記 Ep-1"
 pubDate: 2025-10-15 23:35:40
 description: "RAG 教學：用 LangChain + Ollama 把「載入→分割→嵌入→索引→檢索→生成」8 個步驟串成可跑的 Python 程式，搭配 Chroma 向量資料庫，本地免費跑 llama3.1，附完整程式碼。"
 author: "Peter"

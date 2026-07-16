@@ -1,5 +1,5 @@
 ---
-title: "LangChain 與 LLM 學習筆記 Ep-2"
+title: "進階 RAG 教學：混合檢索與 Reranking 實測｜LangChain 筆記 Ep-2"
 pubDate: 2026-06-17 12:00:00
 description: "進階 RAG 實作教學：用勞動基準法示範語意分割、混合檢索（BM25 + 向量 + RRF）、Multi-Query、Cross-Encoder Reranking、Contextual Retrieval，每個技術都有完整可執行的 Python 程式碼，本地 Ollama 跑免付費。"
 author: "Peter"

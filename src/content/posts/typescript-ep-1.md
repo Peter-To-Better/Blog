@@ -1,5 +1,5 @@
 ---
-title: "TypeScript 從 0 開始 Ep-1"
+title: "TypeScript 型別入門：any 與 unknown 差在哪｜TS 從 0 開始 Ep-1"
 pubDate: 2025-02-10 16:32:00
 description: "TypeScript 型別系統入門：string、number、boolean、any、unknown、void、never 各有什麼用途、any 和 unknown 差在哪？附完整範例說明每種型別的使用時機。"
 author: "Peter"

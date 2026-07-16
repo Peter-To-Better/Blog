@@ -1,5 +1,5 @@
 ---
-title: "Harness Engineering 學習筆記 Ep-4"
+title: "Claude Code Sub-agent 教學與 Context Firewall｜Harness 筆記 Ep-4"
 pubDate: 2026-05-12 23:15:00
 description: "Claude Code Sub-agent 怎麼用？一次搞懂 Context Firewall 如何對抗 Context Rot、不讓主對話越跑越笨，並導覽 template 裡 6 個 Nx + NestJS + GraphQL + Next.js 專用 sub-agent 與四條共用設計模式。"
 author: "Peter"

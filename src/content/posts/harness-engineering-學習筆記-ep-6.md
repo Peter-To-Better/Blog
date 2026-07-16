@@ -1,5 +1,5 @@
 ---
-title: "Harness Engineering 學習筆記 Ep-6"
+title: "Claude Code Skill 與 Sub-agent 差在哪？｜Harness 筆記 Ep-6"
 pubDate: 2026-05-16 18:00:00
 description: "Claude Code Skill 與 Sub-agent 到底差在哪？一次搞懂 progressive disclosure、為什麼 slash commands 併進了 skills，並動手做一個 dep-auditor 示範「Sub-agent + Skill 合用」的經典模式。附五元件決策表。"
 author: "Peter"

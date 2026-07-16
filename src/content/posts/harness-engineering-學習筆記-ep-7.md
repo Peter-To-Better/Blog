@@ -1,5 +1,5 @@
 ---
-title: "Harness Engineering 學習筆記 Ep-7"
+title: "Claude Code Hooks 與 MCP 實戰設定｜Harness 筆記 Ep-7"
 pubDate: 2026-05-16 19:30:00
 description: "Claude Code Hooks 與 MCP 怎麼落地？本集寫出兩個 PreToolUse hook，用 exit code 2 把 HARD 規則變成「動不了」的決定性約束，並用 .mcp.json 把資料庫、GitHub 等外部工具接進 sub-agent。附完整設定範例。"
 author: "Peter"

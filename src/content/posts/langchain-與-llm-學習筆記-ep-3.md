@@ -1,5 +1,5 @@
 ---
-title: "LangChain 與 LLM 學習筆記 Ep-3"
+title: "多模態 RAG 教學：讓 LLM 讀懂含圖表 PDF｜LangChain 筆記 Ep-3"
 pubDate: 2026-06-17 13:00:00
 description: "多模態 RAG 實作教學：用 LangChain + Ollama 視覺模型讀取含圖表的 PDF，圖片先用 llama3.2-vision 轉成文字描述再建向量索引，含完整 Python 程式碼，不需要任何付費 API。"
 author: "Peter"

@@ -1,5 +1,5 @@
 ---
-title: "Harness Engineering 學習筆記 Ep-5"
+title: "Spec-Driven Development（SDD）導入實戰｜Harness 筆記 Ep-5"
 pubDate: 2026-05-13 10:00:00
 description: "Agent 寫的程式碼一直「飄」離初衷？本集導入 2026 最熱門的 Spec-Driven Development（SDD），把 /spec、/plan、/implement 三個 slash command 加進 template，讓每個 feature 都有可被 review、可進版控的契約。"
 author: "Peter"

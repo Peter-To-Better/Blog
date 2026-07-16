@@ -1,5 +1,5 @@
 ---
-title: "Harness Engineering 學習筆記 Ep-1"
+title: "AGENTS.md 怎麼寫才有效？80 行實例教學｜Harness 筆記 Ep-1"
 pubDate: 2026-05-09 14:30:00
 description: "AGENTS.md 怎麼寫才有效？ETH Zurich 研究揭露「寫太多反而讓成功率下降」的殘酷數據，還有寫進去的工具被用 160 倍的規則。附一份 80 行實例，手把手帶你寫出精簡有效的 AGENTS.md。"
 author: "Peter"
