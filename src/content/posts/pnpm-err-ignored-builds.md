@@ -6,7 +6,7 @@ author: "Peter"
 tags: ["pnpm", "Next.js", "踩坑"]
 category: "pnpm"
 keywords: "ERR_PNPM_IGNORED_BUILDS, Ignored build scripts sharp, pnpm approve-builds, pnpm install has failed, Aborting installation, pnpm onlyBuiltDependencies, unrs-resolver"
-draft: true
+draft: false
 ---
 
 ## 本篇重點
