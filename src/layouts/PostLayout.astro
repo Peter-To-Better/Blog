@@ -165,6 +165,20 @@ const breadcrumbSchema = {
       <slot />
     </div>
 
+    <!-- Services CTA -->
+    <aside class="mt-14 p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <p class="font-semibold text-gray-900 dark:text-white mb-1">有每天重複做的工作，想交給 AI？</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400">我幫企業做 AI 自動化與客製系統。第一次諮詢 30 分鐘免費，先聊聊不用錢。</p>
+      </div>
+      <a
+        href="/services"
+        class="shrink-0 px-5 py-2.5 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold hover:opacity-80 transition-opacity text-center"
+      >
+        看看合作方式 →
+      </a>
+    </aside>
+
     <!-- Related Posts -->
     {relatedPosts.length > 0 && (
       <section class="mt-16">

@@ -1,0 +1,215 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const mainCases = [
+  {
+    n: 'CASE 01',
+    tag: '中小企業・電商系統',
+    live: true,
+    url: 'https://tiande2160.com',
+    urlLabel: 'tiande2160.com',
+    img: '/images/portfolio/tiande.jpg',
+    imgAlt: '天德中藥房電商網站實際畫面：玫瑰陳皮舒壓飲產品頁，含購物車與結帳功能',
+    title: '天德中藥房｜電商與訂單後台系統',
+    problem: '宜蘭百年中藥房要把生意搬上網路，但接單、整理訂單、填寄件單全是手工，量一大就吃掉整個下午。',
+    solution: '從品牌官網、購物車結帳到店家後台一手包辦。老闆在後台即時收單，一鍵匯出「賣貨便」格式表單，匯入後自動產生熱感標籤寄件單，超商物流直接串好。',
+    result: '從接單到出貨全程不需手動整理資料，出貨作業成本大幅降低；百年老店的品牌形象在線上重新開張。',
+    tech: ['Next.js', 'Flask API', '超商物流串接'],
+  },
+  {
+    n: 'CASE 02',
+    tag: '自有產品・平台系統',
+    live: true,
+    url: 'https://viewdrop.org',
+    urlLabel: 'viewdrop.org',
+    img: '/images/portfolio/viewdrop.jpg',
+    imgAlt: 'ViewDrop 官網首頁：台灣第一個 CPM 制 UGC 任務平台',
+    title: 'ViewDrop｜CPM 制 UGC 任務媒合平台',
+    problem: '品牌方投 UGC 內容難以衡量成效、預算容易失控；創作者拍了影片卻換不到對等報酬。',
+    solution: '獨立完成整個平台：串接 Meta（Instagram）官方 API 自動追蹤影片觀看數、按觀看數計費的 CPM 結算引擎、預算硬上限與自動防刷風控、創作者排行儀表板。',
+    result: '台灣首個 CPM 制 UGC 任務平台，從需求發想、系統設計、開發到營運皆獨立完成，持續上線營運中。',
+    tech: ['Nx Monorepo', 'Next.js', 'NestJS', 'GraphQL', 'Meta API'],
+  },
+];
+---
+
+<BaseLayout title="作品集" description="Peter 的開發實績：百年中藥房電商系統、CPM 制 UGC 媒合平台 ViewDrop、企業 Sensor 數據系統與 AI 導入實測，附真實上線畫面。">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <p class="text-[11px] font-semibold tracking-widest uppercase text-blue-600 dark:text-blue-400 mb-3">Portfolio・實際上線的系統</p>
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">作品集</h1>
+    <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-12 max-w-xl">
+      每個案例都回答三件事：<strong>客戶遇到什麼問題、我做了什麼、結果如何</strong>。
+      截圖都來自正在營運的系統——點進去就能驗證。
+    </p>
+
+    {mainCases.map((c) => (
+      <article class="mb-14">
+        <div class="flex items-baseline gap-3 mb-3">
+          <span class="text-xs font-mono font-bold text-gray-400 dark:text-gray-500">{c.n}</span>
+          <span class="text-[11px] font-semibold tracking-widest uppercase text-blue-600 dark:text-blue-400">{c.tag}</span>
+          {c.live && <span class="text-[11px] px-2 py-0.5 rounded-full bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400">上線營運中</span>}
+        </div>
+
+        <!-- browser frame -->
+        <a href={c.url} target="_blank" rel="noopener noreferrer" class="block group mb-5">
+          <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm group-hover:shadow-md group-hover:border-gray-300 dark:group-hover:border-gray-700 transition-all">
+            <div class="flex items-center gap-2 px-4 py-2.5 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+              <span class="flex gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-gray-700"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-gray-700"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-gray-300 dark:bg-gray-700"></span>
+              </span>
+              <span class="ml-2 text-xs font-mono text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-md px-3 py-0.5">{c.urlLabel}</span>
+            </div>
+            <img src={c.img} alt={c.imgAlt} class="w-full object-cover object-top" loading={c.n === 'CASE 01' ? 'eager' : 'lazy'} />
+          </div>
+        </a>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{c.title}</h2>
+        <dl class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm leading-relaxed mb-4">
+          <div>
+            <dt class="font-semibold text-gray-900 dark:text-gray-100 mb-1 flex items-center gap-1.5"><span class="w-1 h-4 bg-gray-300 dark:bg-gray-700 rounded-full"></span>問題</dt>
+            <dd class="text-gray-600 dark:text-gray-300">{c.problem}</dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-gray-900 dark:text-gray-100 mb-1 flex items-center gap-1.5"><span class="w-1 h-4 bg-blue-500 rounded-full"></span>我做了什麼</dt>
+            <dd class="text-gray-600 dark:text-gray-300">{c.solution}</dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-gray-900 dark:text-gray-100 mb-1 flex items-center gap-1.5"><span class="w-1 h-4 bg-green-500 rounded-full"></span>結果</dt>
+            <dd class="text-gray-600 dark:text-gray-300">{c.result}</dd>
+          </div>
+        </dl>
+        <div class="flex flex-wrap items-center gap-2">
+          {c.tech.map((t) => (
+            <span class="text-xs px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">{t}</span>
+          ))}
+          <a href={c.url} target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline ml-auto">{c.urlLabel} →</a>
+        </div>
+      </article>
+    ))}
+
+    <!-- CASE 03 + 04 -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-14">
+      <article class="p-6 rounded-2xl border border-gray-200 dark:border-gray-800 flex flex-col">
+        <div class="flex items-baseline gap-3 mb-3">
+          <span class="text-xs font-mono font-bold text-gray-400 dark:text-gray-500">CASE 03</span>
+          <span class="text-[11px] font-semibold tracking-widest uppercase text-blue-600 dark:text-blue-400">企業內部系統</span>
+        </div>
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-2">硬體科技廠｜Sensor 數據管理系統</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4 flex-1">
+          與業界工程師團隊協作，負責前端：大量感測數據的即時視覺化、設備監控介面與可複用元件庫。
+        </p>
+        <p class="text-xs text-gray-400 dark:text-gray-500 mb-3">🔒 企業內部系統，細節與截圖不公開</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-xs px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">Next.js</span>
+          <span class="text-xs px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">GraphQL</span>
+          <span class="text-xs px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">即時數據視覺化</span>
+        </div>
+      </article>
+
+      <article class="rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden flex flex-col">
+        <a href="https://peter-to-better.github.io/boot/" target="_blank" rel="noopener noreferrer" class="block group">
+          <img
+            src="/images/portfolio/chattalker.jpg"
+            alt="ChatTalker 聊天機器人產品 Landing Page 切版"
+            class="w-full aspect-[16/8] object-cover object-top group-hover:opacity-95 transition-opacity"
+            loading="lazy"
+          />
+        </a>
+        <div class="p-6 flex flex-col flex-1">
+          <div class="flex items-baseline gap-3 mb-3">
+            <span class="text-xs font-mono font-bold text-gray-400 dark:text-gray-500">CASE 04</span>
+            <span class="text-[11px] font-semibold tracking-widest uppercase text-blue-600 dark:text-blue-400">Landing Page 切版</span>
+          </div>
+          <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-2">ChatTalker｜產品形象頁</h2>
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4 flex-1">
+            聊天機器人產品的 Landing Page，從視覺切版到 RWD 完整實作——活潑插畫風也能精準落地。
+          </p>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">RWD 切版</span>
+            <a href="https://peter-to-better.github.io/boot/" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline ml-auto">實際頁面 →</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- AI 實測 -->
+    <section class="mb-14">
+      <div class="flex items-baseline gap-3 mb-3">
+        <span class="text-xs font-mono font-bold text-gray-400 dark:text-gray-500">LAB</span>
+        <span class="text-[11px] font-semibold tracking-widest uppercase text-blue-600 dark:text-blue-400">AI 導入・公開實測</span>
+      </div>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">AI 能力，用可驗證的實測說話</h2>
+      <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-5 max-w-xl">
+        幫客戶導入 AI 之前，我先把技術公開做給所有人看——完整程式碼與過程都在部落格系列文裡。
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-4">
+        <a href="/posts/langchain-與-llm-學習筆記-ep-2" class="block group">
+          <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 group-hover:border-gray-300 dark:group-hover:border-gray-700 transition-colors">
+            <img
+              src="/images/llm-ep2-baseline-vs-advanced.png"
+              alt="RAG 實測對比：基礎版純向量檢索答不知道，進階檢索管線正確引用勞基法第 18 條答對"
+              class="w-full aspect-[16/10] object-cover object-top"
+              loading="lazy"
+            />
+          </div>
+          <p class="text-sm font-semibold text-gray-900 dark:text-gray-100 mt-2.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">RAG 文件問答：從「答不出來」到「答對」</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">用勞動基準法全文實測混合檢索與重排序，全程本地模型、資料不出機器。</p>
+        </a>
+        <a href="https://github.com/Peter-To-Better/Tongue-Ai-Agent" target="_blank" rel="noopener noreferrer" class="block group">
+          <div class="rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 group-hover:border-gray-300 dark:group-hover:border-gray-700 transition-colors">
+            <img
+              src="/images/portfolio/tongue-ai.jpg"
+              alt="舌診 AI 桌面應用畫面：上傳舌頭照片後，AI 進行影像判讀並輸出中醫理論分析與健康建議"
+              class="w-full aspect-[16/10] object-cover object-top"
+              loading="lazy"
+            />
+          </div>
+          <p class="text-sm font-semibold text-gray-900 dark:text-gray-100 mt-2.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">多模態 Agent：讓 LLM 主動判讀影像</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">LangGraph 把視覺模型封裝為 Agent 工具，部署於 NVIDIA Jetson 邊緣裝置。</p>
+        </a>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-xs px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">LangChain / LangGraph</span>
+        <span class="text-xs px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">RAG</span>
+        <span class="text-xs px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">本地模型（Ollama）</span>
+        <a href="/posts/langchain-與-llm-學習筆記-ep-1" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline ml-auto">完整實作系列文 →</a>
+      </div>
+    </section>
+
+    <!-- 關於我 -->
+    <section class="mb-10 p-6 sm:p-8 rounded-2xl border border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+      <img
+        src="/images/avatar-peter.png"
+        alt="Peter（陳暐仁）的照片"
+        class="w-24 h-24 sm:w-28 sm:h-28 rounded-full shrink-0"
+        loading="lazy"
+      />
+      <div class="text-center sm:text-left">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-2">我是 Peter（陳暐仁）</h2>
+        <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
+          從前端、後端寫到 AI 導入的開發者。上面的每個系統都是我從需求談到上線親手做完的，
+          所有技術實測也都公開寫在這個部落格——你可以先看我怎麼做事，再決定要不要找我。
+          我相信：<strong>如果一件事每天都要重複做，它就值得被自動化。</strong>
+        </p>
+        <div class="flex flex-wrap justify-center sm:justify-start gap-3 text-xs font-semibold">
+          <a href="/archives" class="text-blue-600 dark:text-blue-400 hover:underline">技術文章</a>
+          <a href="https://github.com/Peter-To-Better" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">GitHub</a>
+          <a href="/contact" class="text-blue-600 dark:text-blue-400 hover:underline">聯絡我</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-center">
+      <p class="text-gray-700 dark:text-gray-200 font-medium mb-1">你的問題也想被這樣解決？</p>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">先聊聊不用錢，我會誠實告訴你值不值得做。</p>
+      <a
+        href="/services"
+        class="inline-block px-6 py-2.5 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold hover:opacity-80 transition-opacity"
+      >
+        看看合作方式 →
+      </a>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const services = [
+  {
+    tag: '主打服務',
+    title: 'AI 自動化與 RAG 知識庫',
+    hook: '每天花兩小時翻文件、回答同樣的問題？讓公司文件自己會回答。',
+    desc: '把內部文件、SOP、法規變成能直接問答的 AI 系統；把每天重複的資料整理、回覆流程交給自動化。可全程使用本地模型，資料不出你的機器。技術細節我都公開寫在部落格的實測系列裡——你可以先驗貨再找我。',
+    points: ['內部文件 AI 問答', '客服知識庫機器人', '重複流程自動化'],
+    proof: { label: '公開實測：RAG 從「答不出來」到「答對」', href: '/portfolio' },
+  },
+  {
+    tag: '有上線實績',
+    title: '客製化網站與系統',
+    hook: '不是做一個網站，是把手工流程整個做掉。',
+    desc: '從品牌官網、電商到內部後台一手包辦。我幫宜蘭百年中藥房做的系統，讓老闆從接單到出貨不用再手動整理任何資料——你買的不是頁面，是省下來的時間。',
+    points: ['品牌官網・電商系統', '訂單與內部後台', '既有系統重構接手'],
+    proof: { label: '看實際案例：天德中藥房', href: '/portfolio' },
+  },
+  {
+    tag: '低門檻入口',
+    title: 'AI 導入評估',
+    hook: '不確定 AI 能幫你做什麼？先花 30 分鐘搞清楚，不用錢。',
+    desc: '我會看你的實際流程，直接告訴你：哪些環節值得 AI 化、哪些用更簡單的方法就能解決、大概要花多少成本。如果結論是「你不需要」，我也會照實說。',
+    points: ['流程盤點', '可行性與成本評估', '技術選型建議'],
+  },
+];
+
+const promises = [
+  { fear: '講需求聽不懂', promise: '我先聽你的流程，用你的語言複述一次確認，才談技術。' },
+  { fear: '做一半一直加錢', promise: '報價時「不含項目」寫得跟「包含項目」一樣清楚，新需求另外報、不偷渡。' },
+  { fear: '時程一直延', promise: '照里程碑分期交付，每個階段你都看得到能動的東西。' },
+  { fear: '為了工時硬加功能', promise: '如果有更簡單省錢的做法，我直接告訴你——包括「這個不值得做」。' },
+];
+
+const steps = [
+  { n: '01', title: '免費諮詢 30 分鐘', desc: '線上聊聊你的需求，我會誠實告訴你值不值得做、大概要多少成本。' },
+  { n: '02', title: '範圍與報價', desc: '白紙黑字寫清楚：做什麼、不做什麼、時程與修改次數，不玩模糊空間。' },
+  { n: '03', title: '分期交付', desc: '照里程碑分期收款與交付，每個階段你都看得到進度。' },
+  { n: '04', title: '交付與保固', desc: '完整交接文件與原始碼，交付後的問題修正期內免費處理。' },
+];
+---
+
+<BaseLayout title="服務項目" description="AI 自動化、RAG 知識庫、客製化網站與系統開發。把重複工作交給 AI，把人力留給真正重要的事。30 分鐘免費諮詢，先聊聊不用錢。">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <p class="text-[11px] font-semibold tracking-widest uppercase text-blue-600 dark:text-blue-400 mb-3">AI Automation・自動化開發</p>
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-snug">把重複工作交給 AI，<br class="sm:hidden" />把人力留給真正重要的事</h1>
+    <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-2">
+      如果一件事每天都要重複做，它就值得被自動化。我是 Peter，專注於 AI 自動化與客製系統開發——你買的不是程式，是每天省下來的那幾個小時。
+    </p>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mb-12">
+      實績：百年中藥房電商系統（上線中）・CPM 制 UGC 平台 ViewDrop（上線中）・企業內部系統 → <a href="/portfolio" class="text-blue-600 dark:text-blue-400 hover:underline">看作品集</a>
+    </p>
+
+    <div class="grid grid-cols-1 gap-5 mb-16">
+      {services.map((s) => (
+        <div class="p-6 sm:p-7 rounded-2xl border border-gray-200 dark:border-gray-800">
+          <span class="text-[11px] font-semibold tracking-widest uppercase text-blue-600 dark:text-blue-400 block mb-1.5">{s.tag}</span>
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{s.title}</h2>
+          <p class="text-sm font-medium text-gray-800 dark:text-gray-200 mb-2">{s.hook}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4">{s.desc}</p>
+          <div class="flex flex-wrap items-center gap-2">
+            {s.points.map((p) => (
+              <span class="text-xs px-2.5 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300">{p}</span>
+            ))}
+            {s.proof && (
+              <a href={s.proof.href} class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline ml-auto">{s.proof.label} →</a>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">不是接案，是一起解決問題</h2>
+    <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6 text-sm">
+      找外包最怕的那些事，我把話說在前面：
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-16">
+      {promises.map((p) => (
+        <div class="p-5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+          <p class="text-sm text-gray-400 dark:text-gray-500 line-through mb-1.5">{p.fear}</p>
+          <p class="text-sm text-gray-800 dark:text-gray-200 leading-relaxed">{p.promise}</p>
+        </div>
+      ))}
+    </div>
+
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">合作流程</h2>
+    <ol class="space-y-5 mb-16">
+      {steps.map((step) => (
+        <li class="flex gap-4">
+          <span class="text-sm font-mono font-bold text-blue-600 dark:text-blue-400 pt-0.5 shrink-0">{step.n}</span>
+          <div>
+            <h3 class="font-semibold text-gray-900 dark:text-white">{step.title}</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{step.desc}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-center">
+      <p class="text-gray-700 dark:text-gray-200 font-medium mb-1">有想自動化的流程，或不確定 AI 幫不幫得上？</p>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">先聊聊不用錢，我會誠實告訴你值不值得做。</p>
+      <a
+        href="/contact"
+        class="inline-block px-6 py-2.5 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold hover:opacity-80 transition-opacity"
+      >
+        聯絡我 →
+      </a>
+    </div>
+  </div>
+</BaseLayout>

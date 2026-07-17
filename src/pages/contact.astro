@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="聯絡我" description="AI 導入、系統開發的合作洽詢。24 小時內回覆，第一次諮詢 30 分鐘免費。">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+    <div class="flex items-center gap-5 mb-4">
+      <img src="/images/avatar-peter.png" alt="Peter（陳暐仁）的照片" class="w-16 h-16 rounded-full shrink-0" />
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">聯絡我</h1>
+    </div>
+    <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-10">
+      我是 Peter，訊息都是我本人回。合作洽詢、技術諮詢，或只是想聊聊你的想法都歡迎——
+      簡單描述你想解決的問題就好，不用寫得很正式。我會在 <strong>24 小時內回覆</strong>，第一次線上諮詢 30 分鐘免費。
+    </p>
+
+    <div class="space-y-4 mb-14">
+      <a
+        href="mailto:peter.to.better@gmail.com?subject=%E5%90%88%E4%BD%9C%E6%B4%BD%E8%A9%A2"
+        class="flex items-center gap-4 p-5 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-sm transition-all group"
+      >
+        <span class="text-2xl">✉️</span>
+        <div>
+          <div class="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Email（最推薦）</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">peter.to.better@gmail.com</div>
+        </div>
+      </a>
+
+      <a
+        href="https://x.com/PeterToBetter"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-4 p-5 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-sm transition-all group"
+      >
+        <span class="text-2xl">𝕏</span>
+        <div>
+          <div class="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">X（Twitter）</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">@PeterToBetter — DM 開放</div>
+        </div>
+      </a>
+
+      <a
+        href="https://github.com/Peter-To-Better"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center gap-4 p-5 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-sm transition-all group"
+      >
+        <span class="text-2xl">⌨️</span>
+        <div>
+          <div class="font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">GitHub</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">Peter-To-Better — 開源專案與教學程式碼</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="p-5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
+      <h2 class="font-semibold text-gray-900 dark:text-white mb-2 text-sm">來信時可以附上（都選填）：</h2>
+      <ul class="text-sm text-gray-500 dark:text-gray-400 space-y-1 list-disc list-inside">
+        <li>你想解決的問題或想做的東西</li>
+        <li>大概的預算範圍與期望時程</li>
+        <li>目前有沒有既有系統或資料</li>
+      </ul>
+    </div>
+  </div>
+</BaseLayout>
