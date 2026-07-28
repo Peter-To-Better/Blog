@@ -17,7 +17,7 @@ const currentPath = Astro.url.pathname;
   <nav class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
 
     <!-- Logo: compact icon (traced from PNG) + text -->
-    <a href="/" class="flex items-center gap-2.5 group" aria-label="To_Better 首頁">
+    <a href="/" class="flex items-center gap-2.5 group shrink-0" aria-label="To_Better 首頁">
       <!-- Icon: potrace-traced paths 1-2 (hand/arm + chevron), cropped viewBox -->
       <svg
         viewBox="110 0 380 295"
@@ -60,8 +60,8 @@ const currentPath = Astro.url.pathname;
       </div>
     </a>
 
-    <!-- Nav -->
-    <div class="flex items-center gap-0.5">
+    <!-- Desktop nav -->
+    <div class="hidden md:flex items-center gap-0.5">
       {navLinks.map(({ href, label }) => (
         <a
           href={href}
@@ -85,8 +85,78 @@ const currentPath = Astro.url.pathname;
       </a>
       <ThemeToggle />
     </div>
+
+    <!-- Mobile controls -->
+    <div class="flex md:hidden items-center gap-1">
+      <ThemeToggle />
+      <button
+        id="mobile-menu-button"
+        type="button"
+        aria-label="開啟選單"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="p-2 -mr-2 rounded-lg text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+      >
+        <svg id="icon-menu-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg id="icon-menu-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
   </nav>
+
+  <!-- Mobile menu panel -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-[#0c0c0c]/95 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-2 flex flex-col">
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class:list={[
+            'px-2 py-3 text-base border-b border-gray-100 dark:border-gray-900 last:border-b-0 transition-colors duration-150',
+            currentPath === href || (href !== '/' && currentPath.startsWith(href))
+              ? 'text-gray-900 dark:text-white font-semibold'
+              : 'text-gray-600 dark:text-gray-400 font-medium',
+          ]}
+        >
+          {label}
+        </a>
+      ))}
+      <a
+        href="https://github.com/Peter-To-Better"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-2 py-3 text-base font-medium text-gray-600 dark:text-gray-400"
+      >
+        GitHub
+      </a>
+    </div>
+  </div>
 </header>
+
+<script>
+  const menuButton = document.getElementById('mobile-menu-button');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('icon-menu-open');
+  const iconClose = document.getElementById('icon-menu-close');
+
+  function setMenuOpen(open: boolean) {
+    menu?.classList.toggle('hidden', !open);
+    iconOpen?.classList.toggle('hidden', open);
+    iconClose?.classList.toggle('hidden', !open);
+    menuButton?.setAttribute('aria-expanded', String(open));
+    menuButton?.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+  }
+
+  menuButton?.addEventListener('click', () => {
+    setMenuOpen(menu?.classList.contains('hidden') ?? false);
+  });
+
+  menu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => setMenuOpen(false));
+  });
+</script>
 
 <script>
   import gsap from 'gsap';
