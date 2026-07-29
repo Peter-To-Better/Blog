@@ -16,8 +16,22 @@ const websiteSchema = JSON.stringify({
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'Peter To Better',
-  alternateName: ['peter-to-better', 'Peter-To-Better'],
+  alternateName: ['peter-to-better', 'Peter-To-Better', 'PeterToBetter'],
   url: Astro.site?.toString(),
+});
+
+const organizationSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Peter To Better',
+  alternateName: ['peter-to-better', 'PeterToBetter'],
+  url: Astro.site?.toString(),
+  logo: new URL('/favicon.svg', Astro.site).toString(),
+  sameAs: [
+    'https://x.com/PeterToBetter',
+    'https://www.instagram.com/peter.to.better/',
+    'https://github.com/Peter-To-Better',
+  ],
 });
 
 const {
@@ -47,6 +61,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   {keywords && <meta name="keywords" content={keywords} />}
   <link rel="canonical" href={canonicalURL} />
   {Astro.url.pathname === '/' && <script type="application/ld+json" set:html={websiteSchema} />}
+  {Astro.url.pathname === '/' && <script type="application/ld+json" set:html={organizationSchema} />}
 
   <!-- Open Graph -->
   <meta property="og:type" content={type} />
