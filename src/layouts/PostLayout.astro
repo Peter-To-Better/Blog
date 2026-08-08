@@ -17,6 +17,11 @@ interface RelatedPost {
   tags: string[];
 }
 
+interface SeriesNavPost {
+  title: string;
+  slug: string;
+}
+
 interface Props {
   title: string;
   pubDate: Date;
@@ -28,11 +33,13 @@ interface Props {
   body: string;
   headings?: Heading[];
   relatedPosts?: RelatedPost[];
+  prevPost?: SeriesNavPost | null;
+  nextPost?: SeriesNavPost | null;
 }
 
 const {
   title, pubDate, category, tags, keywords, description, image, body,
-  headings = [], relatedPosts = [],
+  headings = [], relatedPosts = [], prevPost = null, nextPost = null,
 } = Astro.props;
 
 const readingTime = getReadingTime(body);
@@ -164,6 +171,34 @@ const breadcrumbSchema = {
     <div class="prose prose-lg dark:prose-invert max-w-none">
       <slot />
     </div>
+
+    <!-- Series Prev/Next Navigation -->
+    {(prevPost || nextPost) && (
+      <nav aria-label="系列文章導覽" class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {prevPost ? (
+          <a
+            href={`/posts/${prevPost.slug}`}
+            class="group flex flex-col p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-sm transition-all"
+          >
+            <span class="text-xs text-gray-400 dark:text-gray-500 mb-1">← 上一篇</span>
+            <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors line-clamp-2">
+              {prevPost.title}
+            </span>
+          </a>
+        ) : <div />}
+        {nextPost && (
+          <a
+            href={`/posts/${nextPost.slug}`}
+            class="group flex flex-col p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-sm transition-all sm:text-right sm:items-end"
+          >
+            <span class="text-xs text-gray-400 dark:text-gray-500 mb-1">下一篇 →</span>
+            <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-gray-500 dark:group-hover:text-gray-400 transition-colors line-clamp-2">
+              {nextPost.title}
+            </span>
+          </a>
+        )}
+      </nav>
+    )}
 
     <!-- Services CTA -->
     <aside class="mt-14 p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection, render } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
+import { getSeriesKey } from '../../utils/helpers';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -32,6 +33,25 @@ const relatedPosts = allPosts
     description: p.data.description,
     tags: p.data.tags,
   }));
+
+const currentSlug = post.id.replace(/\.md$/, '');
+const seriesKey = getSeriesKey(currentSlug);
+let prevPost = null;
+let nextPost = null;
+if (seriesKey) {
+  const series = allPosts
+    .filter((p) => !p.data.draft && getSeriesKey(p.id.replace(/\.md$/, '')) === seriesKey)
+    .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+  const idx = series.findIndex((p) => p.id === post.id);
+  if (idx > 0) {
+    const p = series[idx - 1];
+    prevPost = { title: p.data.title, slug: p.id.replace(/\.md$/, '') };
+  }
+  if (idx > -1 && idx < series.length - 1) {
+    const p = series[idx + 1];
+    nextPost = { title: p.data.title, slug: p.id.replace(/\.md$/, '') };
+  }
+}
 ---
 
 <PostLayout
@@ -45,6 +65,8 @@ const relatedPosts = allPosts
   body={post.body}
   headings={headings}
   relatedPosts={relatedPosts}
+  prevPost={prevPost}
+  nextPost={nextPost}
 >
   <Content />
 </PostLayout>

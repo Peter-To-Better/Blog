@@ -16,6 +16,11 @@ export function getReadingTime(content: string): number {
   return Math.max(1, minutes);
 }
 
+export function getSeriesKey(slug: string): string | null {
+  const match = slug.match(/^(.*)-(?:ep-\d+|番外-.+)$/);
+  return match ? match[1] : null;
+}
+
 export function getExcerpt(content: string, maxLength = 120): string {
   const moreIndex = content.indexOf('<!-- more -->');
   let text = moreIndex > -1 ? content.slice(0, moreIndex) : content;
