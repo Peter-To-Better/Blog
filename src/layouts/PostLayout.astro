@@ -313,6 +313,17 @@ const breadcrumbSchema = {
     color: #6ee7b7;
     border-color: #6ee7b7;
   }
+
+  /* 圖片可點擊放大 */
+  .prose img {
+    cursor: zoom-in;
+  }
+  .medium-zoom-overlay {
+    z-index: 60;
+  }
+  .medium-zoom-image--opened {
+    z-index: 61;
+  }
 </style>
 
 <script>
@@ -355,6 +366,12 @@ const breadcrumbSchema = {
     });
     pre.appendChild(btn);
   });
+
+  const zoomTargets = document.querySelectorAll('.prose img');
+  if (zoomTargets.length > 0) {
+    const { default: mediumZoom } = await import('medium-zoom');
+    mediumZoom(zoomTargets, { margin: 24, background: 'rgba(0, 0, 0, 0.85)' });
+  }
 
   if (document.querySelector('pre.mermaid')) {
     const { default: mermaid } = await import('mermaid');
