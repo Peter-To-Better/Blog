@@ -17,7 +17,7 @@ draft: false
 
 ## 映像（Image）與容器（Container）的差別
 
-在 Docker 中，**映像（Image）**和**容器（Container）**是兩個核心概念，理解它們的區別對於掌握 Docker 是非常重要的事，這裡我會舉一些例子讓大家更好懂。
+在 Docker 中，**映像**（Image）和**容器**（Container）是兩個核心概念，理解它們的區別對於掌握 Docker 是非常重要的事，這裡我會舉一些例子讓大家更好懂。
 
 ### 什麼是映像（Image）？
 

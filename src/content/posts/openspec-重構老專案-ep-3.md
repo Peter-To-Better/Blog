@@ -284,7 +284,7 @@ pnpm dev                             # http://localhost:3000
 curl http://localhost:3000           # 應該看到含 "Hello, Carbon-ESG" 的 HTML
 ```
 
-瀏覽器打開 `localhost:3000`,看到「**Hello, Carbon-ESG · Backend API: http://localhost:8000**」,前端 phase-0 就收工。
+瀏覽器打開 `localhost:3000`,看到「**Hello, Carbon-ESG · Backend API: `http://localhost:8000`**」,前端 phase-0 就收工。
 
 ## 踩坑實錄:跑驗收三條指令真實發生了什麼
 
@@ -344,7 +344,7 @@ step 3 abort 之後沒人在 listen 3000 port,curl 立刻收到「對方沒開 s
 
 我嘗試過 `--force` reinstall、嘗試過 `pnpm rebuild sharp unrs-resolver`、嘗試過 `pnpm install` non-frozen — 全部都顯示 `Ignored build scripts`。**pnpm 11 把 build approval 拉到比 lockfile 還高階的層級**:就算 `package.json` 列了 `onlyBuiltDependencies`,**這個版本仍要求你親自過一次 `pnpm approve-builds` 互動式確認**才會把 approval 寫進 user-level 信任 store(`~/.pnpm-config.yaml` 之類),之後同一台機器才不再問。
 
-也就是說 — `package.json` 的 `onlyBuiltDependencies` 是**「我這個 repo 同意跑哪些 build」**,而 `pnpm approve-builds` 是**「我這個人類同意我這台機器跑那些 build」**,**兩件事**,缺一不可。
+也就是說 — `package.json` 的 `onlyBuiltDependencies` 是「**我這個 repo 同意跑哪些 build**」,而 `pnpm approve-builds` 是「**我這個人類同意我這台機器跑那些 build**」,**兩件事**,缺一不可。
 
 ### 真正能解的指令
 
@@ -505,7 +505,7 @@ pnpm install                         # 第一次 / pull 後跑;pnpm 11 之後通
 pnpm dev                              # http://localhost:3000
 ```
 
-打開 `http://localhost:3000` 應看到「**Hello, Carbon-ESG · Backend API: http://localhost:8000**」。
+打開 `http://localhost:3000` 應看到「**Hello, Carbon-ESG · Backend API: `http://localhost:8000`**」。
 
 ## 環境變數
 

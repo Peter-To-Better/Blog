@@ -35,7 +35,7 @@ Sub-agent 解決了 Context Firewall，但還有一個更大的問題沒處理 �
 
 ## 什麼是 SDD？
 
-**Spec-Driven Development（SDD）**是 2025 年下半年到 2026 年快速崛起的方法論。它對 Vibe Coding 的解法很直接：
+**Spec-Driven Development**（SDD）是 2025 年下半年到 2026 年快速崛起的方法論。它對 Vibe Coding 的解法很直接：
 
 > 把一份**結構化規格（spec）**當成真相來源，程式碼是**從 spec 生出的產物**，不是反過來。
 

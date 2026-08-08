@@ -61,7 +61,7 @@ RAGAS 把評估拆成幾個指標，最常用的四個剛好對應上面那兩�
 uv add ragas
 ```
 
-RAGAS 評估時，背後其實是**用一個 LLM 當「裁判」**去打分數（例如判斷某句回答有沒有被檢索資料支持）。預設它會用 OpenAI，但我們要省錢，所以一樣把裁判換成本地的 Ollama。
+RAGAS 評估時，背後其實是用一個 LLM 當「**裁判**」去打分數（例如判斷某句回答有沒有被檢索資料支持）。預設它會用 OpenAI，但我們要省錢，所以一樣把裁判換成本地的 Ollama。
 
 ---
 
@@ -81,7 +81,7 @@ evaluator_embeddings = LangchainEmbeddingsWrapper(
 )
 ```
 
-> 提醒：裁判模型越強，評分越可信。本地小模型當裁判會有誤差，所以 RAGAS 的分數適合拿來**「比較不同版本的相對好壞」**（加 rerank 前 vs 後），而不是當成絕對的考試分數。
+> 提醒：裁判模型越強，評分越可信。本地小模型當裁判會有誤差，所以 RAGAS 的分數適合拿來「**比較不同版本的相對好壞**」（加 rerank 前 vs 後），而不是當成絕對的考試分數。
 
 ---
 
@@ -145,7 +145,7 @@ print(result)
 每個指標都是 0~1，越接近 1 越好。拿到分數之後就能**對症下藥**：
 
 - **Context Recall 低** → 檢索漏東西。回去調 Ep-2 的分割策略、或加上混合檢索把 Recall 拉高。
-- **Context Precision 低** → 撈回太多雜訊。這正是 Ep-2 **重排序（Reranking）**最能救的地方。
+- **Context Precision 低** → 撈回太多雜訊。這正是 Ep-2 **重排序**（Reranking）最能救的地方。
 - **Faithfulness 低** → LLM 在幻覺。檢查 prompt 是不是沒約束好、或檢索內容根本不夠它回答。
 - **Answer Relevancy 低** → 答非所問。通常是 prompt 設計或生成模型的問題。
 
@@ -181,7 +181,7 @@ print(result)
 
 這篇我們補上了 RAG 開發最容易被忽略、卻最重要的一環——**評估**。用 RAGAS 搭本地 Ollama，把「準不準」拆成檢索（Context Precision / Recall）和生成（Faithfulness / Answer Relevancy）兩個層面去量化，最後用數據來驅動 Ep-2 的優化決策。
 
-到這裡，這個 LangChain 系列從**概念（Ep-0）→ RAG 架構（Ep-1）→ 進階理論（Ep-2）→ 多模態實作（Ep-3）→ 評估（Ep-4）**就走完一輪了。接下來可以往 Agent、LangGraph、或把這套 RAG 包成 API 服務的方向繼續深入。
+到這裡，這個 LangChain 系列從**概念（Ep-0）→ RAG 架構（Ep-1）→ 進階理論（Ep-2）→ 多模態實作（Ep-3）→ 評估**（Ep-4）就走完一輪了。接下來可以往 Agent、LangGraph、或把這套 RAG 包成 API 服務的方向繼續深入。
 
 ---
 
