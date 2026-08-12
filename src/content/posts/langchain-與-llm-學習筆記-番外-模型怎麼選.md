@@ -106,7 +106,7 @@ Chroma、Retriever、LLM 那幾行完全不用動——這就是 LangChain 抽�
 | :--- | :--- | :--- | :--- |
 | 嵌入向量 | `nomic-embed-text` | `mxbai-embed-large`、`bge-m3` | OpenAI `text-embedding-3-large`、Cohere `embed-v4` |
 | 文字生成 | `llama3.1:8b` | `qwen3:8b`、`llama3.3:70b` | OpenAI `gpt-4o-mini`、Anthropic `claude-haiku-4-5` |
-| 視覺轉述（Ep-3） | `llama3.2-vision:11b` | `llama3.2-vision:90b`（需 GPU）| OpenAI `gpt-4o`、Anthropic `claude-sonnet-4-6` |
+| 視覺轉述（Ep-3） | `qwen2.5vl:7b` | `qwen2.5vl:72b`（需 GPU）| OpenAI `gpt-4o`、Anthropic `claude-sonnet-4-6` |
 
 ---
 
