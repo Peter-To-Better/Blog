@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// 迷路的人需要的是出口，不是道歉。給他最新的文章跟主要系列入口。
+const latestPosts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3)
+  .map((post) => ({
+    title: post.data.title,
+    slug: post.id.replace(/\.md$/, ''),
+    category: post.data.category,
+  }));
+
+const series = [
+  { name: 'LangChain 與 LLM', category: 'LangChain & LLM', desc: 'RAG 實作與本地模型' },
+  { name: 'Harness Engineering', category: 'Harness Engineering', desc: 'AI Agent 工程實踐' },
+  { name: 'Docker 與 K8s', category: 'Docker & K8s', desc: '容器化從零開始' },
+  { name: 'TypeScript 從 0 開始', category: 'TypeScript', desc: '型別系統完整教學' },
+];
+---
+
+<BaseLayout
+  title="找不到頁面"
+  description="這個網址不存在或已經搬走了。這裡有最新文章與各系列的入口。"
+  noindex={true}
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
+
+    <p class="text-[11px] font-semibold tracking-widest uppercase text-blue-600 dark:text-blue-400 mb-3">
+      Error 404
+    </p>
+    <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+      這個頁面不存在
+    </h1>
+    <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-12 max-w-xl">
+      可能是網址打錯了，或這篇文章已經搬到別的位置。
+      下面是最近寫的東西，或者你可以直接從系列文章找起。
+    </p>
+
+    <!-- 最新文章 -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-5">
+        <h2 class="text-[10px] font-semibold tracking-[0.3em] uppercase text-gray-400 dark:text-gray-500 shrink-0">
+          最新文章
+        </h2>
+        <div class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></div>
+      </div>
+
+      <div class="space-y-3">
+        {latestPosts.map((post) => (
+          <a
+            href={`/posts/${post.slug}/`}
+            class="flex items-baseline gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-sm transition-all group"
+          >
+            <span class="text-[11px] font-semibold tracking-wider uppercase text-gray-400 dark:text-gray-500 shrink-0">
+              {post.category}
+            </span>
+            <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              {post.title}
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- 系列入口 -->
+    <section class="mb-12">
+      <div class="flex items-center gap-4 mb-5">
+        <h2 class="text-[10px] font-semibold tracking-[0.3em] uppercase text-gray-400 dark:text-gray-500 shrink-0">
+          系列文章
+        </h2>
+        <div class="flex-1 h-px bg-gray-100 dark:bg-gray-800"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {series.map((s) => (
+          <a
+            href={`/categories/${s.category}/`}
+            class="p-4 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-gray-400 dark:hover:border-gray-600 hover:shadow-sm transition-all group"
+          >
+            <div class="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              {s.name}
+            </div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">{s.desc}</div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- 出口 -->
+    <div class="flex flex-wrap items-center gap-3">
+      <a
+        href="/"
+        class="px-5 py-2.5 rounded-lg bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 text-sm font-semibold hover:opacity-90 transition-opacity"
+      >
+        回首頁
+      </a>
+      <a
+        href="/archives/"
+        class="px-5 py-2.5 rounded-lg border border-gray-200 dark:border-gray-800 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600 transition-colors"
+      >
+        所有文章
+      </a>
+      <a
+        href="/contact/"
+        class="px-5 py-2.5 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+      >
+        回報壞掉的連結 →
+      </a>
+    </div>
+
+  </div>
+</BaseLayout>
