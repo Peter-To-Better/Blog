@@ -82,7 +82,7 @@ Vue 是三大前端框架（Vue、React、Angular）中學習門檻較低的一�
 ```
 
 執行解果：
-![alt 執行解果](/images/vue-start-example.png)
+![alt 執行解果](/images/vue-start-example.webp)
 
 <hr>
 
@@ -138,7 +138,7 @@ Vue 是三大前端框架（Vue、React、Angular）中學習門檻較低的一�
 ```
 
 執行解果：
-![alt 執行解果](/images/vue-template-syntax.png)
+![alt 執行解果](/images/vue-template-syntax.webp)
 
 <hr>
 
@@ -190,7 +190,7 @@ Vue 是三大前端框架（Vue、React、Angular）中學習門檻較低的一�
 ```
 
 執行解果：
-![alt 執行解果](/images/v-html-v-text.png)
+![alt 執行解果](/images/v-html-v-text.webp)
 
 <hr>
 
@@ -239,7 +239,7 @@ Vue 是三大前端框架（Vue、React、Angular）中學習門檻較低的一�
 
 因為現在都是 true 所以都可以被看見
 執行解果：
-![alt 執行解果](/images/v-if-v-show.png)
+![alt 執行解果](/images/v-if-v-show.webp)
 條件渲染指令 v-if、v-else、v-else-if
 在 vue 中的 v-if 就相當於 JavaScript 的 if，v-else 就相當於 else 依此類推...所以我們直接看範例：
 
@@ -279,7 +279,7 @@ Vue 是三大前端框架（Vue、React、Angular）中學習門檻較低的一�
 ```
 
 執行解果：
-![alt 執行解果](/images/v-if-v-else-if-v-else.png)
+![alt 執行解果](/images/v-if-v-else-if-v-else.webp)
 
 <hr>
 
@@ -328,7 +328,7 @@ v-on: 簡寫為 @
 ```
 
 執行解果：
-![alt 執行解果](/images/v-on-click.gif)
+![alt 執行解果](/images/v-on-click.webp)
 通常事件會結合 Vue 裡的 methods 做使用以下是個範例用來切換顯示或隱藏的功能：
 
 ```html
@@ -366,7 +366,7 @@ v-on: 簡寫為 @
 - methods: 在 Vue 中，methods 就是一些方法，也就是一些你自己定義的程式碼，主要用來執行特定的任務或操作。
 - this: 把 Vue 想像成一位家長，而每個方法內的「this」，就像是你在家長指導下的手。這個手可以觸摸和處理家裡的不同物品（資料和屬性），同時也能夠進行各種動作（執行方法），這樣你就可以透過這隻手，與家裡的各種事物進行互動。
   執行解果：
-  ![alt 執行解果](/images/showhide.gif)
+  ![alt 執行解果](/images/showhide.webp)
   這裡再示範一下傳參數的方法:
   ```html
   <!DOCTYPE html>
@@ -432,7 +432,7 @@ v-on: 簡寫為 @
 ```
 
 左邊是用 v-bind 的寫法右邊是縮寫效果都是一樣的執行解果：
-![alt 執行解果](/images/v-bind.png)
+![alt 執行解果](/images/v-bind.webp)
 綜合以上的內容我們來做一個可以點選上一張照片及上一張照片的工能吧！
 步驟說明：
 
@@ -483,7 +483,7 @@ v-on: 簡寫為 @
 ```
 
 執行解果：
-![alt 執行解果](/images/click-nextexample.gif)
+![alt 執行解果](/images/click-nextexample.webp)
 
 <hr>
 
@@ -529,7 +529,7 @@ v-on: 簡寫為 @
 ```
 
 執行解果：
-![alt 執行解果](/images/v-for.png)
+![alt 執行解果](/images/v-for.webp)
 使用 v-for 迭代相同元素時，需要一種方式來追蹤每個迭代項目，這就是 key 屬性的作用。
 key 屬性是用來區分不同迭代項目的唯一性，key 可以優化渲染更有效地檢測元素的變化，以及進行 DOM 更新和重用，如果你不加上 key，又在迴圈中有新增或修改資料時可能會在更新 DOM 時出現錯誤，因為它無法確定哪些元素需要更新，所以我們要加上 key 來當作依據。(通常都會使用後端給回來的 primary key 由於本主題沒有探討後端所以我們在 list 內自己創建 id)
 接下來我們可以結合 mtehods 與 v-for 來做一個列表渲染與刪除的功能吧！

@@ -28,7 +28,7 @@ beforeDestroy：在實例被銷毀之前被調用，此時實例和 DOM 元素�
 destroyed：在實例被銷毀之後被調用，此時實例和相關的 DOM 元素都已被刪除。在這個階段，你可以進行最終的資源釋放和清理工作。
 
 圖解 Vue 的生命週期(圖片取自官網)：
-![alt Vue 的生命週期解析圖](https://v2.vuejs.org/images/lifecycle.png)
+<img src="https://v2.vuejs.org/images/lifecycle.png" alt="Vue 的生命週期解析圖" width="1200" height="3039" loading="lazy" decoding="async" />
 
 以下為生命週期的範例：可以操作一下+ -號在 devtool 觀察 hook 有沒有作用
 
@@ -244,14 +244,14 @@ npm install -g @vue/cli # OR yarn global add @vue/cli
 
 3. 安裝好後可以使用`vue --version`指令來確認 Vue-cli 有沒有被安裝成功
 4. 在來我們可以使用 vue create 來創建一個 vue 的專案
-   ![alt Vue Create](/images/vue-cli-start.png)
+   ![alt Vue Create](/images/vue-cli-start.webp)
 5. 在來就是選擇 vue 的版本跟套件包這裡預設都會有一個 Vue 版本配上 bable 與 eslint 這裡我們都先使用 Vue2 來開發可以使用方向鍵來選取，而 Manually select features 是可以自己配置要有哪些套件
-   ![alt Vue end](/images/vue-cli-end.png)
+   ![alt Vue end](/images/vue-cli-end.webp)
 6. 這裡我們創建好專案後可以使用 cd 來切換到專案目錄以這個範例為例就是 cd app 而在圖中可以看到 npm run serve 是在本地開啟一個開發伺服器環境來運行整個專案再來就可以使用編輯器將專案開啟
 
 ## 專案架構講解
 
-![alt vue-cli-dir](/images/vue-cli-dir.png) 1.這裡我們可以看到 Vue-cli 幫我們建立了許多內容首先我們可以先從 package.json 裡來看有哪些指令可以在專案使用，這裡預設情況下會有剛剛講到的 serve 比較不一樣的是多了一個 build，而 build 是在我們專案寫完後的環境 build 出來的內程式碼都會被壓縮較不容易閱讀
+![alt vue-cli-dir](/images/vue-cli-dir.webp) 1.這裡我們可以看到 Vue-cli 幫我們建立了許多內容首先我們可以先從 package.json 裡來看有哪些指令可以在專案使用，這裡預設情況下會有剛剛講到的 serve 比較不一樣的是多了一個 build，而 build 是在我們專案寫完後的環境 build 出來的內程式碼都會被壓縮較不容易閱讀
 
 ```json
   "scripts": {

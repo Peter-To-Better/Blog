@@ -25,7 +25,7 @@ const maxCount = Math.max(...tags.map(([, count]) => count));
         const scale = 0.8 + (count / maxCount) * 0.6;
         return (
           <a
-            href={`/tags/${tag}`}
+            href={`/tags/${tag}/`}
             class="px-4 py-2 bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             style={`font-size: ${scale}rem`}
           >

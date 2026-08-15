@@ -39,7 +39,7 @@ RAG 全名是 **Retrieval-Augmented Generation（檢索增強生成）**
 
 ## 圖解 RAG 工作流程
 
-![RAG Workflow](/images/RAG-work-flow.jpg)
+![RAG Workflow](/images/RAG-work-flow.webp)
 
 RAG 的核心在於透過「檢索（Retrieval）」來提升生成內容的品質，而其中最關鍵的部分正是**如何進行檢索**。傳統搜尋引擎或資料庫通常採用「關鍵字檢索」的方式，依據文字匹配程度來計算相關性，並產生排序後的結果。而在 RAG 應用中，我們更常使用的是**向量語意檢索（Vector Semantic Search）**，這種方法會將文本與查詢轉換為向量表示，透過計算語意上的相似度來尋找最相關的資料片段，並依照相似度高低排序，最後輸出前 _k_ 個最相關的內容區塊（top_k），這樣的語意檢索能讓模型不只找到詞彙相似的資料，更能理解語意上的關聯，從而為生成提供更準確且有意義的參考依據。
 
@@ -493,15 +493,15 @@ uv run python ep1_basic_rag/rag.py --question "房屋租金支出可以申報扣
 
 以下是實際執行截圖：
 
-![第一次執行](/images/llm-ep1-terminal-run1.png)
+![第一次執行](/images/llm-ep1-terminal-run1.webp)
 
 執行後，`chroma_db_ep1/` 資料夾會自動建立，索引就持久化在裡面：
 
-![執行後的專案結構](/images/llm-ep1-file-structure.png)
+![執行後的專案結構](/images/llm-ep1-file-structure.webp)
 
 換一個問題再跑（不需要重新載入 PDF，直接從已存好的索引查詢）：
 
-![換問題再跑](/images/llm-ep1-terminal-run2.png)
+![換問題再跑](/images/llm-ep1-terminal-run2.webp)
 
 ---
 

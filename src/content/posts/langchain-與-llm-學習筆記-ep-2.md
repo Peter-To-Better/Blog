@@ -100,7 +100,7 @@ uv run python ep2_advanced_retrieval/01_semantic_chunking.py
 
 執行結果：
 
-![語意分割 vs 固定字數切割執行結果（勞動基準法，101 vs 98 塊，切點幾乎都落在「第 X 條」邊界）](/images/llm-ep2-semantic.png)
+![語意分割 vs 固定字數切割執行結果（勞動基準法，101 vs 98 塊，切點幾乎都落在「第 X 條」邊界）](/images/llm-ep2-semantic.webp)
 
 有意思的是，在勞動基準法上兩者數量很接近（101 vs 98），切點也幾乎都落在「第 X 條」的邊界——**因為法條本身結構就很乾淨**。語意分割真正的優勢在「沒有明顯結構的長文」（例如會議記錄、訪談逐字稿）：那種內容用固定字數會硬切在句子中間，語意分割才會在話題轉換點下刀。結構化文件用它是「錦上添花」，非結構化文件用它才是「雪中送炭」。
 
@@ -137,7 +137,7 @@ uv run python ep2_advanced_retrieval/02_parent_document_retriever.py
 
 執行結果（節選）：
 
-![父子文件檢索執行結果（161 個子 chunk 精準命中、還原成完整條文 vs 零散小 chunk）](/images/llm-ep2-parent-doc.png)
+![父子文件檢索執行結果（161 個子 chunk 精準命中、還原成完整條文 vs 零散小 chunk）](/images/llm-ep2-parent-doc.webp)
 
 **看差在哪**：檢索時用「小 chunk」比對，命中率高；但如果直接把小 chunk 餵給 LLM，會拿到像「**者**，主管機關得依事業規模…」這種**從半句開始、脈絡斷掉**的碎片。父子分割在命中後**還原成整條條文**（例如完整的第 14 條），LLM 才有完整依據。畫面中「161 個子 chunk」對應回少數幾個父段落，就是這個「小 chunk 精準命中、大段落補回上下文」的機制。
 
@@ -177,9 +177,9 @@ uv run python ep2_advanced_retrieval/06_contextual_retrieval.py
 
 執行結果：
 
-![上下文檢索執行結果（上）：為 99 個 chunk 生成上下文說明；「扣押工資」有/無上下文平手，「未成年大夜班」加上下文救回第 44 條](/images/llm-ep2-contextual.png)
+![上下文檢索執行結果（上）：為 99 個 chunk 生成上下文說明；「扣押工資」有/無上下文平手，「未成年大夜班」加上下文救回第 44 條](/images/llm-ep2-contextual.webp)
 
-![上下文檢索執行結果（下）：「輪班制換班」無上下文本來有第 35 條，加了上下文反而掉成第 26 條](/images/llm-ep2-contextual-2.png)
+![上下文檢索執行結果（下）：「輪班制換班」無上下文本來有第 35 條，加了上下文反而掉成第 26 條](/images/llm-ep2-contextual-2.webp)
 
 **誠實說**：在勞基法這三題上，上下文檢索**有輸有贏**。贏的是「未成年人可以上大夜班嗎？」——無上下文的 Top-3 除了第 46 條沾到邊，另外兩條飄到退休（53）與罰則（76）；加上上下文後，**第 44 條（童工工作限制）被撈了回來**，因為上下文說明把「童工」「保護未成年人」這些章節線索寫進了向量。輸的是「輪班制換班要休息多久」——無上下文本來還撈到第 35 條（輪班休息），加了上下文反而掉成第 26 條（工資）。這正好呼應上面 Anthropic 的數據：**單靠上下文嵌入只降 35% 失敗率**，真正的大幅提升（−67%）要疊加「上下文 BM25 + 重排序」一起用。所以上下文檢索是**組合技的一環，不是單獨的萬靈丹**——它的價值要到文末的[完整實測](#實測結果baseline-答不出來進階答對了)把混合檢索、重排序都串起來才看得出來。
 
@@ -218,9 +218,9 @@ uv run python ep2_advanced_retrieval/03_hybrid_search.py
 
 腳本會跑三種查詢（精確字詞 / 語意理解 / 混合型），分別印出 BM25、向量、混合檢索各自的 Top-3，讓你直接看到差異。三題的結果如下：
 
-![混合檢索執行結果（上）：「第 38 條特別休假」精確詞，BM25 精準命中第 38 條](/images/llm-ep2-hybrid-search.png)
+![混合檢索執行結果（上）：「第 38 條特別休假」精確詞，BM25 精準命中第 38 條](/images/llm-ep2-hybrid-search.webp)
 
-![混合檢索執行結果（下）：「開除員工」與「輪班制休息」兩題——輪班題 BM25 抓到第 34、35 條，純向量卻飄到第 18、84-1 條，RRF 混合覆蓋最廣](/images/llm-ep2-hybrid-search-2.png)
+![混合檢索執行結果（下）：「開除員工」與「輪班制休息」兩題——輪班題 BM25 抓到第 34、35 條，純向量卻飄到第 18、84-1 條，RRF 混合覆蓋最廣](/images/llm-ep2-hybrid-search-2.webp)
 
 （結果中 `差異：BM25 獨有 {...}｜向量獨有 {...}` 的 `{...}` 是段落編號，代表「只有這個檢索器撈到、另一個沒撈到」的段落。）
 
@@ -248,9 +248,9 @@ uv run python ep2_advanced_retrieval/04_multi_query.py
 
 執行結果：
 
-![Multi-Query 執行結果（上）：LLM 把每個問題改寫成 3 個角度的版本，分別檢索再合併去重](/images/llm-ep2-multi-query.png)
+![Multi-Query 執行結果（上）：LLM 把每個問題改寫成 3 個角度的版本，分別檢索再合併去重](/images/llm-ep2-multi-query.webp)
 
-![Multi-Query 執行結果（下）：原始檢索只撈 5 段，Multi-Query 擴大到 21 段](/images/llm-ep2-multi-query-2.png)
+![Multi-Query 執行結果（下）：原始檢索只撈 5 段，Multi-Query 擴大到 21 段](/images/llm-ep2-multi-query-2.webp)
 
 以「勞工什麼時候可以自行離職？」為例，LLM 先把它改寫成三個角度（「勞工離職的法定程序和時間限制是什麼？」「哪些情況下勞工有權利要求離職？」「離職前勞工需要完成哪些手續？」），分別檢索再合併去重——**撈回的段落從原始檢索的 5 段（`[23, 33, 43, 76, 77]`）暴增到 21 段**。這就是 Multi-Query 的核心價值：**擴大召回（Recall）**，讓「問法沒對上就漏掉答案」的機率大幅下降。
 
@@ -282,7 +282,7 @@ uv run python ep2_advanced_retrieval/05_reranking.py
 
 執行結果：
 
-![Cross-Encoder 重排序執行結果：查「雇主未依規定發給資遣費會怎樣？」，重排前純向量把不相關的第 72、1 條排在最前，重排後第 17 條（資遣費）衝上第 1、分數 0.512 斷崖式領先](/images/llm-ep2-reranking.png)
+![Cross-Encoder 重排序執行結果：查「雇主未依規定發給資遣費會怎樣？」，重排前純向量把不相關的第 72、1 條排在最前，重排後第 17 條（資遣費）衝上第 1、分數 0.512 斷崖式領先](/images/llm-ep2-reranking.webp)
 
 **看重排前後的差**：查「雇主未依規定發給資遣費會怎樣？」，純向量粗撈的 15 筆候選裡，**第 1 名竟然是不相關的第 72 條（勞工檢查機構）、第 2 名是第 1 條（總則）**，最相關的第 17 條（資遣費給付標準）被壓在第 4 名。Cross-Encoder 重排後，第 17 條直接衝上第 1——而且分數本身就很會說話：**第 17 條 0.512、第 18 條 0.043、第三名以後全部掉到 0.006**，「真相關」和「沾邊」被切得乾乾淨淨，湊熱鬧的第 72、67 條則被踢出 Top-5。這就是 Bi-Encoder「快但粗略」、Cross-Encoder「慢但精準」的具體長相。
 
@@ -313,7 +313,7 @@ uv run python ep2_advanced_retrieval/07_full_pipeline.py \
 
 同一個問題「雇主什麼時候可以不發資遣費？」、同一份勞動基準法（99 段、101 個 chunk）、同一個 `llama3.1`、同一段 prompt——**只差在檢索方式**：
 
-![Ep-1 baseline vs Ep-2 進階實測：baseline 純向量答「不知道」，進階管線撈到第 18 條答對](/images/llm-ep2-baseline-vs-advanced.png)
+![Ep-1 baseline vs Ep-2 進階實測：baseline 純向量答「不知道」，進階管線撈到第 18 條答對](/images/llm-ep2-baseline-vs-advanced.webp)
 
 差別非常直接：
 

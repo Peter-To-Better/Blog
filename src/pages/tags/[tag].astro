@@ -21,12 +21,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { tag, posts } = Astro.props;
+
+// 只有 1～2 篇的標籤頁內容太薄，會稀釋抓取預算。
+// 設 noindex 但保留 follow，連結權重照樣往文章傳遞。
+const MIN_POSTS_TO_INDEX = 3;
+const noindex = posts.length < MIN_POSTS_TO_INDEX;
 ---
 
-<BaseLayout title={`#${tag}`}>
+<BaseLayout title={`#${tag}`} noindex={noindex}>
   <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10">
     <div class="mb-10">
-      <a href="/tags" class="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">&larr; 所有標籤</a>
+      <a href="/tags/" class="text-sm text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">&larr; 所有標籤</a>
       <h1 class="text-3xl font-bold text-gray-900 dark:text-white mt-2">
         #{tag}
         <span class="text-lg font-normal text-gray-400">({posts.length})</span>

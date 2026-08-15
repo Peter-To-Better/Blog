@@ -174,7 +174,7 @@ draft: false
 ```
 
 執行結果：
-![alt 執行解果](/images/v-bind-class.png)
+![alt 執行解果](/images/v-bind-class.webp)
 綜合之前學的我們使用 click 來做一個點擊加上樣式的功能
 
 ```html
@@ -242,7 +242,7 @@ draft: false
 ```
 
 執行結果：
-![alt 執行解果](/images/click-switch.gif)
+<video src="/images/click-switch.mp4" width="568" height="544" autoplay loop muted playsinline preload="metadata" aria-label="alt 執行解果"></video>
 
 除了 class 的綁定 Vue 也提供了行內樣式的綁定用法，用法則是
 `:style="{width: '400px',height: '400px' , backgroundColor:'blue'}"`
@@ -315,7 +315,7 @@ draft: false
 ```
 
 執行結果：
-![alt 執行解果](/images/click-circle-example.gif)
+<video src="/images/click-circle-example.mp4" width="568" height="544" autoplay loop muted playsinline preload="metadata" aria-label="alt 執行解果"></video>
 
 <hr>
 
@@ -421,7 +421,7 @@ computed 的使用方法與 data 是一樣的可以使用插值語法直接使�
 ```
 
 執行結果：
-![alt 執行解果](/images/computed-total.png)
+![alt 執行解果](/images/computed-total.webp)
 
 <hr>
 
@@ -602,7 +602,7 @@ computed: { 計算屬性名稱: { get(){ return 運算邏輯 }, set(修改值){ 
 ```
 
 執行結果：
-![alt 執行解果](/images/computed-calc.gif)
+<video src="/images/computed-calc.mp4" width="1136" height="1088" autoplay loop muted playsinline preload="metadata" aria-label="alt 執行解果"></video>
 
 <hr>
 

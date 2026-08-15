@@ -6,6 +6,7 @@ dist/
 .astro/
 .deploy*/
 .claude/
+.playwright-mcp/
 todo.md
 經營SOP.md
 doc/

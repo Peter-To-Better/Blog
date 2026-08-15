@@ -15,5 +15,6 @@
 
 - 作者: Peter Chen
 - 網站: https://peter-to-better.com
+- RSS: https://peter-to-better.com/rss.xml
 - 語言: 繁體中文
 - 更新頻率: 持續更新

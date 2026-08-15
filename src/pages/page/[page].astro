@@ -14,14 +14,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const totalPages = Math.ceil(allPosts.length / postsPerPage);
 
-  return Array.from({ length: totalPages }, (_, i) => ({
-    params: { page: String(i + 1) },
-    props: {
-      posts: allPosts.slice(i * postsPerPage, (i + 1) * postsPerPage),
-      currentPage: i + 1,
-      totalPages,
-    },
-  }));
+  // 第 1 頁不生成：內容與首頁 / 完全相同，會變成自我競爭的重複頁。
+  // Pagination 元件的 getPageUrl 也已經把第 1 頁指向 /，不會有斷連結。
+  return Array.from({ length: totalPages }, (_, i) => i + 1)
+    .filter((page) => page > 1)
+    .map((page) => ({
+      params: { page: String(page) },
+      props: {
+        posts: allPosts.slice((page - 1) * postsPerPage, page * postsPerPage),
+        currentPage: page,
+        totalPages,
+      },
+    }));
 };
 
 const { posts, currentPage, totalPages } = Astro.props;

@@ -19,7 +19,7 @@ draft: false
 
 在官網中有各種不同的版本，大家可以根據自己的環境需求來進行安裝。如果你在系統上無法順利安裝，可以先使用這個 [Play with Docker](https://labs.play-with-docker.com/) 來練習，但這裡還是建議大家都要去安裝 Docker 才能完整使用到所有功能。
 
-![Docker Desktop 安裝](/images/Docker-Desktop.png)
+![Docker Desktop 安裝](/images/Docker-Desktop.webp)
 
 ## 怎麼檢查有沒有安裝成功？
 
@@ -29,7 +29,7 @@ draft: false
 docker version
 ```
 
-![Docker 版本](/images/Docker-version.png)
+![Docker 版本](/images/Docker-version.webp)
 
 ## 安裝後基本操作
 
@@ -54,7 +54,7 @@ docker version
 docker pull nginx
 ```
 
-![Docker pull nginx](/images/Docker-pull-ngix.png)
+![Docker pull nginx](/images/Docker-pull-ngix.webp)
 
 2. 啟動 Nginx 容器：
 
@@ -62,7 +62,7 @@ docker pull nginx
 docker run --name mynginx -d -p 8080:80 nginx
 ```
 
-![Docker run nginx](/images/Docker-run-ngix.png)
+![Docker run nginx](/images/Docker-run-ngix.webp)
 
 3. 檢查運行中的容器：
 
@@ -70,7 +70,7 @@ docker run --name mynginx -d -p 8080:80 nginx
 docker ps
 ```
 
-![Docker ps](/images/Docker-ps.png)
+![Docker ps](/images/Docker-ps.webp)
 
 4. 停止 Nginx 容器：
 
@@ -78,7 +78,7 @@ docker ps
 docker stop mynginx
 ```
 
-![Docker stop](/images/Docker-stop.png)
+![Docker stop](/images/Docker-stop.webp)
 (這裡可以再使用 docker ps -a 來檢查所有容器)
 
 5. 刪除 Nginx 容器：
@@ -87,7 +87,7 @@ docker stop mynginx
 docker rm mynginx
 ```
 
-![Docker rm](/images/Docker-stop.png)
+![Docker rm](/images/Docker-stop.webp)
 (這裡同樣的也可以再使用 docker ps -a 來檢查有沒有被刪除成功)
 
 6. 刪除 Nginx 映像檔：
@@ -98,7 +98,7 @@ docker rm mynginx
 docker rmi nginx
 ```
 
-![Docker rmi](/images/Docker-rmi.png)
+![Docker rmi](/images/Docker-rmi.webp)
 
 ---
 
@@ -106,7 +106,7 @@ docker rmi nginx
 
 當然，上面講的這些操作，我們都可以在 Docker Desktop 找到，並且直接透過 GUI 的方式操作，這邊我就不操作，但大家可以在操作指令時打開 Docker Desktop 來觀察這些操作在 GUI 上的變化，就會知道什麼指令對應到什麼樣的功能。
 
-![Docker Desktop GUI](/images/Docker-GUI.png)
+![Docker Desktop GUI](/images/Docker-GUI.webp)
 
 ---
 

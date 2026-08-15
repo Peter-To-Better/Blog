@@ -332,7 +332,7 @@ uv run python ep3_multimodal_rag/pipeline.py \
 
 上面這段程式碼看起來平淡無奇，但**第一次照著這個邏輯跑，答案是「不知道」**——即使 `measles-chapter.pdf` 這份文件裡明明白白寫著「每十萬人口確定病例發生率以**彰化縣 1.05 居冠**」：
 
-![第一次實測：即使正確答案就在文件裡，還是回答「不知道」](/images/llm-ep3-prompt-bug.png)
+![第一次實測：即使正確答案就在文件裡，還是回答「不知道」](/images/llm-ep3-prompt-bug.webp)
 
 追下去發現是兩層問題疊在一起，跟大家老實交代：
 
@@ -362,7 +362,7 @@ uv run python ep3_multimodal_rag/pipeline.py \
 
 執行結果：
 
-![Ep-3 實測成功：修正 prompt 措辭與 top_k 之後，正確答出「彰化縣」](/images/llm-ep3-success.png)
+![Ep-3 實測成功：修正 prompt 措辭與 top_k 之後，正確答出「彰化縣」](/images/llm-ep3-success.webp)
 
 `qwen2.5vl:7b` 把地圖轉述成文字、`nomic-embed-text` 把它跟同頁的圖說一起嵌入、`llama3.1` 從檢索到的 9 份文件裡揪出正確答案——**一個純文字 RAG（沒有這張地圖轉述）永遠答不出來的問題，這次是真的搞定了，不是憑空宣稱。**
 
@@ -384,7 +384,7 @@ uv run python ep3_multimodal_rag/pipeline.py \
 
 執行結果：就算加了[上面那招上下文修正](#四文字與圖片描述一起入庫)，答案還是「找不到相關資訊」：
 
-![對完整 202 頁報告提問，即使加了上下文修正，還是答不出來](/images/llm-ep3-full-report-fail.png)
+![對完整 202 頁報告提問，即使加了上下文修正，還是答不出來](/images/llm-ep3-full-report-fail.webp)
 
 用 `similarity_search_with_score` 把正確答案（麻疹地理分布圖那份文件）在全部 501 份文件裡的排名抓出來——**它連前 20 名都排不進去**：
 

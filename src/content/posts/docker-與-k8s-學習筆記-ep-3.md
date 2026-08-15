@@ -223,7 +223,7 @@ docker login
 
 在 Docker Hub 中的 create 一個新的 repository 可以依照需求看要不要將映像公開但在 Docker Hub 上，私密映像倉庫在 Docker Hub 是有限的，如果要更多私密映像倉庫就需要付費，所以這邊鼓勵大家開源。
 
-![Docker Hub](/images/Docker-hub.png)
+![Docker Hub](/images/Docker-hub.webp)
 
 ---
 
@@ -241,7 +241,7 @@ docker tag my-node-app:lastest shoushouren/node-hello-world
 
 使用以下指令將映像上傳到 Docker Hub ，在圖中右邊可以看到 Docker Hub 很貼心的告訴我們要怎麼推上去：
 
-![Docker Hub](/images/Docker-hub-push-cmd.png)
+![Docker Hub](/images/Docker-hub-push-cmd.webp)
 
 ```bash
 docker push shoushouren/node-hello-world

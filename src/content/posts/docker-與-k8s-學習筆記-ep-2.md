@@ -45,7 +45,7 @@ draft: false
 
 ## 用圖來解釋
 
-![Dockerfile DockerImage DockerContainer](/images/Dockerfile-DockerImage-DockerContainer.png)
+![Dockerfile DockerImage DockerContainer](/images/Dockerfile-DockerImage-DockerContainer.webp)
 
 在圖中，我們可以看到 Dockerfile、Docker Image 和 Docker Container，Dockerfile 是一個純文字文件，裡面包含了一系列指令或步驟，這些指令會作用於一個基礎映像檔（Base Image），用於定義如何構建一個新的 Docker 映像檔。
 

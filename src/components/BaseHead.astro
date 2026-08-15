@@ -6,6 +6,8 @@ interface Props {
   keywords?: string;
   type?: string;
   publishedTime?: Date;
+  modifiedTime?: Date;
+  noindex?: boolean;
 }
 
 const siteTitle = 'Peter To Better';
@@ -41,6 +43,8 @@ const {
   keywords,
   type = 'website',
   publishedTime,
+  modifiedTime,
+  noindex = false,
 } = Astro.props;
 
 const fullTitle = title ? `${title} | ${siteTitle}` : `${siteTitle}｜${siteTagline}`;
@@ -60,6 +64,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <meta name="author" content="Peter" />
   {keywords && <meta name="keywords" content={keywords} />}
   <link rel="canonical" href={canonicalURL} />
+  {noindex && <meta name="robots" content="noindex, follow" />}
+  <link rel="alternate" type="application/rss+xml" title={siteTitle} href={new URL('/rss.xml', Astro.site)} />
   {Astro.url.pathname === '/' && <script type="application/ld+json" set:html={websiteSchema} />}
   {Astro.url.pathname === '/' && <script type="application/ld+json" set:html={organizationSchema} />}
 
@@ -73,6 +79,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   <meta property="og:site_name" content={siteTitle} />
   {type === 'article' && publishedTime && (
     <meta property="article:published_time" content={publishedTime.toISOString()} />
+  )}
+  {type === 'article' && modifiedTime && (
+    <meta property="article:modified_time" content={modifiedTime.toISOString()} />
   )}
   {type === 'article' && (
     <meta property="article:author" content="Peter" />
