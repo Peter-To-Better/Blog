@@ -330,7 +330,7 @@ Faithfulness 聚合起來是四個指標裡最可信的（差距 0.441），個�
 
 這是整套東西最重要、卻最少被講清楚的一件事。先講結論：
 
-> **RAGAS 沒有任何一個指標會叫 LLM 輸出「0.87 分」這種連續分數。** 它只有兩種做法：要嘛叫 LLM 做**二元判斷**（0 或 1），再用 Python 算術聚合；要嘛叫它從**極小的離散等級**裡挑一個（`0/1/2`、`0/2/4`、`1–5`）。
+> **RAGAS 沒有任何一個指標會叫 LLM 輸出「0.87 分」這種連續分數。** 它只有兩種做法：要嘛叫 LLM 做**二元判斷**（0 或 1），再用 Python 算術聚合；要嘛叫它從**極小的離散等級**裡挑一個（`0/1/2`、`0/2/4`、`1~5`）。
 
 這不是憑印象講的。我原本寫的是「RAGAS 從頭到尾不叫 LLM 打分數」，結果自己去翻 `collections/` 底下 25 個指標資料夾，發現**這句話講太滿了**。`DomainSpecificRubrics` 就是直接叫 LLM 給 1~5 分。
 
@@ -347,7 +347,7 @@ grep -rhE "^\s+\w+\s*:\s*float\s*=\s*Field" */util.py
 | 家族 | 做法 | 屬於這一族的指標 |
 | :--- | :--- | :--- |
 | **二元判斷 + 算術聚合** | LLM 只回 0/1，分數由 Python 算 | Faithfulness、Answer Relevancy、Context Precision、Context Recall、Factual Correctness、Noise Sensitivity 等 10 個 ← **本篇用的四個全在這裡** |
-| **小範圍離散評級** | LLM 直接給等級，但選項極少 | Answer Accuracy（`0/2/4`）、Context Relevance（`0/1/2`）、Response Groundedness（`0/1/2`）、Domain/Instance Specific Rubrics（`1–5`）等 5 個 |
+| **小範圍離散評級** | LLM 直接給等級，但選項極少 | Answer Accuracy（`0/2/4`）、Context Relevance（`0/1/2`）、Response Groundedness（`0/1/2`）、Domain/Instance Specific Rubrics（`1~5`）等 5 個 |
 
 而且就算是第二族，RAGAS 也**不信任模型的數字**。看 [`answer_accuracy/metric.py`](https://github.com/vibrantlabsai/ragas/blob/v0.4.3/src/ragas/metrics/collections/answer_accuracy/metric.py) 拿到 rating 之後做什麼：
 
