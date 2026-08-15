@@ -334,6 +334,8 @@ uv run python ep2_advanced_retrieval/07_full_pipeline.py \
 
 下一篇 [Ep-3](/posts/langchain-與-llm-學習筆記-ep-3) 我們要處理 Ep-1 和 Ep-2 都吃不下來的東西——**當文件裡有圖片、表格、掃描檔時，純文字向量的 RAG 該怎麼進化**。
 
+> 對 LLM、LangChain、AI Agent 這些名詞還不太熟的話，可以回頭看系列開頭的 [Ep-0：LLM、LangChain、AI Agent 與 MCP 是什麼](/posts/langchain-與-llm-學習筆記-ep-0)。
+
 ---
 
 ## 本篇程式碼

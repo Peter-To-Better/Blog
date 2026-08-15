@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import { unified } from '@astrojs/markdown-remark';
 import remarkMermaid from './src/plugins/remark-mermaid.mjs';
 import rehypeImageAttrs from './src/plugins/rehype-image-attrs.mjs';
+import rehypeExternalLinks from './src/plugins/rehype-external-links.mjs';
 import { shouldExclude, lastmodFor } from './src/utils/posts-index.mjs';
 
 export default defineConfig({
@@ -22,7 +23,7 @@ export default defineConfig({
   markdown: {
     processor: unified({
       remarkPlugins: [remarkMermaid],
-      rehypePlugins: [rehypeImageAttrs],
+      rehypePlugins: [rehypeImageAttrs, rehypeExternalLinks],
     }),
     shikiConfig: {
       theme: 'github-dark',

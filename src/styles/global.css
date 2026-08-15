@@ -29,6 +29,14 @@
     @apply underline underline-offset-2 decoration-gray-300 dark:decoration-gray-600;
   }
 
+  /* 站外連結會另開分頁（見 rehype-external-links），用箭頭讓讀者事先知道。
+     aria-hidden 的效果由 content 為純裝飾字元達成，螢幕閱讀器讀的是
+     連結本身的 aria-label（那裡已經註明「另開新分頁」）。 */
+  .prose a[data-external]::after {
+    content: '↗';
+    @apply inline-block ml-0.5 text-[0.75em] align-super no-underline opacity-50;
+  }
+
   .prose h1,
   .prose h2,
   .prose h3,
