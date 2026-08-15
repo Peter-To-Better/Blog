@@ -9,13 +9,33 @@ Astro 部落格。文章放 `src/content/posts/*.md`，圖片放 `public/images/
 
 ## 寫作規則
 
-### 禁止使用破折號「——」
+### 禁止使用破折號
 
-**文章內文一律不准出現 `——`。** 這是硬規則，寫完要檢查：
+**文章內文一律不准出現破折號。** 這是硬規則。
+
+注意它有**兩種寫法**，只查其中一種會漏掉（本站就發生過：只查 `——` 結果漏掉 487 個 ` — `）：
+
+| 寫法 | 字元 | 出現在 |
+| :--- | :--- | :--- |
+| `——` | 兩個 U+2014 | LangChain 系列 |
+| ` — ` | 空格 + 單個 U+2014 + 空格 | Harness、OpenSpec 系列 |
+
+**檢查指令要一次抓全部**，不要只 grep `——`：
 
 ```bash
-grep -n '——' src/content/posts/*.md
+# 列出所有破折號類字元（程式碼區塊內的不算違規，要自己判斷）
+python3 -c "
+import glob,unicodedata
+for f in glob.glob('src/content/posts/*.md'):
+    infence=False
+    for i,l in enumerate(open(f,encoding='utf-8').read().split('\n'),1):
+        if l.lstrip().startswith('\`\`\`'): infence = not infence
+        if not infence and any(unicodedata.category(c)=='Pd' and c!='-' for c in l):
+            print(f'{f}:{i}  {l.strip()[:90]}')
+"
 ```
+
+**程式碼區塊（``` 圍起來的）裡的破折號不用改**，那是範例輸出、目錄樹、shell 註解的原始內容，改了就失真。
 
 破折號很好用，所以會被濫用。一段話裡塞兩三個，讀者的節奏會被切碎，而且它常常是在
 掩蓋「這兩個句子的關係我沒想清楚」。改寫時**先問破折號在做什麼事**，再換成對的標點：

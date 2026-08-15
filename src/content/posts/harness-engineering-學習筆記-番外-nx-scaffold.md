@@ -11,7 +11,7 @@ draft: false
 
 ## 本篇重點
 
-`claude-harness-template` 內的 Nx workspace 是怎麼從零搭建出來的？本篇是一份**完整可重現的指令清單** — 從 `create-nx-workspace`、生 NestJS server / Next.js client、加 lib，到 NestJS 與 Next.js 兩種不同的 port 設定模式，照著跑就能複製出同樣的骨架。
+`claude-harness-template` 內的 Nx workspace 是怎麼從零搭建出來的？本篇是一份**完整可重現的指令清單**：從 `create-nx-workspace`、生 NestJS server / Next.js client、加 lib，到 NestJS 與 Next.js 兩種不同的 port 設定模式，照著跑就能複製出同樣的骨架。
 
 <!-- more -->
 
@@ -19,7 +19,7 @@ draft: false
 
 [Ep-3](/posts/harness-engineering-學習筆記-ep-3) 預告 template 是一份「Nx + NestJS + GraphQL + Next.js 完整 starter」。[Ep-4](/posts/harness-engineering-學習筆記-ep-4) 跟 [Ep-5](/posts/harness-engineering-學習筆記-ep-5) 把 harness 層(sub-agents、slash commands)做出來,但**底下的 Nx scaffold 是怎麼生的這件事一直沒有正式紀錄**。
 
-這篇就是把那段拆開來講 — 你如果想 fork 改成自己的 stack(例如改成 GraphQL → tRPC、或加 React Native app),這份紀錄就是起點。
+這篇就是把那段拆開來講：你如果想 fork 改成自己的 stack(例如改成 GraphQL → tRPC、或加 React Native app),這份紀錄就是起點。
 
 ## 完整搭建流程
 
@@ -39,11 +39,11 @@ pnpm dlx create-nx-workspace@latest harness-bootstrap \
 
 幾個關鍵 flag(官方完整選項見 [create-nx-workspace CLI 文件](https://nx.dev/getting-started/intro)):
 
-- `--preset=apps` — 整合式 (integrated) monorepo,空骨架,等我們自己加 app
-- `--packageManager=pnpm`(別名 `--pm`)— 明確指定,**預設是 npm**
-- `--nxCloud=skip`(別名 `--ci`)— 跳過 Nx Cloud 註冊,其他選項包含 `github`、`gitlab`、`circleci`、`yes` 等
-- `--interactive=false` — 完全 headless,給 script 用
-- `--skipGit`(別名 `-g`)— 不要自動 `git init`(我們的 template repo 已經有 git history)
+- `--preset=apps`：整合式 (integrated) monorepo,空骨架,等我們自己加 app
+- `--packageManager=pnpm`(別名 `--pm`)： 明確指定,**預設是 npm**
+- `--nxCloud=skip`(別名 `--ci`)： 跳過 Nx Cloud 註冊,其他選項包含 `github`、`gitlab`、`circleci`、`yes` 等
+- `--interactive=false`：完全 headless,給 script 用
+- `--skipGit`(別名 `-g`)： 不要自動 `git init`(我們的 template repo 已經有 git history)
 
 > Nx 22.7+ 還新增 `--aiAgents` 旗標,可指定 `claude`、`codex`、`copilot`、`cursor`、`gemini`、`opencode` 任意組合;不指定預設**全部 6 個都生**(也是我們看到一堆 dotfile 的原因)。
 
@@ -54,7 +54,7 @@ pnpm dlx create-nx-workspace@latest harness-bootstrap \
 - `.github/skills/`(Nx 內建 4 個 AI skill:`nx-workspace`、`nx-generate`、`nx-import`、`monitor-ci`)
 - `AGENTS.md`、`CLAUDE.md`(內容相同,給 Claude Code 跟其他 agent 讀的規則)
 
-> Nx 22.7 內建這麼多 AI agent 工具是這次最大的驚喜 — 等於 Nx 自己已經實踐了 Harness Engineering,我們只需要在它上面**疊 stack-specific 規則**。
+> Nx 22.7 內建這麼多 AI agent 工具是這次最大的驚喜：等於 Nx 自己已經實踐了 Harness Engineering,我們只需要在它上面**疊 stack-specific 規則**。
 
 ### Step 2:搬進目標目錄 + 保留 git history
 
@@ -121,8 +121,8 @@ pnpm nx g @nx/nest:application apps/server \
 
 這條會生兩個 project:
 
-- `@org/server` — NestJS 主程式(`apps/server/src/main.ts`、`app.module.ts` 等)
-- `@org/server-e2e` — e2e 測試 harness(`apps/server-e2e/`)
+- `@org/server`：NestJS 主程式(`apps/server/src/main.ts`、`app.module.ts` 等)
+- `@org/server-e2e`：e2e 測試 harness(`apps/server-e2e/`)
 
 > ⚠️ `--linter` 與 `--unitTestRunner` **預設都是 `none`**,所以**必須顯式傳 `eslint` / `jest` 才會配出來**(用 `pnpm exec nx g @nx/nest:application --help` 可驗證)。`--e2eTestRunner` 預設是 `jest` 倒不用特別寫。完整選項見 [@nx/nest plugin 文件](https://nx.dev/nx-api/nest)。
 
@@ -140,10 +140,10 @@ pnpm nx g @nx/next:application apps/client \
 
 關鍵 flag(完整選項見 [@nx/next plugin 文件](https://nx.dev/nx-api/next)):
 
-- `--appDir=true` — 用 App Router(其實**預設就是 true**,寫出來只是顯式提醒)
-- `--style=css` — 預設值,可改成 `scss`、`less`、`tailwind` 等
-- `--linter=eslint`、`--unitTestRunner=jest` — 跟 `@nx/nest` 一樣預設 `none`,必須顯式傳
-- `--e2eTestRunner=none` — **預設是 `playwright`**,我們不需要前端 e2e 才覆寫成 none
+- `--appDir=true`：用 App Router(其實**預設就是 true**,寫出來只是顯式提醒)
+- `--style=css`：預設值,可改成 `scss`、`less`、`tailwind` 等
+- `--linter=eslint`、`--unitTestRunner=jest`：跟 `@nx/nest` 一樣預設 `none`,必須顯式傳
+- `--e2eTestRunner=none`：**預設是 `playwright`**,我們不需要前端 e2e 才覆寫成 none
 
 > Nx 22.7 的 `@nx/next` 把 `next` 釘在 `~16.1.6`,**npm 上有 16.2 也不會幫你裝**。要升手動 `pnpm up next@16.2 eslint-config-next@16.2`,或等 `@nx/next` 下個 release。`@nx/next` 的 peer dep 寫 `next >=14.0.0 <17.0.0`,所以手動升不會撞 peer 約束。
 
@@ -165,8 +165,8 @@ pnpm nx g @nx/js:library libs/user \
 
 關鍵 flag(完整選項見 [@nx/js plugin 文件](https://nx.dev/nx-api/js)):
 
-- `--bundler=none` — lib 是 source-only,不另外打包(由用它的 app 自己 bundle)。**預設是 `tsc`**;其他可選 `swc`、`rollup`、`vite`、`esbuild`
-- `--importPath=@my-org/<name>` — 顯式設 path alias。`tsconfig.base.json` 會自動更新
+- `--bundler=none`：lib 是 source-only,不另外打包(由用它的 app 自己 bundle)。**預設是 `tsc`**;其他可選 `swc`、`rollup`、`vite`、`esbuild`
+- `--importPath=@my-org/<name>`：顯式設 path alias。`tsconfig.base.json` 會自動更新
 
 跑完三條,結構長這樣:
 
@@ -208,9 +208,9 @@ libs/
 
 注意:
 
-- Next.js 用 `dev`(不是 `serve`)— 對應 `next dev` CLI
+- Next.js 用 `dev`(不是 `serve`)： 對應 `next dev` CLI
 - `nx affected` 預設 base 是 `main`,如果你 default branch 是 `master` 改一下
-- 不放 `migration:run` 之類 GraphQL/TypeORM 相關 — 那些等接好相應 plugin 再加
+- 不放 `migration:run` 之類 GraphQL/TypeORM 相關：那些等接好相應 plugin 再加
 
 ### Step 9:設定 port
 
@@ -264,7 +264,7 @@ Project.json 的 targets 會**覆蓋** plugin 推斷出來的同名 target,**其
 
 #### 為什麼不直接在 root script 加 `--port=4500`?
 
-我一開始這樣做了 — `package.json` 的 `client` 改成 `nx dev @org/client --port=4500`。看起來能用,但有問題:
+我一開始這樣做了：`package.json` 的 `client` 改成 `nx dev @org/client --port=4500`。看起來能用,但有問題:
 
 | 場景                              | root script 方式  | project.json 方式 |
 | :-------------------------------- | :---------------- | :---------------- |
@@ -272,7 +272,7 @@ Project.json 的 targets 會**覆蓋** plugin 推斷出來的同名 target,**其
 | `pnpm exec nx dev @org/client`(直接) | ❌ 變回預設 3000 | ✅ 吃 4500        |
 | IDE / CI / sub-agent 直接 invoke  | ❌ 不一致         | ✅ 一致           |
 
-**Port 是 project 的屬性,不是某個 script 的屬性** — 放 `project.json` 才是 Nx 正確姿勢。
+**Port 是 project 的屬性,不是某個 script 的屬性**：放 `project.json` 才是 Nx 正確姿勢。
 
 ### 驗證
 
@@ -289,35 +289,35 @@ pnpm client   # → http://localhost:4500       (Next.js)
 
 把這篇可重現的指令清單收進口袋,之後做事:
 
-1. **想 fork 換 stack**(例如改 tRPC、Astro、Remix)— 從 Step 1 開始,Step 5 / 6 換成對應 framework 的 generator(`@nx/remix:app`、`@nx/astro:app` 等)
-2. **想加新 app**(例如 mobile)— 只跑 Step 5 / 6 那條,生 `apps/mobile`
-3. **想加新 lib** — 只跑 Step 7,記得用 `--bundler=none` 跟 `--importPath`
-4. **想改 port** — 看是 NestJS(改 `main.ts`)還是 Next.js(改 `project.json`)
+1. **想 fork 換 stack**(例如改 tRPC、Astro、Remix)： 從 Step 1 開始,Step 5 / 6 換成對應 framework 的 generator(`@nx/remix:app`、`@nx/astro:app` 等)
+2. **想加新 app**(例如 mobile)： 只跑 Step 5 / 6 那條,生 `apps/mobile`
+3. **想加新 lib**：只跑 Step 7,記得用 `--bundler=none` 跟 `--importPath`
+4. **想改 port**：看是 NestJS(改 `main.ts`)還是 Next.js(改 `project.json`)
 
-> 這份 scaffold 不是「一勞永逸的 template」,而是「**一份可被 Claude Code 用 SDD 流程持續擴張的起點**」— 接下來無論你想加 GraphQL、TypeORM、Apollo Client、Chakra UI、auth、CI...都用 `/spec → /plan → /implement` 一個個進來,由 harness 把關品質。
+> 這份 scaffold 不是「一勞永逸的 template」,而是「**一份可被 Claude Code 用 SDD 流程持續擴張的起點**」： 接下來無論你想加 GraphQL、TypeORM、Apollo Client、Chakra UI、auth、CI...都用 `/spec → /plan → /implement` 一個個進來,由 harness 把關品質。
 
 ## 延伸閱讀
 
 ### Nx
 
 - [Nx Monorepo 官方首頁](https://nx.dev/)
-- [Nx Getting Started](https://nx.dev/getting-started/intro) — `create-nx-workspace` 入口
-- [Inferred Tasks 機制](https://nx.dev/concepts/inferred-tasks) — project.json 怎麼覆蓋
-- [Project Configuration Reference](https://nx.dev/reference/project-configuration) — `project.json` 完整 schema
-- [@nx/js plugin](https://nx.dev/nx-api/js) — `library` generator 與 bundler 選項
-- [@nx/nest plugin](https://nx.dev/nx-api/nest) — `application` generator
-- [@nx/next plugin](https://nx.dev/nx-api/next) — Next.js application generator
+- [Nx Getting Started](https://nx.dev/getting-started/intro)：`create-nx-workspace` 入口
+- [Inferred Tasks 機制](https://nx.dev/concepts/inferred-tasks)：project.json 怎麼覆蓋
+- [Project Configuration Reference](https://nx.dev/reference/project-configuration)：`project.json` 完整 schema
+- [@nx/js plugin](https://nx.dev/nx-api/js)：`library` generator 與 bundler 選項
+- [@nx/nest plugin](https://nx.dev/nx-api/nest)：`application` generator
+- [@nx/next plugin](https://nx.dev/nx-api/next)：Next.js application generator
 
 ### Framework
 
-- [NestJS First Steps](https://docs.nestjs.com/first-steps) — `main.ts` / `app.listen()` bootstrap pattern
-- [Next.js CLI Reference](https://nextjs.org/docs/app/api-reference/cli/next) — `next dev --port` 等所有指令選項
+- [NestJS First Steps](https://docs.nestjs.com/first-steps)：`main.ts` / `app.listen()` bootstrap pattern
+- [Next.js CLI Reference](https://nextjs.org/docs/app/api-reference/cli/next)：`next dev --port` 等所有指令選項
 
 ### pnpm
 
-- [pnpm settings — allowBuilds(pnpm 11+)](https://pnpm.io/settings#allowbuilds)
-- [pnpm settings — full reference](https://pnpm.io/settings)
+- [pnpm settings：allowBuilds(pnpm 11+)](https://pnpm.io/settings#allowbuilds)
+- [pnpm settings：full reference](https://pnpm.io/settings)
 
 ### 本系列
 
-- [Peter-To-Better/claude-harness-template](https://github.com/Peter-To-Better/claude-harness-template) — 本篇產出的 template repo
+- [Peter-To-Better/claude-harness-template](https://github.com/Peter-To-Better/claude-harness-template)：本篇產出的 template repo

@@ -11,15 +11,15 @@ draft: false
 
 ## 本篇重點
 
-本篇將深入介紹 Harness 中威力最大、也最危險的元件 — Hooks（生命週期鉤子）。從 Anthropic 在 2026 年 1 月正式推出的 12 個生命週期事件、PreToolUse 的封鎖機制、Exit Code 2 的決定性意義，到一份能套用在大型 NX Monorepo 的生產級 hook 設定，徹底搞懂怎麼用 hook 把「拜託 Agent」變成「不做到就動不了」。
+本篇將深入介紹 Harness 中威力最大、也最危險的元件：Hooks（生命週期鉤子）。從 Anthropic 在 2026 年 1 月正式推出的 12 個生命週期事件、PreToolUse 的封鎖機制、Exit Code 2 的決定性意義，到一份能套用在大型 NX Monorepo 的生產級 hook 設定，徹底搞懂怎麼用 hook 把「拜託 Agent」變成「不做到就動不了」。
 
 <!-- more -->
 
 ## 上集回顧
 
-[Ep-0](/posts/harness-engineering-學習筆記-ep-0) 我們建立了 **Agent = Model + Harness** 的世界觀，提到「機率性合規 vs 決定性約束」是整個 Harness Engineering 的精髓；[Ep-1](/posts/harness-engineering-學習筆記-ep-1) 拆解了 AGENTS.md，發現它雖然有用，但**只能把規則遵守機率從 0.5% 拉到 80%** — 仍然是機率性的。
+[Ep-0](/posts/harness-engineering-學習筆記-ep-0) 我們建立了 **Agent = Model + Harness** 的世界觀，提到「機率性合規 vs 決定性約束」是整個 Harness Engineering 的精髓；[Ep-1](/posts/harness-engineering-學習筆記-ep-1) 拆解了 AGENTS.md，發現它雖然有用，但**只能把規則遵守機率從 0.5% 拉到 80%**：仍然是機率性的。
 
-那剩下那 20% 怎麼辦？這集要請出 Harness 工具箱裡最強的武器 — **Hooks**。
+那剩下那 20% 怎麼辦？這集要請出 Harness 工具箱裡最強的武器：**Hooks**。
 
 ## 為什麼需要 Hooks？一個讓人不安的數字
 
@@ -27,7 +27,7 @@ draft: false
 
 > 純 prompt-based 的指令，Agent 大約只能達到 **70 ~ 90% 的合規率**。
 
-聽起來很高對吧？但換個角度想 — 這代表你每 10 次請 Agent「commit 前一定要跑測試」，**就有 1 ~ 3 次它會直接跳過**。如果你的 PR 一天有 50 個變更，那一週就會有大約 100 次「應該跑但沒跑」的情況進到 main。
+聽起來很高對吧？但換個角度想：這代表你每 10 次請 Agent「commit 前一定要跑測試」，**就有 1 ~ 3 次它會直接跳過**。如果你的 PR 一天有 50 個變更，那一週就會有大約 100 次「應該跑但沒跑」的情況進到 main。
 
 > 「'usually'（通常）跟 'always'（永遠）之間那道縫，就是 production system 出事的地方。」
 
@@ -35,7 +35,7 @@ Hooks 就是填補這道縫的工程手段。它不是叫 Agent「記得做」�
 
 ## 什麼是 Hook？
 
-Hook 是 **在 Agent 生命週期的特定時間點自動執行的程式碼**。它執行在 LLM 推理鏈**之外**的系統層，所以結果是 100% 確定的 — 不會因為 context window 變長、prompt 被覆蓋、模型心情不好而失靈。
+Hook 是 **在 Agent 生命週期的特定時間點自動執行的程式碼**。它執行在 LLM 推理鏈**之外**的系統層，所以結果是 100% 確定的：不會因為 context window 變長、prompt 被覆蓋、模型心情不好而失靈。
 
 你可以把它想成你已經熟悉的兩個概念：
 
@@ -46,7 +46,7 @@ Hook 是 **在 Agent 生命週期的特定時間點自動執行的程式碼**。
 | Husky / lint-staged         | PostToolUse hook            |
 | Webpack 的 lifecycle plugin | Claude Code 的 12 個事件    |
 
-差別在於 — git hook 攔的是「人類」的 commit，AI hook 攔的是「Agent」的每一次行動。
+差別在於：git hook 攔的是「人類」的 commit，AI hook 攔的是「Agent」的每一次行動。
 
 ## Claude Code 的 12 個生命週期事件
 
@@ -62,7 +62,7 @@ Anthropic 在 **2026 年 1 月** 正式把 Hooks 寫進 Claude Code 的官方 sp
 | `PostToolUseFailure`    | 工具執行失敗                   | 錯誤回饋、自動 retry           |
 | `SubagentStart`         | 派出子代理                     | 記錄、限制子代理權限           |
 | `SubagentStop`          | 子代理回報結果                 | 合併結果、檢查輸出             |
-| `Stop`                  | Claude 認為任務做完了          | **完成閘門** — 強制 test 通過  |
+| `Stop`                  | Claude 認為任務做完了          | **完成閘門**：強制 test 通過  |
 | `PreCompact`            | context 即將被壓縮             | 備份 transcript                |
 | `Setup`                 | `--init` 或 `--maintenance`    | 一次性初始化                   |
 | `SessionEnd`            | session 結束                   | 記錄、清理、上傳 log           |
@@ -73,9 +73,9 @@ Anthropic 在 **2026 年 1 月** 正式把 Hooks 寫進 Claude Code 的官方 sp
 
 Claude Code 的 hook 接受三種 handler，這是它跟 Cursor / Copilot 拉開差距的地方（後兩者目前只支援 command）：
 
-1. **command** — 跑一個 shell command，最常用。
-2. **prompt** — 餵一段 prompt 給輕量模型做語意判斷（例如「這個檔案改動有沒有牽涉到敏感邏輯？」）。
-3. **agent** — 派一個 sub-agent 做深度分析（例如「審視這個 PR 的安全性」）。
+1. **command**：跑一個 shell command，最常用。
+2. **prompt**：餵一段 prompt 給輕量模型做語意判斷（例如「這個檔案改動有沒有牽涉到敏感邏輯？」）。
+3. **agent**：派一個 sub-agent 做深度分析（例如「審視這個 PR 的安全性」）。
 
 入門先學 command 就夠用，等開始想做 semantic gating 再升級到 prompt / agent。
 
@@ -86,12 +86,12 @@ Claude Code 的 hook 接受三種 handler，這是它跟 Cursor / Copilot 拉開
 | Exit Code | 意義                                              |
 | :-------: | :------------------------------------------------ |
 | `0`       | 成功；stdout 內容會被當 JSON 處理                 |
-| **`2`**   | **Block — 工具呼叫被中止，stderr 內容回傳給 Claude** |
+| **`2`**   | **Block：工具呼叫被中止，stderr 內容回傳給 Claude** |
 | 其他      | 錯誤狀態，但執行繼續                              |
 
 **Exit code 2 是整個 Harness Engineering 的決定性開關**。
 
-舉個例子：你寫一個 `PreToolUse` hook，攔截每次 `Bash` 工具呼叫，檢查指令裡有沒有 `rm -rf` 或 `DROP TABLE`。一旦看到，hook 直接 `exit 2` — 此刻 Claude **連那條指令都還沒跑**，就被擋下來了。它不會「下次小心點」，而是**這次就根本沒辦法做**。這就是 Ep-0 講的「結構上不可能」。
+舉個例子：你寫一個 `PreToolUse` hook，攔截每次 `Bash` 工具呼叫，檢查指令裡有沒有 `rm -rf` 或 `DROP TABLE`。一旦看到，hook 直接 `exit 2`：此刻 Claude **連那條指令都還沒跑**，就被擋下來了。它不會「下次小心點」，而是**這次就根本沒辦法做**。這就是 Ep-0 講的「結構上不可能」。
 
 ## 五個生產級 Hook 範例（NX Monorepo 場景）
 
@@ -177,7 +177,7 @@ Claude Code 的 hook 接受三種 handler，這是它跟 Cursor / Copilot 拉開
 }
 ```
 
-`guard-bash.js` 對輸入的指令做正規式比對 — 看到 `rm -rf /`、`DROP TABLE`、`pnpm migration:revert` 在 main 分支執行……一律 `exit 2`。Agent 即使被 prompt injection 也無法執行。
+`guard-bash.js` 對輸入的指令做正規式比對：看到 `rm -rf /`、`DROP TABLE`、`pnpm migration:revert` 在 main 分支執行……一律 `exit 2`。Agent 即使被 prompt injection 也無法執行。
 
 ### 5. 完成閘門：所有測試沒過不准結束
 
@@ -223,11 +223,11 @@ Hook 很強，但它**不是萬靈丹**。以下情境用 hook 反而會傷自�
 
 把這集濃縮成三句話：
 
-1. **Hook 是 Harness Engineering 中唯一能達到 100% 合規的工具** — prompt 永遠是 70~90%。
-2. **PreToolUse + Exit Code 2 是決定性約束的核心** — 它讓「結構上不可能」這件事真的成立。
-3. **`.claude/settings.json` 進版控** — hook 設定是團隊的 Harness，不是個人偏好。
+1. **Hook 是 Harness Engineering 中唯一能達到 100% 合規的工具**：prompt 永遠是 70~90%。
+2. **PreToolUse + Exit Code 2 是決定性約束的核心**：它讓「結構上不可能」這件事真的成立。
+3. **`.claude/settings.json` 進版控**：hook 設定是團隊的 Harness，不是個人偏好。
 
-下一篇我們會聊另一個威力同等強大、但思路完全不同的元件 — **Sub-agents（子代理）**，怎麼用「context firewall」這個觀念，讓你的 Agent 在跑長任務時不會越跑越笨。
+下一篇我們會聊另一個威力同等強大、但思路完全不同的元件：**Sub-agents（子代理）**，怎麼用「context firewall」這個觀念，讓你的 Agent 在跑長任務時不會越跑越笨。
 
 ## 延伸閱讀
 

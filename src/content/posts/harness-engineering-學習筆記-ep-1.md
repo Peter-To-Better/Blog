@@ -11,7 +11,7 @@ draft: false
 
 ## 本篇重點
 
-本篇將深入介紹 Harness Engineering 中最基礎也最容易被誤用的元件 — AGENTS.md，從這個格式的起源、被超過 60,000 個專案採用的標準寫法，到 ETH Zurich 研究揭露的「寫太多反而更糟」殘酷數據，最後手把手帶你寫出一份精簡有效的 AGENTS.md。
+本篇將深入介紹 Harness Engineering 中最基礎也最容易被誤用的元件：AGENTS.md，從這個格式的起源、被超過 60,000 個專案採用的標準寫法，到 ETH Zurich 研究揭露的「寫太多反而更糟」殘酷數據，最後手把手帶你寫出一份精簡有效的 AGENTS.md。
 
 <!-- more -->
 
@@ -19,7 +19,7 @@ draft: false
 
 在 [Ep-0](/posts/harness-engineering-學習筆記-ep-0) 我們聊過 Harness Engineering 的核心公式 **Agent = Model + Harness**，也提到一份完整的 Coding Agent Harness 包含六大元件（System prompt、MCP、Skills、Sub-agents、Hooks、Back-pressure）。
 
-這一集要把放大鏡對準其中最基礎、也最常被誤用的那個元件 — **AGENTS.md**。
+這一集要把放大鏡對準其中最基礎、也最常被誤用的那個元件：**AGENTS.md**。
 
 ## 什麼是 AGENTS.md？
 
@@ -32,7 +32,7 @@ AGENTS.md 是一個放在專案根目錄的 Markdown 檔案，用來告訴 AI Co
 | README.md  | 人類     | 專案介紹、quick start、貢獻指南、Demo 連結 |
 | AGENTS.md  | AI Agent | build / test 指令、檔案結構、嚴格的規則    |
 
-為什麼需要分開？因為人類讀者看 README 是想「**判斷要不要用這個專案**」，而 Agent 看 AGENTS.md 是想「**馬上動手做事**」 — 兩者需要的資訊密度跟細節完全不同。把 lint 規則、commit message 格式、不能動哪些檔案塞進 README 會讓人類讀者超載，但對 Agent 來說卻是救命稻草。
+為什麼需要分開？因為人類讀者看 README 是想「**判斷要不要用這個專案**」，而 Agent 看 AGENTS.md 是想「**馬上動手做事**」：兩者需要的資訊密度跟細節完全不同。把 lint 規則、commit message 格式、不能動哪些檔案塞進 README 會讓人類讀者超載，但對 Agent 來說卻是救命稻草。
 
 ## 誰在用 AGENTS.md？
 
@@ -66,7 +66,7 @@ AGENTS.md 是一個放在專案根目錄的 Markdown 檔案，用來告訴 AI Co
 1. **AI 幫你生成的 AGENTS.md，反而會讓任務成功率「下降」3%**，同時把 token 成本拉高 20%。
 2. **人類手寫的 AGENTS.md 也只勉強提升 4%**，成本還是會增加。
 
-也就是說 — 與其讓 Claude / Cursor 一鍵幫你 init 一份 AGENTS.md，**不如什麼都不要寫**。這份研究等於把過去一年大家「叫 AI 自動產出 AGENTS.md」的工作流直接打臉。
+也就是說：與其讓 Claude / Cursor 一鍵幫你 init 一份 AGENTS.md，**不如什麼都不要寫**。這份研究等於把過去一年大家「叫 AI 自動產出 AGENTS.md」的工作流直接打臉。
 
 ## 為什麼會這樣？
 
@@ -81,7 +81,7 @@ Agent 自己 grep + ls 就能搞清楚的東西（哪個資料夾放什麼、用
 - 哪些檔案是 generated 的，改了會被 CI 覆蓋
 - 為什麼 commit 之前要先跑 `make typecheck`
 
-這就是 Harness Engineering 在 Ep-0 講過的精神 — **AGENTS.md 不是寫給 Agent 看「這專案長怎樣」，而是寫「Agent 自己看不出來的隱性規則」**。
+這就是 Harness Engineering 在 Ep-0 講過的精神：**AGENTS.md 不是寫給 Agent 看「這專案長怎樣」，而是寫「Agent 自己看不出來的隱性規則」**。
 
 ## 160x 規則：寫進去的工具會被用 160 倍
 
@@ -89,15 +89,15 @@ Agent 自己 grep + ls 就能搞清楚的東西（哪個資料夾放什麼、用
 
 > 被寫進 AGENTS.md 的指令／工具，被 Agent 實際呼叫的機率，是沒寫進去的 **160 倍**。
 
-意思是 — 如果你的專案有一個自製 CLI `./scripts/seed-db.sh`，你不寫進 AGENTS.md，Agent 幾乎不會發現它的存在，會自己 hardcode SQL 來造資料。寫進去，馬上變成首選工具。
+意思是：如果你的專案有一個自製 CLI `./scripts/seed-db.sh`，你不寫進 AGENTS.md，Agent 幾乎不會發現它的存在，會自己 hardcode SQL 來造資料。寫進去，馬上變成首選工具。
 
-這也呼應了 Ep-0 的「機率性 vs 決定性」— **AGENTS.md 不能保證 100% 被遵守，但它把機率從 0.5% 拉到 80%，已經是工程上巨大的差異**。
+這也呼應了 Ep-0 的「機率性 vs 決定性」： **AGENTS.md 不能保證 100% 被遵守，但它把機率從 0.5% 拉到 80%，已經是工程上巨大的差異**。
 
 ## 一份好的 AGENTS.md 應該寫什麼？
 
 根據 GitHub 官方分析 2500+ 個高品質 AGENTS.md 整理出的結論，一份好的 AGENTS.md 應該涵蓋這六大區塊（順序也有講究）：
 
-1. **Commands（執行指令）— 放最前面**
+1. **Commands（執行指令）： 放最前面**
    `pnpm dev`、`pnpm test --watch`、`pnpm typecheck` 這類每天都會用到的指令，連同參數一起列出。
 2. **Testing（測試規範）**
    用什麼 framework、跑哪些 suite、覆蓋率門檻多少。
@@ -112,7 +112,7 @@ Agent 自己 grep + ls 就能搞清楚的東西（哪個資料夾放什麼、用
    - 🟡 **ASK FIRST**：要先確認的事
    - 🛑 **NEVER**：絕對不能碰的事
 
-最後一條 Boundaries 是 Harness Engineering 精神最濃的一段 — 它把規則寫得越具體越偏執越好。
+最後一條 Boundaries 是 Harness Engineering 精神最濃的一段：它把規則寫得越具體越偏執越好。
 
 ## 該避免什麼？
 
@@ -126,7 +126,7 @@ Agent 自己 grep + ls 就能搞清楚的東西（哪個資料夾放什麼、用
 
 ## 範例：一份大型前後端系統的 AGENTS.md
 
-來看一個更貼近實戰的情境 — 一個 **Nx Monorepo** 同時包了 NestJS GraphQL 後端與 Next.js 前端的大型系統。這種專案最容易踩到「跨 lib、跨工具、跨語言」的隱性規則，正是 AGENTS.md 發揮最大威力的場景：
+來看一個更貼近實戰的情境：一個 **Nx Monorepo** 同時包了 NestJS GraphQL 後端與 Next.js 前端的大型系統。這種專案最容易踩到「跨 lib、跨工具、跨語言」的隱性規則，正是 AGENTS.md 發揮最大威力的場景：
 
 ```markdown
 # AGENTS.md
@@ -214,7 +214,7 @@ source of truth 是 `tsconfig.base.json`，以下僅供快速查找：
 - 不要在 service / resolver 命名出現 `Manager`
 ```
 
-整份大約 80 行，幾乎都是「**Agent 用 grep 跟 ls 看不出來**」的隱性規則 — `Relation<T>` 跟 `@Field` 的禁忌、Nx 必須透過 `nx run`、`schema.gql` 是 generated 不能改、命名禁止用 `Manager`。這些就是讓你的 Agent 從「會寫 code 但每次都踩雷」進化到「**順著專案慣例走**」的關鍵。
+整份大約 80 行，幾乎都是「**Agent 用 grep 跟 ls 看不出來**」的隱性規則：`Relation<T>` 跟 `@Field` 的禁忌、Nx 必須透過 `nx run`、`schema.gql` 是 generated 不能改、命名禁止用 `Manager`。這些就是讓你的 Agent 從「會寫 code 但每次都踩雷」進化到「**順著專案慣例走**」的關鍵。
 
 對照一下，**反例**會長這樣（請不要這樣寫）：
 
@@ -230,17 +230,17 @@ source of truth 是 `tsconfig.base.json`，以下僅供快速查找：
 ...（後面還有 50 行 ls 結果）
 ```
 
-這就是 ETH Zurich 研究裡讓成功率 **-3%** 的典型寫法 — 全部都是 Agent 自己 `ls` 就知道的事，浪費 context window 還誤導決策。
+這就是 ETH Zurich 研究裡讓成功率 **-3%** 的典型寫法：全部都是 Agent 自己 `ls` 就知道的事，浪費 context window 還誤導決策。
 
 ## 結論
 
 把這一集的觀念整理成三句話：
 
-1. **AGENTS.md 不是 README** — 它是寫給 Agent 看的「隱性規則手冊」，不是專案介紹。
-2. **少即是多** — ETH Zurich 證實過長或 AI 生成的 AGENTS.md 反而會讓成功率下降，控制在 60 ~ 150 行。
-3. **160x 規則** — 你想讓 Agent 用什麼工具、走什麼流程，**就一定要寫進去**，不寫等於不存在。
+1. **AGENTS.md 不是 README**：它是寫給 Agent 看的「隱性規則手冊」，不是專案介紹。
+2. **少即是多**：ETH Zurich 證實過長或 AI 生成的 AGENTS.md 反而會讓成功率下降，控制在 60 ~ 150 行。
+3. **160x 規則**：你想讓 Agent 用什麼工具、走什麼流程，**就一定要寫進去**，不寫等於不存在。
 
-下一篇會接著聊 Harness 裡威力最大、也最危險的元件 — **Hooks（生命週期鉤子）**，怎麼用 hook 把「拜託你 commit 前跑測試」變成「不跑就 commit 不了」的決定性約束。
+下一篇會接著聊 Harness 裡威力最大、也最危險的元件：**Hooks（生命週期鉤子）**，怎麼用 hook 把「拜託你 commit 前跑測試」變成「不跑就 commit 不了」的決定性約束。
 
 ## 延伸閱讀
 

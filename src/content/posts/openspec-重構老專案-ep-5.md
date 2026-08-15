@@ -11,14 +11,14 @@ draft: false
 
 ## 本篇重點
 
-[Ep-4](/posts/openspec-重構老專案-ep-4/) 結尾 phase-1 還停在「design 寫完 ready to apply」,中間我把 `/opsx:apply` 跑完、archive 進 `openspec/specs/auth/`,active change 槽位再次空出來。然後今天直接接 **phase-2-carbon-listings** — 整個專案的**商業核心**:landowner 上架碳匯 → admin 審 → buyer 買 → 系統 mark sold。一天從 propose 跑到 archive,69 個 Pest passing,前端 8 個 surface 全部 tsc clean。
+[Ep-4](/posts/openspec-重構老專案-ep-4/) 結尾 phase-1 還停在「design 寫完 ready to apply」,中間我把 `/opsx:apply` 跑完、archive 進 `openspec/specs/auth/`,active change 槽位再次空出來。然後今天直接接 **phase-2-carbon-listings**：整個專案的**商業核心**:landowner 上架碳匯 → admin 審 → buyer 買 → 系統 mark sold。一天從 propose 跑到 archive,69 個 Pest passing,前端 8 個 surface 全部 tsc clean。
 
 這篇我不流水帳,只挑**今天設計上最值得寫進筆記的四件事**:
 
-1. **角色推導 vs role enum** — 為什麼 seller / buyer 不寫進 `users.role`、而是看 `carbon_listings` / `carbon_purchases` 有沒有對應 row 推導出來,且這個決策在 `/me` 加了什麼成本
-2. **State machine 用 method + saving listener 雙保險** — 為什麼不靠 `if` 散在 controller 裡,也不只靠單一 `transitionTo()` 方法,而是兩道防線同時上
-3. **同時購買的 race condition 用三層防線** — `DB::transaction` + `lockForUpdate` 是經典解,但為什麼還加一個 `UNIQUE(carbon_listing_id)` 約束當「萬一」
-4. **`/me` 不開新端點直接 spread role flag** — 為什麼不另開 `/api/me/roles`,以及前端那個 `useSession()` 因此省掉的一次 round trip
+1. **角色推導 vs role enum**：為什麼 seller / buyer 不寫進 `users.role`、而是看 `carbon_listings` / `carbon_purchases` 有沒有對應 row 推導出來,且這個決策在 `/me` 加了什麼成本
+2. **State machine 用 method + saving listener 雙保險**：為什麼不靠 `if` 散在 controller 裡,也不只靠單一 `transitionTo()` 方法,而是兩道防線同時上
+3. **同時購買的 race condition 用三層防線**：`DB::transaction` + `lockForUpdate` 是經典解,但為什麼還加一個 `UNIQUE(carbon_listing_id)` 約束當「萬一」
+4. **`/me` 不開新端點直接 spread role flag**：為什麼不另開 `/api/me/roles`,以及前端那個 `useSession()` 因此省掉的一次 round trip
 
 最後一段寫 archive 的儀式:delta spec 怎麼 sync 回真相、為什麼 carbon-listings 是「全新 capability」而 auth 是「MODIFIED 既有 requirement」。
 
@@ -40,7 +40,7 @@ openspec/changes/
 └── (空 — active 槽位釋出)
 ```
 
-OpenSpec 紀律就是這樣推著走 — **槽位空,就等於下一個 change 該開了**。所以早上我直接打:
+OpenSpec 紀律就是這樣推著走：**槽位空,就等於下一個 change 該開了**。所以早上我直接打:
 
 ```bash
 /opsx:propose phase-2-carbon-listings
@@ -54,12 +54,12 @@ phase-2 的 proposal 跟 phase-1 一樣,真正的功夫不在「列出要做什�
 
 | 不做 | 為什麼 |
 |---|---|
-| **Web3 結算** | 平台代發、`web3p/web3.php` 串智能合約是 phase-3 — 設計上「上架成功 → 過戶」要先在 off-chain DB 跑通,再決定鏈上 mirror 哪些 state |
+| **Web3 結算** | 平台代發、`web3p/web3.php` 串智能合約是 phase-3：設計上「上架成功 → 過戶」要先在 off-chain DB 跑通,再決定鏈上 mirror 哪些 state |
 | **圖片 / 證明文件上傳** | mimetype + size 驗證 + storage driver 抽象是獨立 phase。本 phase 用純文字描述 + 開價就足夠跑通整個 flow |
 | **email 通知**(審核結果、購買收據) | mail driver / queue / template 是獨立 phase,本 phase 仰賴 UI 上看狀態,夠用 |
 | **工人 job 流程**(`legacy/registJob.php` / `jobrecall.php`) | 那是「土地維護」的循環,phase-4 再切。本 phase 只到「碳匯交易」 |
 
-縮 scope 的動機跟 phase-1 一樣:**一個 change 應該可以一氣呵成 archive**。phase-2 收進可控的 8 個 task group,合理估今天可以走完 — 結果真的是一天搞定。
+縮 scope 的動機跟 phase-1 一樣:**一個 change 應該可以一氣呵成 archive**。phase-2 收進可控的 8 個 task group,合理估今天可以走完：結果真的是一天搞定。
 
 ## design 決策 1:角色推導 vs role enum
 
@@ -74,13 +74,13 @@ Option B:role 只存 'admin' / 'general',seller / buyer 看「有沒有 row」�
 
 | 比較項 | Option A enum | Option B 推導 |
 |---|---|---|
-| 角色語意 | 顯式 — schema 一眼看出有哪些角色 | 隱式 — 要看 model 上的 helper |
-| 狀態同步 | ❌ 用戶第一次上架要記得 update `role` | ✅ 創 listing 就同步 — 不會忘 |
+| 角色語意 | 顯式：schema 一眼看出有哪些角色 | 隱式：要看 model 上的 helper |
+| 狀態同步 | ❌ 用戶第一次上架要記得 update `role` | ✅ 創 listing 就同步：不會忘 |
 | 一人多角 | ❌ 同一個 user 可能既賣又買,enum 沒辦法表達 | ✅ 兩個檢查獨立,各自存在不互斥 |
 | `/me` 成本 | ✅ 一個欄位讀完 | ❌ 兩個 EXISTS subquery |
 | schema migration | ✅ 一個 enum column | ❌ 需要兩個 helper + 兩個檢查 |
 
-選 B 的關鍵理由就是「一人多角」這欄。Carbon-ESG 的 user 自然會跨角色 — 一個賣家後來自己也買別人的碳匯,enum 表達不了「他既是 seller 又是 buyer」這件事。改成 row 推導以後,只要寫:
+選 B 的關鍵理由就是「一人多角」這欄。Carbon-ESG 的 user 自然會跨角色：一個賣家後來自己也買別人的碳匯,enum 表達不了「他既是 seller 又是 buyer」這件事。改成 row 推導以後,只要寫:
 
 ```php
 public function isSeller(): bool
@@ -98,7 +98,7 @@ Eloquent 把 `exists()` 編譯成 `SELECT EXISTS (SELECT 1 FROM ... LIMIT 1)`,**
 
 但這個選擇有個顯式的代價:**每次 `/api/me` 多兩個 EXISTS subquery**。設計時的 trade-off 表寫得很白:
 
-> 估算:每次 /me 多 2× `EXISTS` 查詢,各 < 1ms(carbon_listings.user_id 有 index,carbon_purchases.buyer_id 有 index)。在「角色變更不會錯過」跟「每次 me 多 < 2ms」之間選後者。如果未來真的變成熱點,優化路徑是 login 時 `loadCount` 進 session、cache 5 分鐘 — 但**那不是現在的問題**。
+> 估算:每次 /me 多 2× `EXISTS` 查詢,各 < 1ms(carbon_listings.user_id 有 index,carbon_purchases.buyer_id 有 index)。在「角色變更不會錯過」跟「每次 me 多 < 2ms」之間選後者。如果未來真的變成熱點,優化路徑是 login 時 `loadCount` 進 session、cache 5 分鐘：但**那不是現在的問題**。
 
 這段「優化路徑寫進來但不現在做」是我從 Ep-3 開始養成的習慣。把**未來會被人問的問題寫進 design**,以後不用再吵一次。
 
@@ -125,7 +125,7 @@ public function approve(CarbonListing $listing)
 }
 ```
 
-這樣寫的問題不在這個 controller — 在於 6 個 endpoint 每個都要重抄一次「what is allowed」的判斷,**散在 6 個檔案**。哪天加第 6 種狀態,你要記得改 6 處。漏一處就是個邏輯空洞。
+這樣寫的問題不在這個 controller：在於 6 個 endpoint 每個都要重抄一次「what is allowed」的判斷,**散在 6 個檔案**。哪天加第 6 種狀態,你要記得改 6 處。漏一處就是個邏輯空洞。
 
 正確的姿勢:把 transition 規則寫進 model,**所有寫入路徑都過這個方法**:
 
@@ -166,7 +166,7 @@ $listing->transitionTo('approved');
 $listing->save();
 ```
 
-但這樣其實還是有漏洞 — **如果有人在別的地方寫了**:
+但這樣其實還是有漏洞：**如果有人在別的地方寫了**:
 
 ```php
 $listing->status = 'sold';  // 繞過 transitionTo
@@ -238,7 +238,7 @@ public function purchase(CarbonListing $listing)
 }
 ```
 
-兩個 request 同時進來:兩個都讀到 `status = approved`、兩個都 transition 到 `sold`、兩個都 insert 一筆 purchase。**雙方都成功,但同一塊地賣了兩份** — 這是基本 race。
+兩個 request 同時進來:兩個都讀到 `status = approved`、兩個都 transition 到 `sold`、兩個都 insert 一筆 purchase。**雙方都成功,但同一塊地賣了兩份**：這是基本 race。
 
 第一層:**`DB::transaction` 把兩個 write 包成原子**
 
@@ -250,7 +250,7 @@ DB::transaction(function () use ($listing) {
 });
 ```
 
-兩個 write atomic,但不解 race — 兩個 transaction 仍然各自讀到 `approved` 然後各自 commit。
+兩個 write atomic,但不解 race：兩個 transaction 仍然各自讀到 `approved` 然後各自 commit。
 
 第二層:**`lockForUpdate` 在 transaction 內加行鎖**
 
@@ -303,7 +303,7 @@ try {
 
 是的有點 paranoid。但這是錢進來的入口,**多一層 schema-level 的保護成本是 0,出事的成本是無上限**。
 
-Pest 裡專門有一個 `PurchaseRaceTest`:**手動先塞一筆 purchase row 進 DB(模擬另一個 request 先得手),再從 controller 進來** — 預期 409。跑起來確實 409。
+Pest 裡專門有一個 `PurchaseRaceTest`:**手動先塞一筆 purchase row 進 DB(模擬另一個 request 先得手),再從 controller 進來**：預期 409。跑起來確實 409。
 
 ## design 決策 4:`/me` 不開新端點直接 spread role flag
 
@@ -366,7 +366,7 @@ public function me(Request $request): JsonResponse
 {user.isAdmin && <Link href="/admin/review">後台審核</Link>}
 ```
 
-設計上的小堅持:**`後台審核` 不只是 CSS 隱藏,而是條件渲染** — 非 admin 連 DOM 都沒這個 link,DevTools 翻不出來。
+設計上的小堅持:**`後台審核` 不只是 CSS 隱藏,而是條件渲染**：非 admin 連 DOM 都沒這個 link,DevTools 翻不出來。
 
 ## specs delta:全新 capability vs MODIFIED requirement
 
@@ -378,11 +378,11 @@ openspec/changes/phase-2-carbon-listings/specs/
 └── carbon-listings/spec.md     ← ADDED Requirements(全新 10 條)
 ```
 
-`auth/spec.md` 的 delta 只有一塊 `## MODIFIED Requirements`,動的是 `Requirement: Current-Session Endpoint` 那條 — 把回應 schema 加上三個 role flag。**這是 backward-compatible extension**,所以 delta 寫的時候特別在 spec 文裡寫一句「Existing client code that reads only `user.id` / `user.name` / `user.email` continues to work unchanged」。
+`auth/spec.md` 的 delta 只有一塊 `## MODIFIED Requirements`,動的是 `Requirement: Current-Session Endpoint` 那條：把回應 schema 加上三個 role flag。**這是 backward-compatible extension**,所以 delta 寫的時候特別在 spec 文裡寫一句「Existing client code that reads only `user.id` / `user.name` / `user.email` continues to work unchanged」。
 
-`carbon-listings/spec.md` 是 10 條 `## ADDED Requirements`,從「Carbon Listing Resource」一路到「Frontend Surfaces for Seller / Market / Admin」。為什麼分這麼細?因為 OpenSpec 的 spec 是要回答**未來那個忘記的自己**「這個系統當初為什麼長這樣」,而不是「我做了什麼」。每條 requirement 對應一個獨立的契約,有自己的 `#### Scenario` block — 寫一條 requirement 配 2 ~ 4 個 scenario,就把「正常路徑 / 異常路徑 / edge case」都釘下來了。
+`carbon-listings/spec.md` 是 10 條 `## ADDED Requirements`,從「Carbon Listing Resource」一路到「Frontend Surfaces for Seller / Market / Admin」。為什麼分這麼細?因為 OpenSpec 的 spec 是要回答**未來那個忘記的自己**「這個系統當初為什麼長這樣」,而不是「我做了什麼」。每條 requirement 對應一個獨立的契約,有自己的 `#### Scenario` block：寫一條 requirement 配 2 ~ 4 個 scenario,就把「正常路徑 / 異常路徑 / edge case」都釘下來了。
 
-舉一條最後寫得最痛快的 — **`Concurrent purchase loses gracefully`**:
+舉一條最後寫得最痛快的：**`Concurrent purchase loses gracefully`**:
 
 ```markdown
 #### Scenario: Concurrent purchase loses gracefully
@@ -423,7 +423,7 @@ $response->assertJsonPath('listing.status', 'pending');
 // 失敗:Expected 'pending', got null
 ```
 
-DB row 是 `pending`(`status` 欄位 default `'pending'`),但 `CarbonListing::create([...])` 回傳的 **in-memory model** 沒填 default 值 — `null`。修法:
+DB row 是 `pending`(`status` 欄位 default `'pending'`),但 `CarbonListing::create([...])` 回傳的 **in-memory model** 沒填 default 值：`null`。修法:
 
 ```php
 class CarbonListing extends Model
@@ -489,7 +489,7 @@ active change 槽位空了,**就等於 phase-3 該開了**。
 
 ## phase-3 預告
 
-下一個 change 八九不離十就是 **phase-3-web3-settlement** — `web3p/web3.php` 串智能合約、平台代發、買賣行為在鏈上 mirror。設計題:
+下一個 change 八九不離十就是 **phase-3-web3-settlement**：`web3p/web3.php` 串智能合約、平台代發、買賣行為在鏈上 mirror。設計題:
 
 - **on-chain 跟 off-chain 哪個是真相**?listing 一定先 off-chain create、approve、purchase,鏈上只 mirror final state 還是 mirror 每一個 transition?
 - **平台錢包代發的 nonce 管理**:同時兩筆 buy 過戶都要 sign tx,nonce 怎麼不打架(這次 race 是 DB,下次是鏈)
@@ -499,7 +499,7 @@ active change 槽位空了,**就等於 phase-3 該開了**。
 
 ## 收尾
 
-phase-2 一天從 propose 跑到 archive,印象最深的不是寫 code 那段(那段 Pest 推著走、tsc 推著走、跑得很順),是**早上花一小時把 design 那 10 個決策寫完那段**。把每個決策的 trade-off 寫進 design,後面寫 code 就只是執行 — **不用再吵一次該不該這樣選**。
+phase-2 一天從 propose 跑到 archive,印象最深的不是寫 code 那段(那段 Pest 推著走、tsc 推著走、跑得很順),是**早上花一小時把 design 那 10 個決策寫完那段**。把每個決策的 trade-off 寫進 design,後面寫 code 就只是執行：**不用再吵一次該不該這樣選**。
 
 > OpenSpec 在 spec 階段做的「先寫對為什麼」,在 apply 階段會把利息全部還給你。
 

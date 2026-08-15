@@ -11,14 +11,14 @@ draft: false
 
 ## 本篇重點
 
-[Ep-3](/posts/openspec-重構老專案-ep-3/) 結尾留下一個沒兌現的承諾:**「`lib/api.ts` 的 axios 已經對 Sanctum 比好手勢,但 Sanctum 那邊到底有沒有接住」** — 這篇就是接住的開始。phase-0 archive 之後 active change 槽位空了,自然接的下一個 change 叫 `phase-1-auth-sanctum`。
+[Ep-3](/posts/openspec-重構老專案-ep-3/) 結尾留下一個沒兌現的承諾:**「`lib/api.ts` 的 axios 已經對 Sanctum 比好手勢,但 Sanctum 那邊到底有沒有接住」**：這篇就是接住的開始。phase-0 archive 之後 active change 槽位空了,自然接的下一個 change 叫 `phase-1-auth-sanctum`。
 
-但實作之前,我想先把**怎麼設計**這件事拆給你看 — 因為 Sanctum SPA 模式有一個惡名:**設四個地方但只改三個,瀏覽器就吞 cookie 給你看,Network panel 一片綠的 200 但下一條 request 還是 401**。這種失敗模式不能等實作完才解,要在 spec 階段就把它釘成 requirement,讓任何想改 auth 的人(包括三個月後忘記的自己)都看得到。
+但實作之前,我想先把**怎麼設計**這件事拆給你看：因為 Sanctum SPA 模式有一個惡名:**設四個地方但只改三個,瀏覽器就吞 cookie 給你看,Network panel 一片綠的 200 但下一條 request 還是 401**。這種失敗模式不能等實作完才解,要在 spec 階段就把它釘成 requirement,讓任何想改 auth 的人(包括三個月後忘記的自己)都看得到。
 
 所以本篇主題:
 
 1. `/opsx:propose phase-1-auth-sanctum` 背後 **4 個 artifact** 各在做什麼
-2. **proposal**:scope 怎麼切 — 為什麼大量功能(email verify、role、admin policy)留給後續 phase
+2. **proposal**:scope 怎麼切：為什麼大量功能(email verify、role、admin policy)留給後續 phase
 3. **design**:八個關鍵設計決策,逐條給「為什麼這樣選」
 4. **specs**:**「三件套對齊」為什麼被寫進 spec 級別 requirement**,而不是只在 design 裡提一句
 5. **tasks**:48 個 task 怎麼分 5 個 group,每組為什麼正好是一個 commit boundary
@@ -37,7 +37,7 @@ openspec/changes/archive/2026-06-12-phase-0-bootstrap-monorepo/
 openspec/changes/                     ← 空,active change 槽位釋出
 ```
 
-active change 槽位空著一秒都不對 — 沒新 change 開,就等於工作停滯。所以我打:
+active change 槽位空著一秒都不對：沒新 change 開,就等於工作停滯。所以我打:
 
 ```bash
 /opsx:propose phase-1-auth-sanctum?
@@ -67,11 +67,11 @@ artifacts: [
 | 順序 | Artifact | 依賴 | 在回答什麼 |
 |---|---|---|---|
 | 1 | `proposal.md` | (none) | **這個 change 要做什麼 / 為什麼現在做** |
-| 2 | `design.md` | proposal | **怎麼做 — 關鍵決策跟 trade-off** |
+| 2 | `design.md` | proposal | **怎麼做：關鍵決策跟 trade-off** |
 | 3 | `specs/<capability>/spec.md` | proposal | **完成後系統行為的契約**(`ADDED Requirements`) |
 | 4 | `tasks.md` | proposal + design + specs | **逐步實作的 checklist,task group = commit 邊界** |
 
-這四個 artifact 不是隨便分的 — 它們**對應四個不同問題**:**what & why** / **how & why-this-how** / **observable contract** / **executable steps**。寫到第三個的時候你已經在替三個月後的自己回答「我那時候到底為什麼這樣選」,而不是只在記錄「我做了什麼」。
+這四個 artifact 不是隨便分的：它們**對應四個不同問題**:**what & why** / **how & why-this-how** / **observable contract** / **executable steps**。寫到第三個的時候你已經在替三個月後的自己回答「我那時候到底為什麼這樣選」,而不是只在記錄「我做了什麼」。
 
 ## proposal.md:scope 怎麼切
 
@@ -81,7 +81,7 @@ phase-1 的 proposal 真正的功夫不在「列出要做什麼」,而在「**�
 |---|---|
 | **角色細分**(seller / buyer / worker / admin 權限差異) | phase-2 carbon-listings 進來時透過「有沒有對應 row」推導,本 phase 只負責「**這個 user 是誰**」 |
 | **email verification** | 這是獨立功能,介面跟 `Auth::login()` 不衝突,可以單獨 phase 加 `MustVerifyEmail` interface + signed URL,不阻擋 phase-1 |
-| **forgot password / 2FA / OAuth** | 同上,各自獨立 phase。本 phase 連寄信都不做 — 註冊完即 active |
+| **forgot password / 2FA / OAuth** | 同上,各自獨立 phase。本 phase 連寄信都不做：註冊完即 active |
 | **production cross-domain 部署的 cookie 問題** | Safari ITP / Chrome 第三方 cookie 政策 + Sanctum SPA 在 cross-domain 部署的痛苦是另一個 phase 的事,本 phase scope 本機 `localhost:3000` ↔ `localhost:8000` |
 
 **有意縮 scope 的設計動機**:OpenSpec 的單一 change 應該**可以一氣呵成 archive**,scope 大到「兩三週才做得完」的 change 通常會卡在「快做完了但有個邊角還缺」進不去 archive,然後阻擋下一個 change 開始。phase-1 收進可控的 5 group 就是這個原因。
@@ -128,7 +128,7 @@ return Application::configure(basePath: dirname(__DIR__))
 | `backend/config/cors.php` `paths` | 含 `api/*` + `sanctum/csrf-cookie` |
 | `frontend/lib/api.ts` `withCredentials` + `withXSRFToken` | `true` 兩個都要 |
 
-**少改任一個的症狀**:axios 打 `/api/login` 收到 419(CSRF mismatch)/ 200 但 `Set-Cookie` 沒被瀏覽器存 / login 成功但下一條 `/api/me` 還是 401。每一個都對應到不同那一格沒對齊 — Ep-5 會做 Network panel debug clinic 把每個症狀對應 fix 攤開。
+**少改任一個的症狀**:axios 打 `/api/login` 收到 419(CSRF mismatch)/ 200 但 `Set-Cookie` 沒被瀏覽器存 / login 成功但下一條 `/api/me` 還是 401。每一個都對應到不同那一格沒對齊：Ep-5 會做 Network panel debug clinic 把每個症狀對應 fix 攤開。
 
 ### 決策 4:`useSession()` 是 **RSC-friendly 的雙形態 hook**
 
@@ -150,11 +150,11 @@ Next.js 16 App Router 的痛點:**server component 沒有 `window`,不能用 Rea
 └─────────────────────────────────────────────┘
 ```
 
-**`<SessionProvider>` 掛在 root `app/layout.tsx`**,server 先拿一次 session 以 `initialUser` 餵下去當 hydration seed — 避免 client 側第一次渲染就閃白屏發 fetch。Next.js 16 沒給你這個 pattern,但只要寫對一次,後續所有 page 都吃得到。
+**`<SessionProvider>` 掛在 root `app/layout.tsx`**,server 先拿一次 session 以 `initialUser` 餵下去當 hydration seed：避免 client 側第一次渲染就閃白屏發 fetch。Next.js 16 沒給你這個 pattern,但只要寫對一次,後續所有 page 都吃得到。
 
 ### 決策 5:`ensureCsrfCookie()` 一次性 + 自動失效
 
-phase-0 寫的 `csrfFetched: boolean` 模組變數會在「頁面 hard reload / 跨 tab 操作」自動 reset。**不需要在 logout 後手動 reset** — Laravel 在新 session 一旦建立會自動 rotate XSRF,axios 從 cookie 重讀就 OK。
+phase-0 寫的 `csrfFetched: boolean` 模組變數會在「頁面 hard reload / 跨 tab 操作」自動 reset。**不需要在 logout 後手動 reset**：Laravel 在新 session 一旦建立會自動 rotate XSRF,axios 從 cookie 重讀就 OK。
 
 ### 決策 6:axios response interceptor 處理 **401 全域重導**
 
@@ -172,7 +172,7 @@ api.interceptors.response.use(
 );
 ```
 
-關鍵是 `typeof window !== 'undefined'` —— **只在 client side 跑**,server side 由 RSC layout 自己用 `redirect()` 處理(更合 Next.js 慣例)。
+關鍵是 `typeof window !== 'undefined'`：**只在 client side 跑**,server side 由 RSC layout 自己用 `redirect()` 處理(更合 Next.js 慣例)。
 
 Trade-off:未來如果有「user 可以選擇登入,但沒登也能看內容」的頁面(e.g. 公開首頁背景 fetch `/api/me` 拿名字),401 自動重導會把這個 anonymous 路徑也彈到 login。phase-1 沒這需求,以後加 opt-out flag(`{ skipAuthRedirect: true }`)就好。
 
@@ -188,7 +188,7 @@ public function register(RegisterRequest $request) {
 }
 ```
 
-Trade-off:「API 是純 stateless 介面」的 mental model 在這破壞了 — register 不只建 row 還改 session。但這就是 Sanctum SPA 模式的本質,我們已經接受 SPA 不是 stateless API。
+Trade-off:「API 是純 stateless 介面」的 mental model 在這破壞了：register 不只建 row 還改 session。但這就是 Sanctum SPA 模式的本質,我們已經接受 SPA 不是 stateless API。
 
 ### 決策 8:password 規則用 Laravel `Password::defaults()` + `confirmed`
 
@@ -205,7 +205,7 @@ Trade-off:「API 是純 stateless 介面」的 mental model 在這破壞了 — 
 - **Option A**:三件套對齊只寫在 `design.md` 的 decisions section,當作 implementation guidance
 - **Option B**:三件套對齊**寫成 spec 級別 requirement**,包含明確 scenario
 
-我選 B。這是 OpenSpec 紀律下一個非常重要的細節 — 來看為什麼。
+我選 B。這是 OpenSpec 紀律下一個非常重要的細節：來看為什麼。
 
 phase-1 spec 內有十個 requirements,前九個都是 endpoint behavior(register 回什麼、login 拒絕什麼、me 在 401 場景的 response body 形狀...)很標準。**第十個** requirement 叫 **「Three-Way Configuration Alignment」**,長這樣:
 
@@ -238,9 +238,9 @@ The repository's auth-relevant configuration MUST stay aligned across
 
 **答案**:因為它是「**外部可觀察的系統契約**」,不是「實作怎麼選」。
 
-`SESSION_DOMAIN` 漏改是個 **observable behavior**(瀏覽器吞 cookie、me 回 401)。如果未來有人(包括三個月後的自己)為了「省事」把這四個觸點重新組合 — 例如把 `SANCTUM_STATEFUL_DOMAINS` 改成 `*` 想偷懶通配 — spec 會直接擋下來:**這違反了 Requirement,得寫 `## MODIFIED Requirements` 通過 OpenSpec 流程才能改**。
+`SESSION_DOMAIN` 漏改是個 **observable behavior**(瀏覽器吞 cookie、me 回 401)。如果未來有人(包括三個月後的自己)為了「省事」把這四個觸點重新組合：例如把 `SANCTUM_STATEFUL_DOMAINS` 改成 `*` 想偷懶通配：spec 會直接擋下來:**這違反了 Requirement,得寫 `## MODIFIED Requirements` 通過 OpenSpec 流程才能改**。
 
-換句話說:**把「最容易踩坑的設定」釘進 spec,等於替未來的自己樹立一個結構性提醒**。OpenSpec 紀律最大的好處之一就是這個 — 不是「documentation」,而是「**契約**」。
+換句話說:**把「最容易踩坑的設定」釘進 spec,等於替未來的自己樹立一個結構性提醒**。OpenSpec 紀律最大的好處之一就是這個：不是「documentation」,而是「**契約**」。
 
 ## tasks.md:5 個 group 對應 5 個 commit boundary
 
@@ -268,7 +268,7 @@ reviewer 也輕鬆:group ① commit 進來只動 3 個檔(`bootstrap/app.php`、
 
 實作會踩什麼坑,目前完全是 future tense。但根據 Sanctum SPA 模式的踩坑統計學,以下這幾條 99% 會出現:
 
-1. **`SESSION_DOMAIN` 漏設**:`/api/login` 回 200 但下一條 `/api/me` 還是 401 —— 瀏覽器吞了 Set-Cookie
+1. **`SESSION_DOMAIN` 漏設**:`/api/login` 回 200 但下一條 `/api/me` 還是 401：瀏覽器吞了 Set-Cookie
 2. **`stateful` 配 `localhost:3000` 還是 `127.0.0.1:3000`**:這兩個對瀏覽器是不同 origin,選錯會看到「我明明設了還是吞 cookie」
 3. **CSRF token mismatch 419**:`sanctum/csrf-cookie` 沒拿到、或 axios 沒 mirror 進 header、或 `cors.php` 沒把這條 path 列進 `paths`
 4. **Next.js RSC `cookies()` API 在 layout 內讀**:server 拿 cookies 之後 forward 給 backend 的 `/api/me` 寫法很微妙(要構造 `Cookie:` header,不能只 spread)

@@ -11,7 +11,7 @@ draft: false
 
 ## 本篇重點
 
-本篇將介紹 2026 年最熱門的 AI 工程概念 — Harness Engineering，從 Mitchell Hashimoto 提出的起源、核心公式 Agent = Model + Harness，到 Prompt、Context、Harness 三層工程的差異，帶你理解為什麼這個詞會在短短九十天內成為整個 AI 產業的共同語言。
+本篇將介紹 2026 年最熱門的 AI 工程概念：Harness Engineering，從 Mitchell Hashimoto 提出的起源、核心公式 Agent = Model + Harness，到 Prompt、Context、Harness 三層工程的差異，帶你理解為什麼這個詞會在短短九十天內成為整個 AI 產業的共同語言。
 
 <!-- more -->
 
@@ -21,7 +21,7 @@ draft: false
 
 差異不在模型，而在「**Harness（馬具）**」。
 
-Harness Engineering 直白翻譯是「馬具工程」，指的是設計 AI Agent 運作所處的**整個環境** — 包含工具、驗證邏輯、架構限制、回饋機制，目標是讓 Agent 能在無人監督下可靠地執行數小時。等等，先別急！馬具是什麼？跟 AI 又有什麼關係？接下來我會用幾個例子來幫你建立直覺。
+Harness Engineering 直白翻譯是「馬具工程」，指的是設計 AI Agent 運作所處的**整個環境**：包含工具、驗證邏輯、架構限制、回饋機制，目標是讓 Agent 能在無人監督下可靠地執行數小時。等等，先別急！馬具是什麼？跟 AI 又有什麼關係？接下來我會用幾個例子來幫你建立直覺。
 
 ## 這個詞是怎麼來的？
 
@@ -47,13 +47,13 @@ Agent = Model + Harness
 
 意思是：一個 AI Agent **不只是底層的語言模型**，還包含模型外面所有的系統、約束、回饋迴路。
 
-這個公式有多重要？看一個被廣泛引用的實驗 — **Hashline 改寫**：
+這個公式有多重要？看一個被廣泛引用的實驗：**Hashline 改寫**：
 
 - 同一個模型、同一份權重
 - 只把工具回傳的「行號雜湊（line hash）」格式改一改
 - 模型在某個 benchmark 上的成績從 **6.7% 飆升到 68.3%**
 
-模型完全沒換，只動了 Harness，效能就翻了 10 倍。這也是為什麼大家會說 — **Harness 才是產品，不是模型**。
+模型完全沒換，只動了 Harness，效能就翻了 10 倍。這也是為什麼大家會說：**Harness 才是產品，不是模型**。
 
 ## Prompt、Context、Harness 工程有什麼差別？
 
@@ -67,9 +67,9 @@ Agent = Model + Harness
 
 換句話說：
 
-- **Prompt Engineering** 優化的是**單次輸出** — 你怎麼把這一句話講好。
-- **Context Engineering** 管理的是**模型能看到的資訊** — 哪些檔案、哪些對話歷史、哪些工具回傳要塞進 context window。
-- **Harness Engineering** 打造的是**整個世界** — Agent 用什麼工具、能做什麼、不能做什麼、出錯時誰來糾正。
+- **Prompt Engineering** 優化的是**單次輸出**：你怎麼把這一句話講好。
+- **Context Engineering** 管理的是**模型能看到的資訊**：哪些檔案、哪些對話歷史、哪些工具回傳要塞進 context window。
+- **Harness Engineering** 打造的是**整個世界**：Agent 用什麼工具、能做什麼、不能做什麼、出錯時誰來糾正。
 
 層次越往下，影響力越大，但工程量也越大。
 
@@ -83,11 +83,11 @@ Agent = Model + Harness
 
 > 「請務必遵守團隊的 coding 標準，例如使用 2 空白縮排、變數命名要用 camelCase……」
 
-這是**機率性合規（probabilistic compliance）** — 模型「可能會」遵守，但有一定機率會忘記、忽略、或被其他指令蓋過。
+這是**機率性合規（probabilistic compliance）**：模型「可能會」遵守，但有一定機率會忘記、忽略、或被其他指令蓋過。
 
 ### 做法 B：接一個 linter，PR 違規時直接 fail
 
-這是**決定性約束（deterministic constraint）** — 不管模型多想偷懶，只要違規，CI 就紅燈，PR 進不去 main，Agent 必須回頭改到 lint pass 為止。
+這是**決定性約束（deterministic constraint）**：不管模型多想偷懶，只要違規，CI 就紅燈，PR 進不去 main，Agent 必須回頭改到 lint pass 為止。
 
 | 做法             | 性質       | 失敗率       | 信賴度 |
 | :--------------- | :--------- | :----------- | :----- |
@@ -105,7 +105,7 @@ Agent = Model + Harness
 3. **Skills（技能模組）**：可重複使用的知識區塊，採用 progressive disclosure，需要時才載入。
 4. **Sub-agents（子代理）**：把任務切成獨立的 session，避免主 context 被中間過程汙染（俗稱 context rot）。
 5. **Hooks（生命週期鉤子）**：在特定時間點自動執行的腳本，例如「commit 之前一定先跑 test」。
-6. **Back-pressure（回壓機制）**：測試、type check、lint — 當 Agent 寫錯時，這些訊號會逼它自我修正。
+6. **Back-pressure（回壓機制）**：測試、type check、lint：當 Agent 寫錯時，這些訊號會逼它自我修正。
 
 這些東西組合起來，就是讓 Agent 從「玩具 demo」進化成「能可靠交付」的關鍵。
 
@@ -119,7 +119,7 @@ Agent = Model + Harness
 - 你**給騎師地圖、告訴他賽道哪裡有彎、對手在哪** → 這是 **Context Engineering**
 - 你**鋪好整條賽道、設好欄杆、準備好獸醫、設定計時器和終點線** → 這就是 **Harness Engineering**
 
-最厲害的賽馬隊不會把希望全押在「騎師當天狀態好不好」，而是把整個賽道、馬具、後勤系統做到位 — **讓平庸的騎師也能跑出穩定的成績**。
+最厲害的賽馬隊不會把希望全押在「騎師當天狀態好不好」，而是把整個賽道、馬具、後勤系統做到位：**讓平庸的騎師也能跑出穩定的成績**。
 
 放回 AI 世界，這就是為什麼業界會說：
 
@@ -129,9 +129,9 @@ Agent = Model + Harness
 
 Harness Engineering 是 2026 年 AI 工程的新顯學，它的核心精神可以用三句話總結：
 
-1. **Agent = Model + Harness** — 模型只是其中一半，環境決定另一半。
-2. **每個錯誤都是一次工程機會** — 不是重寫 prompt，而是改造環境讓錯誤再也發生不了。
-3. **用決定性約束取代機率性合規** — 能用 hook、test、type check 解決的事，就不要靠口頭叮嚀。
+1. **Agent = Model + Harness**：模型只是其中一半，環境決定另一半。
+2. **每個錯誤都是一次工程機會**：不是重寫 prompt，而是改造環境讓錯誤再也發生不了。
+3. **用決定性約束取代機率性合規**：能用 hook、test、type check 解決的事，就不要靠口頭叮嚀。
 
 下一篇會深入聊 **AGENTS.md 應該怎麼寫**、為什麼人類手寫的 AGENTS.md 總是比 LLM 自動生成的好用，以及一份精簡 AGENTS.md 的實作範例。
 

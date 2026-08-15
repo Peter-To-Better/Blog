@@ -11,7 +11,7 @@ draft: false
 
 ## 本篇重點
 
-本篇將拆解當下最輕量的 spec-driven development 工具 OpenSpec 的兩個入門指令 — 從 `openspec init` 在你 repo 內安插的目錄、到 `openspec config profile` 為什麼把「**安裝在哪**」(Delivery)跟「**有哪些可用 workflow**」(Workflows)切成兩個獨立維度設定。看完你就能解讀為什麼 `/opsx:propose` 在 Claude Code 一打就出現，而你某個同事的 Cursor 卻沒有。
+本篇將拆解當下最輕量的 spec-driven development 工具 OpenSpec 的兩個入門指令：從 `openspec init` 在你 repo 內安插的目錄、到 `openspec config profile` 為什麼把「**安裝在哪**」(Delivery)跟「**有哪些可用 workflow**」(Workflows)切成兩個獨立維度設定。看完你就能解讀為什麼 `/opsx:propose` 在 Claude Code 一打就出現，而你某個同事的 Cursor 卻沒有。
 
 <!-- more -->
 
@@ -23,15 +23,15 @@ draft: false
 
 過去我重構過幾個專案，每次都遇到同一個問題:**做到一半忘記為什麼要這樣做**。三個月後新成員加入，翻 git log 找不到當初的決策。
 
-這次我想試試 spec-driven development — 用 [OpenSpec](https://github.com/Fission-AI/OpenSpec) 把**每一個重構決策都先寫下來，才動 code**。
+這次我想試試 spec-driven development：用 [OpenSpec](https://github.com/Fission-AI/OpenSpec) 把**每一個重構決策都先寫下來，才動 code**。
 
 系列預計 **5 集**,每集對應一個 OpenSpec 指令:
 
-1. **本篇** — `openspec init` + `openspec config profile`(安裝、設定)
-2. `/opsx:propose` — 提案與架構設計
-3. `/opsx:explore` — 自由發想、調查問題、釐清需求
-4. `/opsx:apply` — 依 `tasks.md` 實作程式碼
-5. `/opsx:archive` — 完成後歸檔與整理規範
+1. **本篇**：`openspec init` + `openspec config profile`(安裝、設定)
+2. `/opsx:propose`：提案與架構設計
+3. `/opsx:explore`：自由發想、調查問題、釐清需求
+4. `/opsx:apply`：依 `tasks.md` 實作程式碼
+5. `/opsx:archive`：完成後歸檔與整理規範
 
 ## 什麼是 OpenSpec?
 
@@ -45,7 +45,7 @@ OpenSpec 是一個 **npm 套件**(`@fission-ai/openspec`),核心理念是:**規�
 | **[AWS Kiro](https://kiro.dev)** | 規格 + IDE 都包好，但綁 AWS | 全部 buy-in AWS 生態 |
 | **OpenSpec** | 純 CLI + Markdown,**brownfield-first** | 重構既有系統、跨 AI 工具 |
 
-我這次選 OpenSpec 的決定性理由是「**brownfield-first**」 — 它**就是**為了「**改既有系統**」設計的，不像 Spec Kit 預設你在 greenfield。Carbon-ESG 不是綠地，我需要工具承認這件事。
+我這次選 OpenSpec 的決定性理由是「**brownfield-first**」：它**就是**為了「**改既有系統**」設計的，不像 Spec Kit 預設你在 greenfield。Carbon-ESG 不是綠地，我需要工具承認這件事。
 
 ## 誰在用 OpenSpec?
 
@@ -144,7 +144,7 @@ OpenSpec 把「**怎麼安裝**」這件事拆成**兩個獨立維度**:
 
 **Delivery 跟 Workflows 是正交的**(獨立的)。你可以 `delivery=commands` 配 `workflows=core`,也可以 `delivery=both` 配 `workflows=custom`。組合一共 **6 種**。
 
-### Delivery — 「**這些功能裝在哪裡**」
+### Delivery：「**這些功能裝在哪裡**」
 
 OpenSpec 的指令可以用**兩種型態**送進 AI 工具:
 
@@ -156,25 +156,25 @@ OpenSpec 的指令可以用**兩種型態**送進 AI 工具:
 
 我選 `both`。原因很簡單:**規劃時用 slash command(我要明確驅動)**;**問問題或卡關時靠 skill(讓 Claude 主動跳出來幫忙)**。
 
-### Workflows — 「**有哪些功能可用**」
+### Workflows：「**有哪些功能可用**」
 
 OpenSpec 提供兩個預設 profile:
 
-- **`core`** — 最小可用集合,**5 個 workflow**:`propose`、`explore`、`apply`、`sync`、`archive`
-- **`custom`**(完整) — **11 個 workflow**,加上 `new`、`continue`、`ff`、`verify`、`onboard`、`bulk-archive`
+- **`core`**：最小可用集合,**5 個 workflow**:`propose`、`explore`、`apply`、`sync`、`archive`
+- **`custom`**(完整)：**11 個 workflow**,加上 `new`、`continue`、`ff`、`verify`、`onboard`、`bulk-archive`
 
-`core` 適合「**只是想試試看**」的人 — **一輪 change 流程跑得完**,不會有選擇困難。
+`core` 適合「**只是想試試看**」的人：**一輪 change 流程跑得完**,不會有選擇困難。
 
-`custom` 適合「**要做大型重構**」的人 — 多出來的 6 個 workflow 各有特定場景。
+`custom` 適合「**要做大型重構**」的人：多出來的 6 個 workflow 各有特定場景。
 
 #### 11 個 workflow 速查表
 
 | Skill | 用途 | 何時用 |
 |---|---|---|
-| `/opsx:explore` | 探索模式 — 思考用、不寫 code | 動工前想釐清需求 / 設計 |
+| `/opsx:explore` | 探索模式：思考用、不寫 code | 動工前想釐清需求 / 設計 |
 | `/opsx:new` | 啟動新 change(逐步建 artifact) | 想一步步走完整流程 |
 | `/opsx:propose` | 一次產生完整提案(proposal / design / spec / tasks) | 知道要做什麼，想快速生提案 |
-| `/opsx:ff` | Fast-forward — 一次生出實作所需所有 artifact | 比 `propose` 更激進，直接到可實作狀態 |
+| `/opsx:ff` | Fast-forward：一次生出實作所需所有 artifact | 比 `propose` 更激進，直接到可實作狀態 |
 | `/opsx:continue` | 繼續建立下一個 artifact | change 做到一半要接下去 |
 | `/opsx:apply` | 依 `tasks.md` 逐項實作 | artifact 都齊了，開始寫 code |
 | `/opsx:verify` | 驗證實作是否符合 change artifact | 寫完想確認對齊 |
@@ -185,7 +185,7 @@ OpenSpec 提供兩個預設 profile:
 
 > 表格順序按「**一輪完整流程**」的時序排:從思考(`explore`) → 開 change(`new` / `propose` / `ff`) → 補 artifact(`continue`) → 實作(`apply`) → 驗證(`verify`) → 同步(`sync`) → 收尾(`archive` / `bulk-archive`),最後是教學專用的 `onboard`。
 
-我重構 Carbon-ESG 預計分 **6 個 phase**(每 phase 一個 change),這張表裡至少 **8 個 workflow** 我都會用到 — 所以我選 **`custom`**(全 11 個)。
+我重構 Carbon-ESG 預計分 **6 個 phase**(每 phase 一個 change),這張表裡至少 **8 個 workflow** 我都會用到：所以我選 **`custom`**(全 11 個)。
 
 ### 設定方法
 
@@ -203,13 +203,13 @@ openspec config profile
 openspec config profile custom
 ```
 
-**重點來了** — 設完之後，要跑一次 `openspec update` 讓變動反映到 `.claude/`:
+**重點來了**：設完之後，要跑一次 `openspec update` 讓變動反映到 `.claude/`:
 
 ```bash
 openspec update
 ```
 
-**否則**你的 `.claude/commands/opsx/` 跟 `.claude/skills/` 還是舊的 5 個，新的 6 個 workflow 不會自動出現。我看過不少人卡在這裡 — 「**我明明改了 profile,為什麼還是只看到 5 個指令?**」答案就是少跑了一次 `update`。
+**否則**你的 `.claude/commands/opsx/` 跟 `.claude/skills/` 還是舊的 5 個，新的 6 個 workflow 不會自動出現。我看過不少人卡在這裡：「**我明明改了 profile,為什麼還是只看到 5 個指令?**」答案就是少跑了一次 `update`。
 
 我這邊跑完 `openspec config list` 是這樣:
 
@@ -236,15 +236,15 @@ workflows:
 
 我看過不少人裝完 OpenSpec、跑了 `/opsx:propose` 然後問「**為什麼我沒有 `/opsx:verify`?**」。
 
-**99% 的原因**是他們的 profile 是 `core`,或自訂只開了一部分 — 但他們**以為自己沒裝對**。
+**99% 的原因**是他們的 profile 是 `core`,或自訂只開了一部分：但他們**以為自己沒裝對**。
 
-**Delivery + Workflows 這兩個維度就是 OpenSpec 整個系統的「世界觀設定」** — 你裝完之後接下來幾個禮拜的工作流,**都被這兩個值決定**。
+**Delivery + Workflows 這兩個維度就是 OpenSpec 整個系統的「世界觀設定」**：你裝完之後接下來幾個禮拜的工作流,**都被這兩個值決定**。
 
 從這裡開始講，後續每一篇講 `/opsx:propose` / `/opsx:explore` / `/opsx:apply` / `/opsx:archive` 才不會有人卡在「**我這邊怎麼沒這個指令**」。
 
 ## 下集預告
 
-Ep-2 講 `/opsx:propose` — **OpenSpec 的核心動作**。
+Ep-2 講 `/opsx:propose`：**OpenSpec 的核心動作**。
 
 我會從「**我要在 Carbon-ESG 開出 `phase-0-bootstrap-monorepo` 這個 change**」這個真實案例出發，展示:
 
@@ -260,7 +260,7 @@ Ep-2 講 `/opsx:propose` — **OpenSpec 的核心動作**。
 > **系列地圖**
 >
 > - **Ep-1:`openspec init` + `config profile`**(本篇)
-> - Ep-2:`/opsx:propose` — 提案與架構設計
-> - Ep-3:`/opsx:explore` — 自由發想 / 調查問題 / 釐清需求
-> - Ep-4:`/opsx:apply` — 依 `tasks.md` 實作程式碼
-> - Ep-5:`/opsx:archive` — 完成後歸檔與整理規範
+> - Ep-2:`/opsx:propose`：提案與架構設計
+> - Ep-3:`/opsx:explore`：自由發想 / 調查問題 / 釐清需求
+> - Ep-4:`/opsx:apply`：依 `tasks.md` 實作程式碼
+> - Ep-5:`/opsx:archive`：完成後歸檔與整理規範

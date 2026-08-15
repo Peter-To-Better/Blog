@@ -726,9 +726,9 @@ uv run python ep4_evaluation/report.py --correlate
 
 ### 延伸閱讀
 
-- [RAGAS 官方文件 — Evaluate a simple RAG system](https://docs.ragas.io/en/stable/getstarted/rag_eval/)
-- [RAGAS — List of available metrics](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/)
-- [Ollama — OpenAI compatibility](https://docs.ollama.com/openai)
+- [RAGAS 官方文件：Evaluate a simple RAG system](https://docs.ragas.io/en/stable/getstarted/rag_eval/)
+- [RAGAS：List of available metrics](https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/)
+- [Ollama：OpenAI compatibility](https://docs.ollama.com/openai)
 
 #### 這篇引用的 RAGAS 原始碼
 

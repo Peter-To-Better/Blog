@@ -11,16 +11,16 @@ draft: false
 
 ## 本篇重點
 
-[Ep-5](/posts/openspec-重構老專案-ep-5/) 收尾 phase-2-carbon-listings archive、active change 槽位空出來。phase-3 接手的是 Carbon-ESG **第四個行為角色 worker** — 工人申請、認領「需要維護的土地」、提交前後照片、admin 審核回報。一天從 propose 跑到 verify(archive 還沒按,等明天看 UI 沒問題再按),backend 133 Pest 全綠、frontend tsc clean、curl 模擬完整 SPA flow 19 步 + 13 個 protected route 全綠。
+[Ep-5](/posts/openspec-重構老專案-ep-5/) 收尾 phase-2-carbon-listings archive、active change 槽位空出來。phase-3 接手的是 Carbon-ESG **第四個行為角色 worker**：工人申請、認領「需要維護的土地」、提交前後照片、admin 審核回報。一天從 propose 跑到 verify(archive 還沒按,等明天看 UI 沒問題再按),backend 133 Pest 全綠、frontend tsc clean、curl 模擬完整 SPA flow 19 步 + 13 個 protected route 全綠。
 
 照例不流水帳,只挑**這次最值得寫進筆記的四件事**:
 
-1. **`saved` 跟 `saving` 是兩個 listener,職責分工** — phase-2 只用 `saving` 做 transition 驗證;phase-3 開始 `CarbonListing` 多掛一個 `saved`,負責「pending→sold 同時 `needs_workers=true` 就自動建一筆 WorkerJob」。為什麼是 `saved` 不是 `saving`、`WorkerJobReport.saved` 又怎麼回頭跟 parent `WorkerJob` 講話
-2. **`WorkerJob.rejected` 狀態在 apply 中途被砍** — 一開始 spec 寫了 5 個狀態,實作到 Pest 才意識到「rejected 是 report 的屬性,從來不是 job 的屬性」。`/opsx:apply` 半路修 spec 的儀式
-3. **multipart 上傳的 FormRequest 紅線** — `image|mimes:jpg,jpeg,png|max:5120`,**驗證在 controller body 之前**。為什麼 `mimes` 不只是看副檔名、`.php` 改名 `.jpg` 為什麼也擋得下、檔名怎麼徹底避開 user input
-4. **抓到一個 phase-1 就埋下的 latent bug** — Next.js server-side `fetch()` 只帶 `Cookie + Accept`,沒帶 `Referer`。Sanctum 的 `EnsureFrontendRequestsAreStateful` middleware 看的是 `Referer/Origin`,沒有 → 不認 stateful → session cookie 被忽略 → 401 → `(protected)/layout` 把人踢回 `/login`
+1. **`saved` 跟 `saving` 是兩個 listener,職責分工**：phase-2 只用 `saving` 做 transition 驗證;phase-3 開始 `CarbonListing` 多掛一個 `saved`,負責「pending→sold 同時 `needs_workers=true` 就自動建一筆 WorkerJob」。為什麼是 `saved` 不是 `saving`、`WorkerJobReport.saved` 又怎麼回頭跟 parent `WorkerJob` 講話
+2. **`WorkerJob.rejected` 狀態在 apply 中途被砍**：一開始 spec 寫了 5 個狀態,實作到 Pest 才意識到「rejected 是 report 的屬性,從來不是 job 的屬性」。`/opsx:apply` 半路修 spec 的儀式
+3. **multipart 上傳的 FormRequest 紅線**：`image|mimes:jpg,jpeg,png|max:5120`,**驗證在 controller body 之前**。為什麼 `mimes` 不只是看副檔名、`.php` 改名 `.jpg` 為什麼也擋得下、檔名怎麼徹底避開 user input
+4. **抓到一個 phase-1 就埋下的 latent bug**：Next.js server-side `fetch()` 只帶 `Cookie + Accept`,沒帶 `Referer`。Sanctum 的 `EnsureFrontendRequestsAreStateful` middleware 看的是 `Referer/Origin`,沒有 → 不認 stateful → session cookie 被忽略 → 401 → `(protected)/layout` 把人踢回 `/login`
 
-第四點我想額外多花筆墨 — 那是這次最像 distributed-debugging 的一段:**「為什麼直接 curl backend 是 200,但瀏覽器明明帶了一樣的 cookie 卻被踢回 login」**,整個排查路徑很值得記下來。
+第四點我想額外多花筆墨：那是這次最像 distributed-debugging 的一段:**「為什麼直接 curl backend 是 200,但瀏覽器明明帶了一樣的 cookie 卻被踢回 login」**,整個排查路徑很值得記下來。
 
 <!-- more -->
 
@@ -42,9 +42,9 @@ openspec/changes/
 └── (空 — phase-3 該開了)
 ```
 
-OpenSpec 紀律就是這樣推著走 — **槽位空,就等於下一個 change 該開了**。
+OpenSpec 紀律就是這樣推著走：**槽位空,就等於下一個 change 該開了**。
 
-跟 ep-5 預告稍微不一樣:我本來打算 phase-3 直接做 web3 結算,但實際打開 CLAUDE.md 看四個角色那一段,意識到 **worker(工人)整地 + 回報這條 loop** 才是 phase-2 真正缺的下一塊。Web3 結算是「把已經跑通的 DB 流程 mirror 上鏈」,但 worker loop 是「現在 DB 根本還沒有這個流程」。先補 DB 端的完整性再上鏈才合理 — 不然 phase-4 上鏈時還要回頭 patch worker 那條鏈。順序顛倒。
+跟 ep-5 預告稍微不一樣:我本來打算 phase-3 直接做 web3 結算,但實際打開 CLAUDE.md 看四個角色那一段,意識到 **worker(工人)整地 + 回報這條 loop** 才是 phase-2 真正缺的下一塊。Web3 結算是「把已經跑通的 DB 流程 mirror 上鏈」,但 worker loop 是「現在 DB 根本還沒有這個流程」。先補 DB 端的完整性再上鏈才合理：不然 phase-4 上鏈時還要回頭 patch worker 那條鏈。順序顛倒。
 
 於是改打:
 
@@ -52,7 +52,7 @@ OpenSpec 紀律就是這樣推著走 — **槽位空,就等於下一個 change �
 /opsx:propose phase-3-jobs
 ```
 
-scope 大概是:`legacy/registJob.php` 那個塞滿 modal 跟 PDO bind 的舊頁面用 OpenSpec 重新長出來 — worker 申請 → admin 核准 → 工人變 `isWorker=true` → 在 `/worker/jobs` 看到「賣家標記需要維護、買家已購買」的土地 → 認領 → 整地 → 上傳前後照片 → admin 核准回報。
+scope 大概是:`legacy/registJob.php` 那個塞滿 modal 跟 PDO bind 的舊頁面用 OpenSpec 重新長出來：worker 申請 → admin 核准 → 工人變 `isWorker=true` → 在 `/worker/jobs` 看到「賣家標記需要維護、買家已購買」的土地 → 認領 → 整地 → 上傳前後照片 → admin 核准回報。
 
 ## proposal 在切什麼
 
@@ -63,7 +63,7 @@ scope 大概是:`legacy/registJob.php` 那個塞滿 modal 跟 PDO bind 的舊頁
 | **Web3 on-chain 結算** | phase-3 的「admin 核准回報」目前只寫 DB。phase-4 才把同一個 transitionTo 包進 contract call,phase-3 故意把 `transitionTo()` + `DB::transaction()` 的 shape 設計成 phase-4 能直接 graft 上去的 strict superset |
 | **S3 / 私有 disk / signed URL** | 第一次有 multipart 上傳,本地 disk + `php artisan storage:link` 夠用。檔名用 `Str::random(40)` 不可猜,**有意接受「URL 拿到就能看圖」這個殘留風險**,bucket 移植留給後面 |
 | **email 通知 + 工人 rating** | 同 phase-2 的邏輯。沒有 mail driver / queue / template,phase-3 仍仰賴 UI 看狀態 |
-| **多個 worker 同時做一塊地 / job 超時自動取消** | `WorkerJob.worker_id` 單值。沒有 squad work、沒有 SLA。Worker 認領後消失就讓 job 卡著 — v2 問題 |
+| **多個 worker 同時做一塊地 / job 超時自動取消** | `WorkerJob.worker_id` 單值。沒有 squad work、沒有 SLA。Worker 認領後消失就讓 job 卡著：v2 問題 |
 
 縮 scope 的動機跟前幾次一樣:**一個 change 要可以一氣呵成 archive**。8 個 task group、估今天可以走完。實際上 backend 6 group 從早跑到下午、frontend 2 group 跑到晚上,中間還拆出一個 Sanctum bug,**這次延伸到第二天才完整 verify**(後面那段 war story 就是兇手)。
 
@@ -71,7 +71,7 @@ scope 大概是:`legacy/registJob.php` 那個塞滿 modal 跟 PDO bind 的舊頁
 
 ## design 決策 1:`saved` 跟 `saving` 是兩個 listener,職責分工
 
-phase-2 的 `CarbonListing` 已經掛了一個 `saving` listener,負責「擋掉繞過 `transitionTo()` 的非法 transition」(Ep-5 的 design 決策 2)。phase-3 要做的事情 **不能再塞進同一個 listener 裡** — 需求是:
+phase-2 的 `CarbonListing` 已經掛了一個 `saving` listener,負責「擋掉繞過 `transitionTo()` 的非法 transition」(Ep-5 的 design 決策 2)。phase-3 要做的事情 **不能再塞進同一個 listener 裡**：需求是:
 
 > 當 listing 從 `approved` transition 到 `sold`,而且 `needs_workers === true`,要 atomically 在 `worker_jobs` 開一筆 `status=open` 的工作機會,跟 `carbon_purchases` 的 insert 包在同一個 `DB::transaction()` 裡。
 
@@ -91,7 +91,7 @@ DB::transaction(function () use ($listing) {
 });
 ```
 
-這樣寫的問題跟 ep-5 那個 transition `if` 散在 controller 裡是一樣的 — **未來任何把 listing 變 sold 的路徑都要記得這段**。`/api/admin/manual-mark-sold` 哪天要開出來?要記得抄。Tinker 修資料把某個 listing 強塞成 sold?WorkerJob 不會建,事後爛尾。
+這樣寫的問題跟 ep-5 那個 transition `if` 散在 controller 裡是一樣的：**未來任何把 listing 變 sold 的路徑都要記得這段**。`/api/admin/manual-mark-sold` 哪天要開出來?要記得抄。Tinker 修資料把某個 listing 強塞成 sold?WorkerJob 不會建,事後爛尾。
 
 正確姿勢:**把副作用也寫進 model 的 lifecycle hook**。但這次不能用 `saving`,要用 `saved`。原因是 FK ordering:
 
@@ -128,7 +128,7 @@ protected static function booted(): void
 
 兩個 listener 各管各的,讀起來很乾淨。但這引出第二個問題:**這個 side effect 要被 `PurchaseController` 的 transaction 包起來,不能自己跑出 transaction 邊界**。
 
-幸好 Eloquent 的 `saved` 是 **同步觸發** — 它在 `DB::transaction(function () { ... })` 裡面被觸發的時候,`WorkerJob::create()` 走的也是同一個 connection、同一個 transaction。如果 `WorkerJob` insert 出事(例如有人手動先塞了一筆 stale row 進 `worker_jobs`,撞 `UNIQUE(carbon_listing_id)`),`QueryException` 會 bubble up,**整個 transaction 連同 carbon_purchases 跟 listing.status 一起 rollback**。
+幸好 Eloquent 的 `saved` 是 **同步觸發**：它在 `DB::transaction(function () { ... })` 裡面被觸發的時候,`WorkerJob::create()` 走的也是同一個 connection、同一個 transaction。如果 `WorkerJob` insert 出事(例如有人手動先塞了一筆 stale row 進 `worker_jobs`,撞 `UNIQUE(carbon_listing_id)`),`QueryException` 會 bubble up,**整個 transaction 連同 carbon_purchases 跟 listing.status 一起 rollback**。
 
 Pest 直接打這個 scenario:
 
@@ -211,7 +211,7 @@ open → claimed → reported → approved | rejected
 
 `spec.md` 寫:
 
-> The `status` column MUST take one of exactly five string values: `open`, `claimed`, `reported`, `approved`, `rejected`. ... `rejected` is NOT terminal — a rejected report flips the parent job back to `claimed` ...
+> The `status` column MUST take one of exactly five string values: `open`, `claimed`, `reported`, `approved`, `rejected`. ... `rejected` is NOT terminal：a rejected report flips the parent job back to `claimed` ...
 
 寫的時候沒覺得有問題,實作下去寫到 `transitionTo()` 的 ALLOWED_TRANSITIONS map 才開始覺得怪:
 
@@ -225,9 +225,9 @@ private const ALLOWED_TRANSITIONS = [
 ];
 ```
 
-問題出在我寫 `WorkerJobReport.saved` listener 的時候 — 它應該把 job 從 `reported` 怎麼樣?**到底是 `reported → rejected → claimed`,還是 `reported → claimed` 直接過?**
+問題出在我寫 `WorkerJobReport.saved` listener 的時候：它應該把 job 從 `reported` 怎麼樣?**到底是 `reported → rejected → claimed`,還是 `reported → claimed` 直接過?**
 
-仔細想了一下發現:**從來沒有任何 controller / endpoint 會把 job 變 rejected**。admin 退的是 `WorkerJobReport`(report 的屬性),不是 job。job 的「失敗狀態」根本是個影子概念 — 沒人會用到、沒人會看到。
+仔細想了一下發現:**從來沒有任何 controller / endpoint 會把 job 變 rejected**。admin 退的是 `WorkerJobReport`(report 的屬性),不是 job。job 的「失敗狀態」根本是個影子概念：沒人會用到、沒人會看到。
 
 繞了一圈我意識到:**rejection 是 report 的屬性,不是 job 的屬性**。job 的生命週期是「開放 → 認領 → 回報 → 核准」,沒有「失敗」這個 terminal。失敗是 report 那層的概念。
 
@@ -249,7 +249,7 @@ OpenSpec 的好處在這時候很明顯:**spec 不是聖經,apply 階段發現�
 
 commit 訊息我寫:
 
-> Implementation revealed WorkerJob.rejected status was redundant — rejection is always a property of the report, never the job, so the status was dropped and the rejection-bounce path is now reported → claimed. Spec updated in the same commit.
+> Implementation revealed WorkerJob.rejected status was redundant：rejection is always a property of the report, never the job, so the status was dropped and the rejection-bounce path is now reported → claimed. Spec updated in the same commit.
 
 `/opsx:apply` 的官方流程允許這種半路改 spec 的事:
 
@@ -272,7 +272,7 @@ if (!move_uploaded_file($frontTmpName, $frontTarget)) {
 }
 ```
 
-這段把 `CLAUDE.md` 安全紅線第 4 條的所有警告全部踩過去 — 沒驗 mimetype、沒驗 size、檔名直接從 user input 來、目錄存在性手動判斷。最危險的是**沒有任何 validation 就 `move_uploaded_file`** — 一個 PHP webshell 改名 `.jpg` 就直接寫進 web root。
+這段把 `CLAUDE.md` 安全紅線第 4 條的所有警告全部踩過去：沒驗 mimetype、沒驗 size、檔名直接從 user input 來、目錄存在性手動判斷。最危險的是**沒有任何 validation 就 `move_uploaded_file`**：一個 PHP webshell 改名 `.jpg` 就直接寫進 web root。
 
 新 stack 的紅線寫進 `SubmitReportRequest`:
 
@@ -294,7 +294,7 @@ class SubmitReportRequest extends FormRequest
 }
 ```
 
-關鍵設計是:**`FormRequest` 在 controller body 跑之前就跑完**。Laravel 在 controller method 被呼叫之前已經 resolve `SubmitReportRequest` — 這意味著:
+關鍵設計是:**`FormRequest` 在 controller body 跑之前就跑完**。Laravel 在 controller method 被呼叫之前已經 resolve `SubmitReportRequest`：這意味著:
 
 | 階段 | controller body 是否已執行 | 檔案是否已寫進 disk |
 |---|---|---|
@@ -338,19 +338,19 @@ storage/app/public/job-reports/teJ4dt3gPyGp9zoTs8ZXRtpFVN0nqoBZVKR3eAwZ.jpg
 
 `php artisan storage:link` 把 `storage/app/public/` 軟連結到 `public/storage/`,前端就可以從 `/storage/job-reports/<hash>.jpg` 直接取圖。
 
-這套寫起來的鬆耦合度,**前面 controller 完全不需要知道「副檔名是什麼、檔名怎麼生、路徑前綴是什麼」** — 全部由 `FormRequest` + `Storage` driver 處理掉。對照 legacy 那段把 `pathinfo()`、`md5(uniqid())`、`move_uploaded_file()` 全部塞在 controller body 裡的版本,差距很明顯。
+這套寫起來的鬆耦合度,**前面 controller 完全不需要知道「副檔名是什麼、檔名怎麼生、路徑前綴是什麼」**：全部由 `FormRequest` + `Storage` driver 處理掉。對照 legacy 那段把 `pathinfo()`、`md5(uniqid())`、`move_uploaded_file()` 全部塞在 controller body 裡的版本,差距很明顯。
 
 唯一接受的殘留風險:`/storage/job-reports/<hash>.jpg` 是 **public readable**。任何拿到 URL 的人都能看圖。**有意接受**,因為 hash 40 字、不可猜,前端在 admin queue / job detail 之外不會渲染這條 URL,而且 phase-4 上 S3 時會一併換 signed URL + private disk。寫進 design 的 "Risks / Trade-offs" 那段:
 
 > Hardening to signed URLs comes with the S3 phase.
 
-## bug 戰記:Sanctum 的 `Referer` header — phase-1 種下的雷,phase-3 自己踩
+## bug 戰記:Sanctum 的 `Referer` header：phase-1 種下的雷,phase-3 自己踩
 
 這段是 phase-3 最有 distributed-systems 味道的排查路徑,寫詳細一點。
 
 ### 症狀
 
-`/opsx:apply` 8 個 task group 全部跑完、Pest 133 綠、tsc clean、`openspec validate phase-3-jobs` 過。我跑 backend curl e2e 19 個 step 全綠 — backend 完全沒問題。然後切回 UI 想自己點一次完整流程,輸入帳號密碼按登入,**被踢回 `/login`**。重試、重啟、清 cookie、無痕視窗都一樣。
+`/opsx:apply` 8 個 task group 全部跑完、Pest 133 綠、tsc clean、`openspec validate phase-3-jobs` 過。我跑 backend curl e2e 19 個 step 全綠：backend 完全沒問題。然後切回 UI 想自己點一次完整流程,輸入帳號密碼按登入,**被踢回 `/login`**。重試、重啟、清 cookie、無痕視窗都一樣。
 
 第一直覺:CSRF / Sanctum config 哪裡沒對齊。grep `.env`:
 
@@ -518,14 +518,14 @@ curl -L -b /tmp/worker.jar http://localhost:3000/me
 
 phase-1 archive 時的驗證主要靠 Pest(testing client 自己 handle session,不走真實 RSC fetch) + client-side 的 axios(瀏覽器發 fetch 會自動帶 Origin)。phase-2 加了 `serverGet`,但 market / purchases / admin-review 我當時都是在已經登入很久的 session 上點進去,**Next.js dev server 的 fetch 偶爾會帶 `Referer`**(取決於 React Router 的 navigation 是 client-side 還是 RSC reload),測試覆蓋率剛好沒踩到「乾淨 session 的第一次 RSC fetch」這個 case。
 
-phase-3 我新加的 `getApplicationStatusFromCookies` 是 **`(protected)/layout` 裡每個 navigation 都會跑** 的 RSC fetch。一登入就跑、清完 cookie 重登也跑、無痕視窗一開始就跑 — 完全沒給 latent bug 任何閃避空間。
+phase-3 我新加的 `getApplicationStatusFromCookies` 是 **`(protected)/layout` 裡每個 navigation 都會跑** 的 RSC fetch。一登入就跑、清完 cookie 重登也跑、無痕視窗一開始就跑：完全沒給 latent bug 任何閃避空間。
 
 ### 心得
 
 兩個:
 
 1. **Latent bug 的特徵是「在受控環境跑很久才被特定路徑逼出來」**。phase-1 / 2 archive 時 Pest + tsc + 手動 click-through 都過,但「Pest 不走 RSC fetch、tsc 抓不到 runtime 401、手動 click-through 通常已經在 warm session 上」這三個盲點疊起來剛好讓 bug 躲過去
-2. **Backend 跟 Frontend 中間的「server-side fetch」是新型態的 attack surface**。傳統 SPA 客戶端 fetch 拿 Origin 拿得很順,server-side RSC fetch 預設什麼都沒帶。Sanctum 預設規則是針對「瀏覽器 SPA」設計的,不是針對「Node 上的 RSC」設計的 — 中間那個 gap 就是這次踩到的雷
+2. **Backend 跟 Frontend 中間的「server-side fetch」是新型態的 attack surface**。傳統 SPA 客戶端 fetch 拿 Origin 拿得很順,server-side RSC fetch 預設什麼都沒帶。Sanctum 預設規則是針對「瀏覽器 SPA」設計的,不是針對「Node 上的 RSC」設計的：中間那個 gap 就是這次踩到的雷
 
 寫進 commit message,將來 phase-N 的 me 再翻 git log 不會再花一小時排查。
 
@@ -555,7 +555,7 @@ phase-3 我新加的 `getApplicationStatusFromCookies` 是 **`(protected)/layout
 
 ## archive 還沒按
 
-寫到這裡 phase-3 還沒按 `/opsx:archive`,刻意留一晚等明天看 UI 是不是順 — Sanctum bug 抓到之後我已經不太信任「Pest + tsc + curl 全綠就代表 UX 順」這件事。明天起來把 worker / admin 兩條動線真的用瀏覽器點過一次,確認沒有第二個 latent bug,再按 archive。
+寫到這裡 phase-3 還沒按 `/opsx:archive`,刻意留一晚等明天看 UI 是不是順：Sanctum bug 抓到之後我已經不太信任「Pest + tsc + curl 全綠就代表 UX 順」這件事。明天起來把 worker / admin 兩條動線真的用瀏覽器點過一次,確認沒有第二個 latent bug,再按 archive。
 
 按下去之後:
 
@@ -584,7 +584,7 @@ phase-4 鎖定 **`phase-4-web3-settlement`**,scope:
 - `web3p/web3.php` 接 backend,平台錢包代發(buyer / worker 都不需要 MetaMask)
 - `POST /api/carbon-listings/{id}/purchase` 包進 contract call(`mint` ERC-1155 + transfer to buyer)
 - `POST /api/admin/job-reports/{id}/approve` 包進 contract call(把「這塊地的維護證明」mint 上鏈)
-- nonce 管理(同時兩筆 buy,signed tx 的 nonce 怎麼不打架 — 跟 phase-2 那個 DB race 是同型異種)
+- nonce 管理(同時兩筆 buy,signed tx 的 nonce 怎麼不打架：跟 phase-2 那個 DB race 是同型異種)
 - gas / tx revert 的 off-chain rollback
 - 私鑰絕對不進 git(`.env` 跟 `.env.example` 嚴格分,CI 環境變數注入)
 

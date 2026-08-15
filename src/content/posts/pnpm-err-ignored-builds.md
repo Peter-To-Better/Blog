@@ -47,7 +47,7 @@ pnpm approve-builds   # 上下鍵移動、「空白鍵」打勾、Enter 確認
 
 | Package | 為什麼要 build |
 |---|---|
-| `sharp` | 圖片最佳化核心，要編 libvips（C++）。沒編好會 fallback 到純 JS 版，效能差 5–10 倍 |
+| `sharp` | 圖片最佳化核心，要編 libvips（C++）。沒編好會 fallback 到純 JS 版，效能差 5~10 倍 |
 | `unrs-resolver` | Next.js 16 的新 module resolver（Rust），要編出 `.node` binary |
 
 ## 為什麼 `--force`、`rebuild`、`onlyBuiltDependencies` 都沒用？
@@ -69,11 +69,11 @@ repo 端的白名單還是要寫（讓 CI 和隊友的 fresh clone 直接吃到�
 }
 ```
 
-> ⚠️ 不要圖快用 `pnpm config set ignore-scripts false`——那是 global 放行所有 package，把供應鏈防線整個拆掉。
+> ⚠️ 不要圖快用 `pnpm config set ignore-scripts false`，那是 global 放行所有 package，把供應鏈防線整個拆掉。
 
 ## 誤按 Enter 之後：「There are no packages awaiting approval」
 
-`approve-builds` 的 prompt 寫著 `Press <space> to select`，但很多人下意識直接按 Enter——pnpm 會把它解讀成「**看過名單、全部不准跑**」，並寫進 user-level state。之後再跑 `pnpm approve-builds` 只會回你：
+`approve-builds` 的 prompt 寫著 `Press <space> to select`，但很多人下意識直接按 Enter，pnpm 會把它解讀成「**看過名單、全部不准跑**」，並寫進 user-level state。之後再跑 `pnpm approve-builds` 只會回你：
 
 ```
 There are no packages awaiting approval

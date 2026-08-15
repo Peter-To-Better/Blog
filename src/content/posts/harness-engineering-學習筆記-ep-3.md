@@ -11,7 +11,7 @@ draft: false
 
 ## 本篇重點
 
-前面三集我們把 Harness Engineering 的世界觀、AGENTS.md 與 Hooks 都學了一輪，理論到此告一段落。從這一集開始，我們要把學到的東西實體化 — 動手打造一份名為 **claude-harness-template** 的開源模板，**專為 Nx + NestJS + GraphQL + Next.js stack 設計**，讓你 clone 之後直接用 Claude Code 開發整個系統。本篇先做計畫介紹：要解決什麼問題、骨架長什麼樣、設計原則、以及接下來幾集的 roadmap。
+前面三集我們把 Harness Engineering 的世界觀、AGENTS.md 與 Hooks 都學了一輪，理論到此告一段落。從這一集開始，我們要把學到的東西實體化：動手打造一份名為 **claude-harness-template** 的開源模板，**專為 Nx + NestJS + GraphQL + Next.js stack 設計**，讓你 clone 之後直接用 Claude Code 開發整個系統。本篇先做計畫介紹：要解決什麼問題、骨架長什麼樣、設計原則、以及接下來幾集的 roadmap。
 
 <!-- more -->
 
@@ -29,7 +29,7 @@ draft: false
 
 > 「我懂了，**然後呢？**」
 
-## 然後呢？— 從理論到實作的斷層
+## 然後呢？： 從理論到實作的斷層
 
 老實說，這也是我自己看完業界一堆 Harness Engineering 文章之後的感覺。
 
@@ -42,7 +42,7 @@ draft: false
 
 每個問題單獨看都不難，但**全部加起來就會勸退一整個團隊**。
 
-這個落差就是我們要填的 — 我們需要一份**可以直接 clone 進去用**的模板。
+這個落差就是我們要填的：我們需要一份**可以直接 clone 進去用**的模板。
 
 ## 介紹：claude-harness-template
 
@@ -50,25 +50,25 @@ draft: false
 
 它的定位很簡單：
 
-> 一份**完整、可立即開始開發**的 Claude Code 起手包 — Nx + NestJS + GraphQL + TypeORM + Next.js + Chakra UI 的 workspace，加上一整套設計過的 harness。Clone 後跑 `pnpm install && pnpm dev` 就能讓 Claude Code 動手做 feature。
+> 一份**完整、可立即開始開發**的 Claude Code 起手包：Nx + NestJS + GraphQL + TypeORM + Next.js + Chakra UI 的 workspace，加上一整套設計過的 harness。Clone 後跑 `pnpm install && pnpm dev` 就能讓 Claude Code 動手做 feature。
 
 更精準地說，它要做這幾件事：
 
-- ✅ 完整的 **Nx workspace scaffold** — `apps/server`（NestJS GraphQL）、`apps/client`（Next.js 16）、`libs/` 範例
-- ✅ **經過設計**的 `AGENTS.md` — stack-specific HARD 規則，不是 AI 自動生成（符合 Ep-1 的 -3% 規避原則）
-- ✅ 完整的 **sub-agents 套組** — `code-reviewer`、`migration-writer`、`test-writer`、`graphql-feature`、`frontend-feature`、`nx-lib-creator`、`spec-writer`
-- ✅ **SDD slash commands** — `/spec`、`/plan`、`/implement` 串起整個開發流程
-- ✅ **生產級的 `.claude/settings.json` hooks** — 符合 Ep-2 的 Exit Code 2 範式
-- ✅ **CI 整合範例**（GitHub Actions）— hooks 不只在本地跑，PR 上也擋
+- ✅ 完整的 **Nx workspace scaffold**：`apps/server`（NestJS GraphQL）、`apps/client`（Next.js 16）、`libs/` 範例
+- ✅ **經過設計**的 `AGENTS.md`：stack-specific HARD 規則，不是 AI 自動生成（符合 Ep-1 的 -3% 規避原則）
+- ✅ 完整的 **sub-agents 套組**：`code-reviewer`、`migration-writer`、`test-writer`、`graphql-feature`、`frontend-feature`、`nx-lib-creator`、`spec-writer`
+- ✅ **SDD slash commands**：`/spec`、`/plan`、`/implement` 串起整個開發流程
+- ✅ **生產級的 `.claude/settings.json` hooks**：符合 Ep-2 的 Exit Code 2 範式
+- ✅ **CI 整合範例**（GitHub Actions）： hooks 不只在本地跑，PR 上也擋
 - ✅ 每個檔案都附上「**為什麼這樣設計**」的說明，不是黑盒子
 
 同樣重要的是，它**不做這些事**：
 
-- ❌ 不是通用模板 — 專為這個 stack 設計，其他 stack 請 fork
+- ❌ 不是通用模板：專為這個 stack 設計，其他 stack 請 fork
 - ❌ 不取代 Claude Code 官方文件（它是起手包，不是百科）
 - ❌ 不打算解決所有人的所有問題（我們會非常用力地控制 scope）
 
-換句話說 — **這個 template 本身，就是一次 Harness Engineering 的實踐**。
+換句話說：**這個 template 本身，就是一次 Harness Engineering 的實踐**。
 
 ## 為什麼這個 template 本身就是 Harness Engineering？
 
@@ -144,11 +144,11 @@ claude-harness-template/
 
 注意幾個設計細節：
 
-1. **`AGENTS.md` 放最外層** — 它是 Agent 第一個讀的檔案，跟 README 並列。
-2. **`.claude/` 分四個子資料夾** — `agents/`、`commands/`、`skills/`、`scripts/` 各司其職，符合 Ep-2 的「每個元件做好一件事」原則。
-3. **`apps/` + `libs/` 是 Nx workspace 的標準佈局** — clone 進來就能 `pnpm install && pnpm dev`，不需要再跑 `nx create-nx-workspace`。
-4. **`specs/` 進版控** — SDD 產出的規格檔跟 code 一起版控，PR review 時看得到 spec 變更。
-5. **`docs/` 走 conditional reference 模式** — `AGENTS.md` 不直接塞細節，需要時才指向 `docs/`。
+1. **`AGENTS.md` 放最外層**：它是 Agent 第一個讀的檔案，跟 README 並列。
+2. **`.claude/` 分四個子資料夾**：`agents/`、`commands/`、`skills/`、`scripts/` 各司其職，符合 Ep-2 的「每個元件做好一件事」原則。
+3. **`apps/` + `libs/` 是 Nx workspace 的標準佈局**：clone 進來就能 `pnpm install && pnpm dev`，不需要再跑 `nx create-nx-workspace`。
+4. **`specs/` 進版控**：SDD 產出的規格檔跟 code 一起版控，PR review 時看得到 spec 變更。
+5. **`docs/` 走 conditional reference 模式**：`AGENTS.md` 不直接塞細節，需要時才指向 `docs/`。
 
 ## 設計原則（動工前先講清楚）
 
@@ -158,7 +158,7 @@ claude-harness-template/
    能用慣例解決的事，不開設定。一個讀者只要照 README 跑 `git clone` + 改三個變數，就能上路。
 
 2. **Opinionated, stack-coupled**
-   專為 Nx + NestJS + GraphQL + TypeORM + Next.js 設計。對得上的人 `git clone` 立刻能用，對不上的人 fork 後改成自己的 stack。Ep-1 講過「真正有用的 AGENTS.md 必須有立場」— 整個 template 都套用同一條原則。
+   專為 Nx + NestJS + GraphQL + TypeORM + Next.js 設計。對得上的人 `git clone` 立刻能用，對不上的人 fork 後改成自己的 stack。Ep-1 講過「真正有用的 AGENTS.md 必須有立場」： 整個 template 都套用同一條原則。
 
 3. **Everything explained, nothing magical**
    每個 hook、每個 agent、每個 command，**註解一定要寫「為什麼存在」**。沒人看得懂的設定一律不收。
@@ -189,7 +189,7 @@ claude-harness-template/
 2. **claude-harness-template 是把 Ep-0 ~ Ep-2 學到的觀念實體化**，本身就是一次 Harness Engineering 的實踐。
 3. **我們會按 roadmap 每集交付一塊**，每一集寫完 main branch 都能直接用，沒有半成品。
 
-下一篇 **Ep-4 — Sub-agents：用 Context Firewall 讓 Agent 越跑越聰明**，會深入介紹 sub-agent 的概念跟 context rot 的問題，並動手做出 template 的第一批 6 個 sub-agent — 涵蓋 code review、TypeORM migration、Jest 測試、GraphQL feature、Next.js feature、Nx lib 建立。
+下一篇 **Ep-4：Sub-agents：用 Context Firewall 讓 Agent 越跑越聰明**，會深入介紹 sub-agent 的概念跟 context rot 的問題，並動手做出 template 的第一批 6 個 sub-agent：涵蓋 code review、TypeORM migration、Jest 測試、GraphQL feature、Next.js feature、Nx lib 建立。
 
 我們開工吧。
 

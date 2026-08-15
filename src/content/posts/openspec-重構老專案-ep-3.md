@@ -15,9 +15,9 @@ draft: false
 
 1. 它背後跑的 8 個 flag,每一個都是設計決策
 2. pnpm 11 之後預設**擋住所有 native build scripts**,所以 sharp / unrs-resolver 第一次 install 一定會出 `Aborting installation`,你要會解
-3. `.nvmrc` 寫 20.19.0,我本機卻是 Node 24 — 怎麼降版?要不要降?
+3. `.nvmrc` 寫 20.19.0,我本機卻是 Node 24：怎麼降版?要不要降?
 4. 預設 starter 給的首頁 65 行充滿 Vercel 廣告連結,要怎麼換成「能驗證後端通了」的最小版
-5. `lib/api.ts` 的 axios 為什麼一字一句長那樣 — 那不是隨便寫,而是**對齊 Sanctum SPA 模式的契約**
+5. `lib/api.ts` 的 axios 為什麼一字一句長那樣：那不是隨便寫,而是**對齊 Sanctum SPA 模式的契約**
 
 Ep-2 結尾原本說 Ep-3 要講 Sanctum,但實際拆下去發現「Next.js scaffold + 前後端 cookie 對接」放一篇太擠。所以這篇先把前端站起來,**Sanctum SPA 完整對接(CSRF / cookie / Bootstrap middleware / 第一個 protected 路由)留 Ep-4 專場拆**。
 
@@ -60,7 +60,7 @@ pnpm create next-app@latest frontend \
 | Flag | 它在做什麼 | 為什麼這樣選 |
 |---|---|---|
 | `pnpm create next-app@latest` | 透過 pnpm 跑 create-next-app 最新版 | 對齊 backend 用 Composer、frontend 用 pnpm 的雙語套件管理。`@latest` 是因為我們鎖了 Next.js 16,要拉到對應版本的 scaffolder |
-| `frontend` | 把專案放到 `frontend/` 子目錄 | 對齊 [monorepo 設計](/posts/openspec-重構老專案-ep-1/) — `/backend/` + `/frontend/` 雙子專案 |
+| `frontend` | 把專案放到 `frontend/` 子目錄 | 對齊 [monorepo 設計](/posts/openspec-重構老專案-ep-1/)：`/backend/` + `/frontend/` 雙子專案 |
 | `--typescript` | 用 TypeScript 而不是 JS | 不解釋,2026 年沒有理由開新 React 專案不用 TS |
 | `--eslint` | 內建 ESLint 設定 | 對 PR review 一致性是必要,而且 Next.js 自帶的 `eslint-config-next` 有 Core Web Vitals 規則 |
 | `--tailwind` | 內建 Tailwind v4 + PostCSS 設定 | Carbon-ESG 不想自己刻 CSS 跟 design tokens,Tailwind v4 + shadcn/ui 是現在 React 生態最低摩擦 |
@@ -70,7 +70,7 @@ pnpm create next-app@latest frontend \
 | `--use-pnpm` | 用 pnpm 跑 install,不要 npm | 對齊 [Ep-1 鎖死決策](/posts/openspec-重構老專案-ep-1/) 的「frontend 用 pnpm」 |
 | `--yes` | 跳過所有互動式提問,全用 flag 預設值 | 給 CI / scripted scaffold 用。沒這個 flag 你會被問 7 次 yes/no |
 
-## 第一個坑:`ERR_PNPM_IGNORED_BUILDS` Ignored build scripts — pnpm 11 擋住了 native build
+## 第一個坑:`ERR_PNPM_IGNORED_BUILDS` Ignored build scripts：pnpm 11 擋住了 native build
 
 第一次跑會看到這段:
 
@@ -95,7 +95,7 @@ Next.js 16 預設依賴兩個會跑 build script 的 package:
 
 | Package | 為什麼要 native build |
 |---|---|
-| `sharp` | image optimization 的核心,跑 libvips C++。沒編好的話 Next.js 會 fallback 到純 JS 版,效能差 5–10 倍 |
+| `sharp` | image optimization 的核心,跑 libvips C++。沒編好的話 Next.js 會 fallback 到純 JS 版,效能差 5~10 倍 |
 | `unrs-resolver` | Next.js 16 的新 module resolver(Rust 寫的),取代過去的 enhanced-resolve。也要編 Rust 出 `.node` |
 
 兩個都要編,所以兩個都得列。最乾淨的解法是在 `frontend/package.json` 加上:
@@ -108,7 +108,7 @@ Next.js 16 預設依賴兩個會跑 build script 的 package:
 }
 ```
 
-加完之後 `pnpm install` 不會再 abort,**但已經 install 過一次的話 native build 不會自動補跑** — 要再手動觸發:
+加完之後 `pnpm install` 不會再 abort,**但已經 install 過一次的話 native build 不會自動補跑**：要再手動觸發:
 
 ```bash
 cd frontend
@@ -197,8 +197,8 @@ export default function Home() {
 
 關鍵兩個選擇:
 
-1. **沒寫 `'use client'`** — 預設是 RSC(Server Component)。`process.env.NEXT_PUBLIC_API_URL` 在 build time / server 都讀得到,**不需要 client 端 hydration**。這是 App Router 寫法該有的肌肉記憶
-2. **`process.env.NEXT_PUBLIC_API_URL ?? fallback`** — Next.js 規則:`NEXT_PUBLIC_` 開頭的環境變數會被 bundle 進 client。沒設就 fallback 到 localhost:8000,**避免本機沒 `.env.local` 也能跑**
+1. **沒寫 `'use client'`**：預設是 RSC(Server Component)。`process.env.NEXT_PUBLIC_API_URL` 在 build time / server 都讀得到,**不需要 client 端 hydration**。這是 App Router 寫法該有的肌肉記憶
+2. **`process.env.NEXT_PUBLIC_API_URL ?? fallback`**：Next.js 規則:`NEXT_PUBLIC_` 開頭的環境變數會被 bundle 進 client。沒設就 fallback 到 localhost:8000,**避免本機沒 `.env.local` 也能跑**
 
 要 surface 環境變數,前端對應的 `.env.example` 也要寫:
 
@@ -288,7 +288,7 @@ curl http://localhost:3000           # 應該看到含 "Hello, Carbon-ESG" 的 H
 
 ## 踩坑實錄:跑驗收三條指令真實發生了什麼
 
-寫完上面那段「跑這三條就收工」的瞬間我就意識到 — 我自己**還沒實際打過那三條**。把 ep-3 草稿丟過去第一次走完,連鎖炸了五次:
+寫完上面那段「跑這三條就收工」的瞬間我就意識到：我自己**還沒實際打過那三條**。把 ep-3 草稿丟過去第一次走完,連鎖炸了五次:
 
 ```text
 ➜  frontend (main) cd frontend
@@ -312,15 +312,15 @@ curl: (7) Failed to connect to localhost port 3000 after 0 ms
 
 五個問題壓在一起,每一個都值得拆:
 
-### 1. `cd frontend` 失敗 — 你已經在 `frontend/` 裡了
+### 1. `cd frontend` 失敗：你已經在 `frontend/` 裡了
 
-你的 prompt 已經顯示 `frontend (main)`,再打一次 `cd frontend` 自然找不到 `frontend/frontend/`。永遠先 `pwd` 確認再動 — **或者寫 blog 教學的人少給一句 `cd frontend`,我就是後者,認**。
+你的 prompt 已經顯示 `frontend (main)`,再打一次 `cd frontend` 自然找不到 `frontend/frontend/`。永遠先 `pwd` 確認再動：**或者寫 blog 教學的人少給一句 `cd frontend`,我就是後者,認**。
 
-### 2. `--frozen-lockfile` exit 0,但 build 沒跑 — 這是真正的陷阱
+### 2. `--frozen-lockfile` exit 0,但 build 沒跑：這是真正的陷阱
 
 `onlyBuiltDependencies` 是我在 `package.json` 加上去之後,**lockfile 早就被前一次失敗的 install 凍住了**。`--frozen-lockfile` 的契約是:**驗證 lockfile 跟 `package.json` 解出來的 deps tree 一致,不重 resolve**。它根本不檢查 approval 規則變了沒。
 
-所以你會看到 exit 0(lockfile 真的 valid)、warning(builds 沒跑)、`node_modules/sharp/build/Release/*.node` **不存在**。production build 會 fallback 到純 JS sharp,慢 5–10 倍 — 而你**在 dev mode 完全發現不了**,因為 dev 也 fallback,只是稍慢一點。
+所以你會看到 exit 0(lockfile 真的 valid)、warning(builds 沒跑)、`node_modules/sharp/build/Release/*.node` **不存在**。production build 會 fallback 到純 JS sharp,慢 5~10 倍：而你**在 dev mode 完全發現不了**,因為 dev 也 fallback,只是稍慢一點。
 
 > 教訓:`--frozen-lockfile` 看到的是 lockfile 形狀對,不是 install 真的乾淨。要驗 native 編好沒,看 `node_modules/sharp/build/Release/` 有沒有 `.node`,**不要相信 exit code**。
 
@@ -330,7 +330,7 @@ curl: (7) Failed to connect to localhost port 3000 after 0 ms
 
 > 「我看到的 `package.json` 跟手上的 lockfile / node_modules 一致嗎?不一致的話,我先幫你 `pnpm install` reconcile 再跑 script。」
 
-立意良善 — 避免「`package.json` 改了忘記 install 就跑 dev → import 找不到」的尷尬。但它跑的 install 同樣會被 `onlyBuiltDependencies` 的 approval 機制擋住,於是:
+立意良善：避免「`package.json` 改了忘記 install 就跑 dev → import 找不到」的尷尬。但它跑的 install 同樣會被 `onlyBuiltDependencies` 的 approval 機制擋住,於是:
 
 ```
 [ERR_PNPM_IGNORED_BUILDS] → install exit 1 → dev 連帶 abort
@@ -338,13 +338,13 @@ curl: (7) Failed to connect to localhost port 3000 after 0 ms
 
 ### 4. `curl` connection refused 是徵兆,不是 root cause
 
-step 3 abort 之後沒人在 listen 3000 port,curl 立刻收到「對方沒開 socket」的 TCP RST。`after 0 ms` 那個 **0 ms** 就是線索 — 真的 dev 在 boot 的話,curl 會等 `--connect-timeout` 而不是秒拒。
+step 3 abort 之後沒人在 listen 3000 port,curl 立刻收到「對方沒開 socket」的 TCP RST。`after 0 ms` 那個 **0 ms** 就是線索：真的 dev 在 boot 的話,curl 會等 `--connect-timeout` 而不是秒拒。
 
 ### 5. 為什麼 `pnpm install --force` 跟 `pnpm rebuild` 都救不了
 
-我嘗試過 `--force` reinstall、嘗試過 `pnpm rebuild sharp unrs-resolver`、嘗試過 `pnpm install` non-frozen — 全部都顯示 `Ignored build scripts`。**pnpm 11 把 build approval 拉到比 lockfile 還高階的層級**:就算 `package.json` 列了 `onlyBuiltDependencies`,**這個版本仍要求你親自過一次 `pnpm approve-builds` 互動式確認**才會把 approval 寫進 user-level 信任 store(`~/.pnpm-config.yaml` 之類),之後同一台機器才不再問。
+我嘗試過 `--force` reinstall、嘗試過 `pnpm rebuild sharp unrs-resolver`、嘗試過 `pnpm install` non-frozen：全部都顯示 `Ignored build scripts`。**pnpm 11 把 build approval 拉到比 lockfile 還高階的層級**:就算 `package.json` 列了 `onlyBuiltDependencies`,**這個版本仍要求你親自過一次 `pnpm approve-builds` 互動式確認**才會把 approval 寫進 user-level 信任 store(`~/.pnpm-config.yaml` 之類),之後同一台機器才不再問。
 
-也就是說 — `package.json` 的 `onlyBuiltDependencies` 是「**我這個 repo 同意跑哪些 build**」,而 `pnpm approve-builds` 是「**我這個人類同意我這台機器跑那些 build**」,**兩件事**,缺一不可。
+也就是說：`package.json` 的 `onlyBuiltDependencies` 是「**我這個 repo 同意跑哪些 build**」,而 `pnpm approve-builds` 是「**我這個人類同意我這台機器跑那些 build**」,**兩件事**,缺一不可。
 
 ### 真正能解的指令
 
@@ -361,7 +361,7 @@ curl -s http://localhost:3000 | head -c 200    # 看到 <main> 區塊 + Hello, C
 
 ### 續集:`approve-builds` 自己也有兩個地雷
 
-我寫完上一段「真正能解的指令」、實際照走的時候**又**炸了一次 — `pnpm approve-builds` 的 prompt UX 藏了兩個容易誤觸的設計:
+我寫完上一段「真正能解的指令」、實際照走的時候**又**炸了一次：`pnpm approve-builds` 的 prompt UX 藏了兩個容易誤觸的設計:
 
 **地雷 ①:第一個 prompt 不勾就過 = 全部 decline**
 
@@ -373,7 +373,7 @@ curl -s http://localhost:3000 | head -c 200    # 看到 <main> 區塊 + Hello, C
 All packages were added to allowBuilds with value false.
 ```
 
-它**第一句寫 `Press <space> to select`,但很多人下意識直接按 Enter** — 結果 pnpm 把它解讀成「你看過名單了、什麼都不勾、那就是全部不准跑」,寫進 **user-level state**(macOS 路徑類似 `~/Library/pnpm/` 之下的 yaml)。**之後再跑 `pnpm approve-builds` 會回 `There are no packages awaiting approval`** — 因為決議已下、pnpm 不再問。
+它**第一句寫 `Press <space> to select`,但很多人下意識直接按 Enter**：結果 pnpm 把它解讀成「你看過名單了、什麼都不勾、那就是全部不准跑」,寫進 **user-level state**(macOS 路徑類似 `~/Library/pnpm/` 之下的 yaml)。**之後再跑 `pnpm approve-builds` 會回 `There are no packages awaiting approval`**：因為決議已下、pnpm 不再問。
 
 正確操作:**`a` 切換全選 → `Enter` 進確認 → 然後再對下一個 `Do you approve? (y/N)` 打 `y`**(下面說)。
 
@@ -384,7 +384,7 @@ All packages were added to allowBuilds with value false.
   Do you approve? (y/N) · false
 ```
 
-`(y/N)` 大寫的 N 是 default — 你直接 Enter 就**等於拒絕**,而且輸出最後一行寫 `· false` 就是當前選的值。**要明確打 `y` 再 Enter**。
+`(y/N)` 大寫的 N 是 default：你直接 Enter 就**等於拒絕**,而且輸出最後一行寫 `· false` 就是當前選的值。**要明確打 `y` 再 Enter**。
 
 兩個都踩中的話,你會看到的 net effect 就是 transcript 那樣:install 仍 IGNORED_BUILDS,但 approve-builds 反而說「沒東西好選」。
 
@@ -405,7 +405,7 @@ open ~/Library/pnpm 2>/dev/null || echo "找 pnpm state dir 看 yaml/json 把 sh
 
 ### 等等:為什麼我 decline 了 build,`pnpm dev` 還是 200?
 
-這就是 **Next.js 16 + Turbopack** 的甜頭。Turbopack 自己處理 image transformation,**dev mode 完全不 require sharp**;sharp 只有在 `next build`(production)時才會被 require,而且**沒 native binary 會 fallback 到純 JS sharp,慢 5–10 倍但不會炸**。
+這就是 **Next.js 16 + Turbopack** 的甜頭。Turbopack 自己處理 image transformation,**dev mode 完全不 require sharp**;sharp 只有在 `next build`(production)時才會被 require,而且**沒 native binary 會 fallback 到純 JS sharp,慢 5~10 倍但不會炸**。
 
 所以你看到 `✓ Ready in 326ms` 跟 `GET / 200`,phase-0 dev 環境就**已經算是合格**。production build 那邊欠的人情,等 phase-1 進 deploy 章節再還(到時候 sharp native 一定要解,不然 Vercel / 自架 build server 跑出來的 image optimization 一塌糊塗)。
 
@@ -433,19 +433,19 @@ $ next dev
  GET / 200 in 1889ms (next.js: 1725ms, application-code: 164ms)
 ```
 
-四行看起來就是「server 起來了」,但**每個數字對應一段不同的工作** — 拆開看,之後 debug 慢頁面、慢 SSR 時非常有用。
+四行看起來就是「server 起來了」,但**每個數字對應一段不同的工作**：拆開看,之後 debug 慢頁面、慢 SSR 時非常有用。
 
-### `▲ Next.js 16.2.9 (Turbopack)` — bundler 是 Turbopack 不是 webpack
+### `▲ Next.js 16.2.9 (Turbopack)`：bundler 是 Turbopack 不是 webpack
 
-Next.js 13 / 14 跑 `next dev` 預設是 webpack,要明確 `next dev --turbo` 才用 Turbopack。**Next.js 16 反過來:dev 預設就是 Turbopack**,要關掉得 `next dev --no-turbo`(很少人會)。看到第一行有 `(Turbopack)` 才是預期 — 沒有的話檢查 `next.config.ts` 或 `package.json` scripts 是不是被改過。
+Next.js 13 / 14 跑 `next dev` 預設是 webpack,要明確 `next dev --turbo` 才用 Turbopack。**Next.js 16 反過來:dev 預設就是 Turbopack**,要關掉得 `next dev --no-turbo`(很少人會)。看到第一行有 `(Turbopack)` 才是預期：沒有的話檢查 `next.config.ts` 或 `package.json` scripts 是不是被改過。
 
-### `✓ Ready in 326ms` — server cold start 完成,但**還沒 compile 任何 page**
+### `✓ Ready in 326ms`：server cold start 完成,但**還沒 compile 任何 page**
 
 「Ready」的意思是 **Next.js HTTP server + Turbopack bundler + RSC runtime 三者都載入完成,可以接 request 了**。326ms 是我這台 M-series Mac 的數字;Intel Mac 通常 800ms ~ 1.5s,Linux 約 500ms。**這時候你的 `app/page.tsx` 還沒被 compile**,第一個 request 進來才開始 build。
 
-對比 Next.js 14 webpack dev server 同樣專案 cold start 通常 3 ~ 5 秒,Turbopack 5–10× 加速主要就是這一段 — webpack 啟動就要 parse 全部 module graph,Turbopack 是 lazy。
+對比 Next.js 14 webpack dev server 同樣專案 cold start 通常 3 ~ 5 秒,Turbopack 5~10× 加速主要就是這一段：webpack 啟動就要 parse 全部 module graph,Turbopack 是 lazy。
 
-### `GET / 200 in 1889ms (next.js: 1725ms, application-code: 164ms)` — 第一次 request 的分工
+### `GET / 200 in 1889ms (next.js: 1725ms, application-code: 164ms)`：第一次 request 的分工
 
 這行是 Next.js 16 dev server 新加的細顆粒 timing,**第一次 GET 永遠比之後慢一個量級**,因為它包含三件事:
 
@@ -463,9 +463,9 @@ Next.js 13 / 14 跑 `next dev` 預設是 webpack,要明確 `next dev --turbo` �
  GET / 200 in 178ms (next.js: 24ms, application-code: 154ms)
 ```
 
-`next.js` 從 1725ms 砍到 24ms — 已 compile 的 bundle 直接複用,**這就是 Turbopack HMR 的甜頭**。`application-code` 仍是 154ms(SSR 真實成本,不會被 cache 掉)。
+`next.js` 從 1725ms 砍到 24ms：已 compile 的 bundle 直接複用,**這就是 Turbopack HMR 的甜頭**。`application-code` 仍是 154ms(SSR 真實成本,不會被 cache 掉)。
 
-> phase-1 寫 protected 路由跑 Sanctum auth 時,`application-code` 通常會跳到 300–600ms — 因為每個 request 都要 server-side 打 backend 拿 session。到時候這條 timing line 就是 debug latency 的第一線。
+> phase-1 寫 protected 路由跑 Sanctum auth 時,`application-code` 通常會跳到 300~600ms：因為每個 request 都要 server-side 打 backend 拿 session。到時候這條 timing line 就是 debug latency 的第一線。
 
 ## 兌現承諾:`frontend/README.md` onboarding checklist 範本
 
@@ -493,7 +493,7 @@ pnpm approve-builds
 ## 每次開發(三個 terminal)
 
 ```bash
-# Terminal 1:docker stack(mysql / redis / mailpit)— 從 repo root
+# Terminal 1:docker stack(mysql / redis / mailpit)： 從 repo root
 docker compose up -d --wait
 
 # Terminal 2:backend
@@ -526,14 +526,14 @@ pnpm dev                              # http://localhost:3000
 
 幾個值得停下來看的設計:
 
-1. **First-time setup 跟「每次開發」切兩段** — 跳過 `approve-builds` 的選擇權留給「只想 dev mode」的人,不強制解 sharp,讀者照走不被嚇跑
-2. **「每次開發」明確標三個 terminal** — docker / backend / frontend 不能擠一個 shell,寫清楚省得讀者誤以為一條指令搞定
-3. **`.env.local` ≠ `.env`** — Next.js 讀 `.env.local`、docker-compose 讀 root `.env`,**兩份 env 各管各的**(這個誤解 [Ep-2 的後記章節](#後記照-quickstart-跑一遍一次踩到四個訊號) 也提過,值得再 ping 一次)
-4. **「文件」section 連回 `CLAUDE.md` / `specs/bootstrap/spec.md`** — README 只負責 onboarding 不負責設計決策,真相回到 OpenSpec specs
+1. **First-time setup 跟「每次開發」切兩段**：跳過 `approve-builds` 的選擇權留給「只想 dev mode」的人,不強制解 sharp,讀者照走不被嚇跑
+2. **「每次開發」明確標三個 terminal**：docker / backend / frontend 不能擠一個 shell,寫清楚省得讀者誤以為一條指令搞定
+3. **`.env.local` ≠ `.env`**：Next.js 讀 `.env.local`、docker-compose 讀 root `.env`,**兩份 env 各管各的**(這個誤解 [Ep-2 的後記章節](#後記照-quickstart-跑一遍一次踩到四個訊號) 也提過,值得再 ping 一次)
+4. **「文件」section 連回 `CLAUDE.md` / `specs/bootstrap/spec.md`**：README 只負責 onboarding 不負責設計決策,真相回到 OpenSpec specs
 
 ## 收尾不是 commit,是 `/opsx:archive`
 
-如果你是跟著 [Ep-1 的 OpenSpec 紀律](/posts/openspec-重構老專案-ep-1/) 做的,**phase-0 跑到這裡還沒結束** — change 還在 `openspec/changes/phase-0-bootstrap-monorepo/` 待命中。OpenSpec 對「change 真的完成」的定義是:**delta spec 寫回 `openspec/specs/`,change 目錄移進 `archive/`**。這個動作叫 archive。
+如果你是跟著 [Ep-1 的 OpenSpec 紀律](/posts/openspec-重構老專案-ep-1/) 做的,**phase-0 跑到這裡還沒結束**：change 還在 `openspec/changes/phase-0-bootstrap-monorepo/` 待命中。OpenSpec 對「change 真的完成」的定義是:**delta spec 寫回 `openspec/specs/`,change 目錄移進 `archive/`**。這個動作叫 archive。
 
 在 Claude Code 對話框打:
 
@@ -550,13 +550,13 @@ pnpm dev                              # http://localhost:3000
 
 **為什麼這個動作不能省**:
 
-- **下一個 change 才開得了** — 同時間只能有一個 active change(同 [Ep-1 的規則](/posts/openspec-重構老專案-ep-1/)),phase-1-auth-sanctum 要動,phase-0 就得先 archive
-- **新人 onboarding 讀 `openspec/specs/`** — phase-0 沒 archive,`specs/` 就是空的,新人讀不到「這個專案決定了什麼」
-- **Phase-0 的 spec 變成可被 phase-1 引用的真相** — archive 之後 `specs/bootstrap/spec.md` 永久存在,phase-1 的 delta 寫 `## MODIFIED Requirements` 才知道在改什麼
+- **下一個 change 才開得了**：同時間只能有一個 active change(同 [Ep-1 的規則](/posts/openspec-重構老專案-ep-1/)),phase-1-auth-sanctum 要動,phase-0 就得先 archive
+- **新人 onboarding 讀 `openspec/specs/`**：phase-0 沒 archive,`specs/` 就是空的,新人讀不到「這個專案決定了什麼」
+- **Phase-0 的 spec 變成可被 phase-1 引用的真相**：archive 之後 `specs/bootstrap/spec.md` 永久存在,phase-1 的 delta 寫 `## MODIFIED Requirements` 才知道在改什麼
 
 ### 實際跑下去長什麼樣
 
-我自己照這條跑完一次,把 transcript 攤開給你對照 — 不一樣的話通常代表某個 artifact 沒完成,回頭看 `openspec status --change <name> --json` 找差距。
+我自己照這條跑完一次,把 transcript 攤開給你對照：不一樣的話通常代表某個 artifact 沒完成,回頭看 `openspec status --change <name> --json` 找差距。
 
 **Stage 1:確認 artifact + tasks 都 complete**
 
@@ -580,7 +580,7 @@ phase-0 是 Carbon-ESG 第一個 change,`openspec/specs/` 是空的,所以 delta
 | **Sync now (recommended)** | 建立 `openspec/specs/bootstrap/spec.md`,寫進 4 個 requirements |
 | Archive without syncing | 只搬 change 進 archive,main specs 保持空 |
 
-幾乎所有場景都選 sync — 沒 sync 等於 phase-0 的真相只活在 archive,新人讀 `openspec/specs/` 看到空目錄會懷疑這個 repo 沒在用 OpenSpec。
+幾乎所有場景都選 sync：沒 sync 等於 phase-0 的真相只活在 archive,新人讀 `openspec/specs/` 看到空目錄會懷疑這個 repo 沒在用 OpenSpec。
 
 **Stage 3:sub-agent 跑 sync,寫進 main spec**
 
@@ -617,7 +617,7 @@ Totals: 1 passed, 0 failed (1 items)
 
 這就是 phase-0 從「進行中的 change」變成「永久真相」的瞬間。
 
-### archive **不會幫你 commit** — git working tree 還在動
+### archive **不會幫你 commit**：git working tree 還在動
 
 很多人以為 `/opsx:archive` 是 atomic 的「全做完」,但它**只動 working tree**,**不 commit**。`git status -s` 跑下去你會看到三類變化:
 
@@ -654,7 +654,7 @@ c2701b6     chore: add docker-compose, .nvmrc, .gitignore, .env.example
 54f4a48     feat: add CLAUDE.md for project guidance and refactoring decisions
 ```
 
-到這一刻,**phase-0 才真的歷史化** — repo 從此記住「這 4 個 bootstrap requirements 在這個 commit 之後就是真相」,任何後續 phase 想動它都要寫 `## MODIFIED Requirements` 通過 OpenSpec 流程。Ep-4 預設你已經跑過 archive + commit,直接從 phase-1 開始,不會回頭講這段。
+到這一刻,**phase-0 才真的歷史化**：repo 從此記住「這 4 個 bootstrap requirements 在這個 commit 之後就是真相」,任何後續 phase 想動它都要寫 `## MODIFIED Requirements` 通過 OpenSpec 流程。Ep-4 預設你已經跑過 archive + commit,直接從 phase-1 開始,不會回頭講這段。
 
 ## 下一篇 Ep-4 預告:Sanctum SPA 端到端對接
 
@@ -664,8 +664,8 @@ Ep-3 留了一個尚未驗證的承諾:**`lib/api.ts` 的 axios 已經對 Sanctu
 2. `SANCTUM_STATEFUL_DOMAINS` / `SESSION_DOMAIN` / `config/cors.php` 三件事怎麼**同時**對齊,差一邊瀏覽器就吞 cookie
 3. 在 backend 寫 `POST /api/login`、`GET /api/me`、`POST /api/logout` 三條最小可行 auth 路由
 4. 在前端寫一個 `useSession()` hook + 一條 protected 路由,demo「沒登入 → 401 → ensureCsrfCookie → login → 認得」整段流程
-5. 最後跑一次 **Network panel debugging clinic** — `Set-Cookie` 沒設好的 5 種症狀跟對應 fix
+5. 最後跑一次 **Network panel debugging clinic**：`Set-Cookie` 沒設好的 5 種症狀跟對應 fix
 
 > Ep-4 會跟 Carbon-ESG 的 `phase-1-auth-sanctum` change 一起進。Phase-0 是「東西在那兒」,Phase-1 才是「東西會動」。
 
-如果你看到這邊已經有自己手裡的 Laravel + Next.js 想試試 Sanctum,不用等我 — 順序就是上面 1 → 5,踩任何坑歡迎丟過來,我把 Ep-4 寫得更實用。
+如果你看到這邊已經有自己手裡的 Laravel + Next.js 想試試 Sanctum,不用等我：順序就是上面 1 → 5,踩任何坑歡迎丟過來,我把 Ep-4 寫得更實用。
