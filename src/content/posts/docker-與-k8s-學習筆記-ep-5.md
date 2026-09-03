@@ -378,3 +378,4 @@ docker inspect --format='{{json .State.Health}}' my-node-app
 ## 系列文章導覽
 
 - 上一篇：[Docker 與 K8s 學習筆記 Ep-4：跨容器通訊與 Docker Compose](/posts/docker-與-k8s-學習筆記-ep-4)
+- 下一篇：[Docker 與 K8s 學習筆記 Ep-6：Kubernetes Pod、Deployment、Service 入門](/posts/docker-與-k8s-學習筆記-ep-6)
