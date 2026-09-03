@@ -11,17 +11,27 @@ draft: false
 
 ## 本篇重點
 
-[Ep-5](/posts/docker-與-k8s-學習筆記-ep-5) 結尾預告要進 Kubernetes，這篇正式開始。K8s 的物件很多，但新手第一天真正需要搞懂的其實只有三個：
-
-- Pod：K8s 裡最小的部署單位，一個 Pod 可以跑一個或多個容器
-- Deployment：管理 Pod 的物件，Pod 掛了它會自動補一個新的
-- Service：Pod 的 IP 每次重建都會換，Service 提供一個不會變的連線入口
-
-這篇會實際建一個裸 Pod，故意砍掉它讓你看它不會自動回來，再用 Deployment 包一層看差異。最後接上 Ep-5 寫的 HEALTHCHECK 觀念，示範 readinessProbe 失敗時 Pod 明明是 Running 卻打不通的真實情況。所有指令輸出都是本機實測，不是示意值。
+[Ep-5](/posts/docker-與-k8s-學習筆記-ep-5) 結尾預告要進 Kubernetes，這篇正式開始，先講 K8s 到底是什麼、解決 `docker run` 管不過來的哪些問題，再用 Pod、Deployment、Service 三個核心物件實測。會建一個裸 Pod，故意砍掉它讓你看它不會自動回來，再用 Deployment 包一層看差異。最後接上 Ep-5 寫的 HEALTHCHECK 觀念，示範 readinessProbe 失敗時 Pod 明明是 Running 卻打不通的真實情況。所有指令輸出都是本機實測，不是示意值。
 
 <!-- more -->
 
-## 0. 先把環境準備好：安裝 kubectl 與啟用本機 Kubernetes
+## Kubernetes 是什麼：docker run 管不過來的地方
+
+Ep-1 到 Ep-5 做的事，說到底都是在一台機器上手動下指令：`docker run`、`docker compose up`，最多用 `depends_on` 控制兩三個容器的啟動順序。服務只有一兩個、只跑在一台機器上，這樣做完全沒問題。
+
+但實際上線的服務通常不是這麼單純：可能要跑好幾個服務、分散在好幾台機器上分攤流量；某個容器半夜掛了，總不能等你早上上班才發現；流量變大時要多開幾個副本分流；換版本時如果全部容器同時砍掉重開，服務就會中斷。這些事光靠手動 `docker run` 管不過來，得有人（或有個系統）一直盯著。
+
+**Kubernetes**（常縮寫成 **K8s**，因為 K 和 s 之間剛好夾了 8 個字母）就是做這件事的系統。它跑在一群機器（叫做**節點**，node）組成的**叢集**（cluster）上，你只要用 YAML 宣告「我要這個服務一直維持 3 個副本、對外開 80 port」，K8s 就會自己找機器把容器排上去、副本數量不夠自動補、流量自動分散到多個副本、換版本時一批一批汰換不會整批同時斷線。
+
+換個角度理解：Docker 負責把一個應用程式連同它的執行環境包成一個可以到處複製的容器，這件事本身跟「要開幾個、開在哪台機器、掛了要不要重開」完全無關，那些是 K8s 在管的事。K8s 不會取代 Docker 去 build image，它是疊在容器執行環境上面的一層，專門處理「一大群容器要怎麼被穩定地跑起來」。
+
+這篇會用三個核心物件，實際示範 K8s 具體是怎麼做到「掛了自動補」「流量自動分散」的：
+
+- **Pod**：K8s 裡最小的部署單位，一個 Pod 可以跑一個或多個容器
+- **Deployment**：管理 Pod 的物件，Pod 掛了它會自動補一個新的
+- **Service**：Pod 的 IP 每次重建都會換，Service 提供一個不會變的連線入口
+
+## 1. 先把環境準備好：安裝 kubectl 與啟用本機 Kubernetes
 
 跑 K8s 指令要先裝 `kubectl`（K8s 的命令列工具），macOS 用 Homebrew 裝：
 
@@ -62,7 +72,7 @@ orbstack   Ready    control-plane   48d   v1.35.6+orb1
 
 看到 `STATUS` 是 `Ready` 就代表叢集活著，可以開始丟東西進去了。
 
-## 1. 光有 Pod 不夠：裸 Pod 被砍掉不會自動回來
+## 2. 光有 Pod 不夠：裸 Pod 被砍掉不會自動回來
 
 Pod 是 K8s 裡最小的部署單位。這篇沿用 Ep-5 build 好的 `my-node-app`（帶 HEALTHCHECK 的 multi-stage image），寫一個最簡單的 Pod 設定檔：
 
@@ -108,7 +118,7 @@ Error from server (NotFound): pods "my-node-app" not found
 
 砍掉就真的沒了，K8s 不會自動生一個新的回來。這跟 `docker run` 直接啟動容器是一樣的處境，容器掛了不會有人管。實務上沒有人會直接部署裸 Pod，這正是 Deployment 存在的原因。
 
-## 2. Deployment：讓 Pod 掛了自動補回來
+## 3. Deployment：讓 Pod 掛了自動補回來
 
 Deployment 是包在 Pod 外面的管理層，宣告「我要幾個這個 Pod 的副本一直存在」，K8s 會自己盯著數量，少了就補：
 
@@ -163,7 +173,7 @@ my-node-app-6b6cc75d9b-pcgzm   1/1     Running   0          58s   192.168.194.8 
 
 `fxfg9` 消失了，但馬上多出一個 `g6zm5`，數量還是維持 2 個。注意這個新 Pod 的 IP 是 `192.168.194.9`，跟被砍掉那個的 `192.168.194.7` 不一樣，另一個沒被動到的 `pcgzm` 則維持原本的 `192.168.194.8`。這就是下一節要處理的問題：Pod 的 IP 完全不可靠，每次重建都可能換掉。
 
-## 3. Service：Pod IP 一直換，靠什麼保持連得到
+## 4. Service：Pod IP 一直換，靠什麼保持連得到
 
 如果你的前端服務要連到 `my-node-app`，寫死 IP `192.168.194.7` 過沒多久就會失效，因為 Pod 隨時可能因為重啟、擴縮容而換一個新的。Service 解決的就是這個問題：給一組 Pod 一個固定不變的入口，實際流量會被轉發到當下還活著的 Pod 上。
 
@@ -225,7 +235,7 @@ curl -s -o /dev/null -w '%{http_code}\n' http://localhost:8080/
 
 Pod 在背後被砍掉又重建（IP 從 `192.168.194.9` 換成 `192.168.194.10`），但 `localhost:8080` 這個入口全程沒斷過，仍然回 `200`。這就是 Service 的價值：呼叫端永遠只認一個固定位址，背後 Pod 怎麼生怎麼死都不用管。
 
-## 4. livenessProbe 與 readinessProbe：Running 不等於能用
+## 5. livenessProbe 與 readinessProbe：Running 不等於能用
 
 [Ep-5](/posts/docker-與-k8s-學習筆記-ep-5) 最後提過 Docker 的 `HEALTHCHECK` 會直接對應到 K8s 的 probe，這裡把它接上。`STATUS` 顯示 `Running` 只代表容器行程還活著，不代表應用程式真的能服務，K8s 用兩種探測分別處理兩件事：
 
