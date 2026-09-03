@@ -71,7 +71,7 @@ ollama pull nomic-embed-text  # 嵌入模型：負責把文字轉成向量
 
 Ep-1 用報稅 PDF、Ep-2 用勞動基準法，這篇需要一份**PDF 裡真的內嵌圖表**的文件，這點比想像中挑：很多報告的長條圖、折線圖其實是 Excel / PowerPoint 圖表物件轉存的**向量圖**，不是圖片，PyMuPDF 的 `page.get_images()` 抓不到，丟進這篇的管線會是 0 張圖。
 
-這篇用的是**衛生福利部疾病管制署《傳染病統計暨監視年報－113年》**（[官方頁面](https://www.cdc.gov.tw/InfectionReport/List/DRiONFTwYxu8T162Hm6yFw)）。全份 202 頁、106 張真的內嵌點陣圖片（各傳染病的縣市發生率地理分布圖、趨勢長條圖），政府公開資料，跟 Ep-1、Ep-2 一樣沒有版權疑慮，每年到流感、腸病毒、登革熱季節也真的會有人搜尋。
+這篇用的是**衛生福利部疾病管制署《傳染病統計暨監視年報-113年》**（[官方頁面](https://www.cdc.gov.tw/InfectionReport/List/DRiONFTwYxu8T162Hm6yFw)）。全份 202 頁、106 張真的內嵌點陣圖片（各傳染病的縣市發生率地理分布圖、趨勢長條圖），政府公開資料，跟 Ep-1、Ep-2 一樣沒有版權疑慮，每年到流感、腸病毒、登革熱季節也真的會有人搜尋。
 
 ```bash
 curl -L -o infection-report.pdf \
