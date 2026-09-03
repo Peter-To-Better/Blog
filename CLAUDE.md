@@ -7,6 +7,27 @@ Astro 部落格。文章放 `src/content/posts/*.md`，圖片放 `public/images/
 
 ---
 
+## 配套程式碼 repo
+
+**`~/langchain-rag-lab/`**（GitHub: [Peter-To-Better/langchain-rag-lab](https://github.com/Peter-To-Better/langchain-rag-lab)）
+是「LangChain & LLM」系列所有文章的配套程式碼，一集一個資料夾：
+
+| 資料夾 | 對應文章 |
+| :--- | :--- |
+| `ep1_basic_rag/` | Ep-1 RAG 入門（報稅 PDF） |
+| `ep2_advanced_retrieval/` | Ep-2 進階檢索（勞動基準法） |
+| `ep3_multimodal_rag/` | Ep-3 多模態 RAG（疾管署年報麻疹章節） |
+| `ep4_evaluation/` | Ep-4 RAGAS 評估（六組設定對照） |
+
+寫這個系列的文章時要注意：
+
+- **文章裡的每個數字、每段輸出，都必須是那個 repo 真的跑出來的。** 不要寫預期值或示意值，做不到就不要寫那段。
+- 文章引用程式碼一律連 GitHub（`blob/main/...`），而且**要先 push 才發文**，否則讀者點進去是 404（已經發生過一次）。
+- 改完 repo 記得 commit + push，文章跟程式碼要對得起來。
+- 環境坑（例如 `import ragas` 直接掛掉、Ollama context 爆掉會靜默卡住）要同時寫進 repo 的 README 和文章的「踩雷筆記」。
+
+---
+
 ## 寫作規則
 
 ### 禁止使用破折號
