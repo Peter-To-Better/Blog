@@ -31,6 +31,8 @@ Ep-1 到 Ep-5 做的事，說到底都是在一台機器上手動下指令：`do
 - **Deployment**：管理 Pod 的物件，Pod 掛了它會自動補一個新的
 - **Service**：Pod 的 IP 每次重建都會換，Service 提供一個不會變的連線入口
 
+![Kubernetes 架構圖：Node、Pod、Deployment、Service 的關係與 kubectl 建立流程](/images/k8s-overall.png)
+
 ## 1. 先把環境準備好：安裝 kubectl 與啟用本機 Kubernetes
 
 跑 K8s 指令要先裝 `kubectl`（K8s 的命令列工具），macOS 用 Homebrew 裝：
