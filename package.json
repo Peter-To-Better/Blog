@@ -16,7 +16,7 @@
     "@astrojs/tailwind": "^6.0.2",
     "@tailwindcss/typography": "^0.5.15",
     "@types/three": "^0.185.0",
-    "astro": "^7.0.3",
+    "astro": "^7.0.5",
     "gsap": "^3.15.0",
     "medium-zoom": "^1.1.0",
     "mermaid": "^11.15.0",
