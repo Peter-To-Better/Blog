@@ -19,7 +19,7 @@
     "astro": "^7.4.10",
     "gsap": "^3.15.1",
     "medium-zoom": "^1.1.2",
-    "mermaid": "^11.17.2",
+    "mermaid": "^12.3.0",
     "sharp": "^0.35.5",
     "tailwindcss": "^3.4.19",
     "three": "^0.185.1"
