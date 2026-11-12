@@ -11,17 +11,17 @@
     "indexnow": "node scripts/indexnow.mjs"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^7.2.0",
-    "@astrojs/sitemap": "3.7.3",
+    "@astrojs/markdown-remark": "^7.3.7",
+    "@astrojs/sitemap": "3.7.4",
     "@astrojs/tailwind": "^6.0.2",
-    "@tailwindcss/typography": "^0.5.15",
-    "@types/three": "^0.185.0",
-    "astro": "^7.0.3",
-    "gsap": "^3.15.0",
-    "medium-zoom": "^1.1.0",
-    "mermaid": "^11.15.0",
-    "sharp": "^0.34.5",
-    "tailwindcss": "^3.4.0",
-    "three": "^0.185.0"
+    "@tailwindcss/typography": "^0.5.20",
+    "@types/three": "^0.185.4",
+    "astro": "^7.4.10",
+    "gsap": "^3.15.1",
+    "medium-zoom": "^1.1.2",
+    "mermaid": "^11.17.2",
+    "sharp": "^0.35.5",
+    "tailwindcss": "^3.4.19",
+    "three": "^0.185.1"
   }
 }
